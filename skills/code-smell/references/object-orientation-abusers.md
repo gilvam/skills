@@ -88,7 +88,7 @@ class NoDiscount implements DiscountStrategy {
 
 // classe principal
 class DiscountCalculator {
-  private strategies: { [key: string]: DiscountStrategy } = {
+  private strategies: Record<string, DiscountStrategy> = {
     Regular: new RegularCustomerDiscount(),
     Premium: new PremiumCustomerDiscount(),
     VIP: new VIPCustomerDiscount(),
@@ -145,6 +145,7 @@ class Dog extends Animal {
 const dog = new Dog();
 dog.eat(); // funciona corretamente
 dog.fly(); // lança erro: "Cachorros não podem voar."
+
 // solução
 
 // interfaces para habilidades
@@ -182,8 +183,8 @@ class BasicFlyer implements Flyer {
 // classes específicas
 class Dog implements Eater, Sleeper {
   constructor(
-    private eater: Eater = new BasicEater(),
-    private sleeper: Sleeper = new BasicSleeper()
+    public eater: Eater = new BasicEater(),
+    public sleeper: Sleeper = new BasicSleeper()
   ) {}
 
   eat(): void {
@@ -197,9 +198,9 @@ class Dog implements Eater, Sleeper {
 
 class Bird implements Eater, Sleeper, Flyer {
   constructor(
-    private eater: Eater = new BasicEater(),
-    private sleeper: Sleeper = new BasicSleeper(),
-    private flyer: Flyer = new BasicFlyer()
+    public eater: Eater = new BasicEater(),
+    public sleeper: Sleeper = new BasicSleeper(),
+    public flyer: Flyer = new BasicFlyer()
   ) {}
 
   eat(): void {
@@ -287,7 +288,7 @@ class PickupOrder extends Order {
 }
 
 // exemplo de uso
-const deliveryOrder = new DeliveryOrder(1,'João', 5, 'Deixar na portaria');
+const deliveryOrder = new DeliveryOrder(1, 'João', 5, 'Deixar na portaria');
 deliveryOrder.processOrder();
 
 const pickupOrder = new PickupOrder(2, 'Maria', 50);
@@ -463,6 +464,7 @@ class Bicycle implements Vehicle {
     console.log("Bicicleta pedalando");
   }
 }
+
 // solução
 
 // interface para veículos com combustível
@@ -477,27 +479,17 @@ interface SpeedyVehicle {
 }
 
 class Car implements FuelVehicle, SpeedyVehicle {
-  speed: number;
-  fuel: number;
+  constructor(public speed: number, public fuel: number) {}
 
-  constructor(speed: number, fuel: number) {
-    this.speed = speed;
-    this.fuel = fuel;
-  }
-
-  drive() {
+  drive(): void {
     console.log("Carro dirigindo");
   }
 }
 
 class Bicycle implements SpeedyVehicle {
-  speed: number;
+  constructor(public speed: number) {}
 
-  constructor(speed: number) {
-    this.speed = speed;
-  }
-
-  drive() {
+  drive(): void {
     console.log("Bicicleta pedalando");
   }
 }
@@ -688,6 +680,7 @@ calculateDiscount(price: any, discount: any): any {
 
 // exemplo de uso
 calculateDiscount('100', '20');  // '80.00'
+
 // solução
 
 calculateDiscount(price: number, discount: number): number {

@@ -258,8 +258,8 @@ class Address {
 class Address {
 
   constructor(
-    private street = '', 
-    private zip: string, 
+    private street: string = '',
+    private zip: string = '',
     ...
   ) {
     this.setZip(this.zip); // adicionado validação do zip code

@@ -47,12 +47,16 @@ service.processOrder("456");
 service.sendNotification("123", "Seu pedido foi enviado!");
 // solução
 
+// solução
+
+class CustomerDetails { ... }
+
 class CustomerService {
   getCustomerDetails(customerId: string): string {
     ...
   }
 
-  updateCustomerDetails(customerId: string, details: any): void {
+  updateCustomerDetails(customerId: string, details: CustomerDetails): void {
     ...
   }
 }
