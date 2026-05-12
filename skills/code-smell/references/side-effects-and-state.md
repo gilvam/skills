@@ -60,13 +60,17 @@ const user = new User("Alice", 25);
 updateUser(user);  // O usuário Alice tem agora 26 anos.
 // solução
 
-updateUser(user: { name: string, age: number }): { name: string, age: number } {
-  const updatedUser = { ...user, age: user.age + 1 }; // Criando uma cópia e modificando a cópia
+class User {
+  constructor(public name: string, public age: number) {}
+}
+
+updateUser(user: User): User {
+  const updatedUser = new User(user.name, user.age + 1); // Criando uma cópia e modificando a cópia
   console.log(`O usuário ${updatedUser.name} tem agora ${updatedUser.age} anos.`);
   return updatedUser;
 }
 
-const user = { name: "Alice", age: 25 };
+const user = new User("Alice", 25);
 const updatedUser = updateUser(user);  // O usuário Alice tem agora 26 anos.
 console.log(user);  // O objeto original não foi alterado: { name: "Alice", age: 25 }
 console.log(updatedUser);  // { name: "Alice", age: 26 }
@@ -117,11 +121,7 @@ class NormalOrderProcessor implements OrderProcessorStrategy {
 }
 
 class OrderProcessor {
-  private orderProcessorStrategy: OrderProcessorStrategy;
-
-  constructor(orderProcessorStrategy: OrderProcessorStrategy) {
-    this.orderProcessorStrategy = orderProcessorStrategy;
-  }
+  constructor(private orderProcessorStrategy: OrderProcessorStrategy) {}
 
   processOrder(orderId: string): void {
     this.orderProcessorStrategy.processOrder(orderId);

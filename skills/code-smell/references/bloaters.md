@@ -80,10 +80,31 @@ class OrderProcessor {
     ...
   }
 }
+
 // solução
 
+class Customer {
+    constructor(public name: string, public email: string) {}
+}
+
+class OrderItem {
+    constructor(public name: string, public quantity: number, public price: number) {}
+}
+
+class OrderData {
+    constructor(public id: string, public customer: Customer, public items: OrderItem[], public paymentMethod: string, public discount: number) {}
+}
+
 class OrderProcessor {
-  processOrder(order: any): void {
+  constructor(
+    private paymentValidator: PaymentValidator,
+    private inventoryManager: InventoryManager,
+    private invoiceService: InvoiceService,
+    private emailService: EmailService,
+    private logger: Logger
+  ) {}
+
+  processOrder(order: OrderData): void {
     this.validateOrder(order);
     const total = this.calculateTotal(order);
     this.processPayment(order.paymentMethod, total);
@@ -93,32 +114,22 @@ class OrderProcessor {
     this.logOrder(order);
   }
 
-  private validateOrder(order: any): void {
+  private validateOrder(order: OrderData): void {
     this.validateCustomer(order.customer);
     this.validateItems(order.items);
   }
 
-  private validateCustomer(customer: any): void { ... }
-
-  private validateItems(items: any[]): void { ... }
-
-  private checkStock(item: any): number { ... }
-
-  private calculateTotal(order: any): number { ... }
-
+  private validateCustomer(customer: Customer): void { ... }
+  private validateItems(items: OrderItem[]): void { ... }
+  private checkStock(item: OrderItem): number { ... }
+  private calculateTotal(order: OrderData): number { ... }
   private processPayment(paymentMethod: string, total: number): void { ... }
-
   private paymentSuccess(paymentMethod: string, total: number): boolean { ... }
-
-  private updateInventory(items: any[]): void { ... }
-
-  private updateStock(item: any): void { ... }
-
-  private createInvoice(order: any, total: number) { ... }
-
+  private updateInventory(items: OrderItem[]): void { ... }
+  private updateStock(item: OrderItem): void { ... }
+  private createInvoice(order: OrderData, total: number): void { ... }
   private sendEmail(email: string, total: number): void { ... }
-
-  private logOrder(order: any): void { ... }
+  private logOrder(order: OrderData): void { ... }
 }
 ```
 
@@ -139,23 +150,16 @@ class EmailSender { ... }
 class Logger { ... }
 
 class OrderProcessor {
-  private validator: OrderValidator;
-  private paymentProcessor: PaymentProcessor;
-  private inventoryManager: InventoryManager;
-  private invoiceCreator: InvoiceCreator;
-  private emailSender: EmailSender;
-  private logger: Logger;
+  constructor(
+    private validator = new OrderValidator(),
+    private paymentProcessor = new PaymentProcessor(),
+    private inventoryManager = new InventoryManager(),
+    private invoiceCreator = new InvoiceCreator(),
+    private emailSender = new EmailSender(),
+    private logger = new Logger
+  ) {}
 
-  constructor() {
-    this.validator = new OrderValidator();
-    this.paymentProcessor = new PaymentProcessor();
-    this.inventoryManager = new InventoryManager();
-    this.invoiceCreator = new InvoiceCreator();
-    this.emailSender = new EmailSender();
-    this.logger = new Logger();
-  }
-
-  processOrder(order: any): void {
+  processOrder(order: OrderData): void {
     this.validator.validateOrder(order);
     const total = this.invoiceCreator.calculateTotal(order);
     this.paymentProcessor.processPayment(order.paymentMethod, total);
@@ -191,6 +195,7 @@ class OrderProcessor {
     ...
   }
 }
+
 // solução
 
 class Item {
@@ -265,6 +270,7 @@ class User {
     return this.phoneNumber.length === 10;
   }
 }
+
 // solução
 
 class Email {
@@ -355,6 +361,7 @@ class OrderService {
 // exemplo de uso
 const orderService = new OrderService();
 orderService.processOrder("Laptop", 1, 1500);
+
 // solução
 
 class Product { // classe Product encapsula nome, quantidade e preço
@@ -405,6 +412,7 @@ class OrderManager {
   trackShipment() { ... }
   notifyCustomer() { ... }
 }
+
 // solução
 
 class ProductManager {
@@ -458,42 +466,43 @@ class System {
     this.inventory.push(item);
   }
 }
+
 // solução
 
-class UserService {
-  users: any[] = [];
+class User { ... }
+class Order { ... }
+class InventoryItem { ... }
 
-  addUser(user: any) {
+class UserService {
+  private users: User[] = [];
+
+  addUser(user: User): void {
     this.users.push(user);
   }
 }
 
 class OrderService {
-  orders: any[] = [];
+  private orders: Order[] = [];
 
-  placeOrder(order: any) {
+  placeOrder(order: Order): void {
     this.orders.push(order);
   }
 }
 
 class InventoryService {
-  inventory: any[] = [];
+  private inventory: InventoryItem[] = [];
 
-  manageInventory(item: any) {
+  manageInventory(item: InventoryItem): void {
     this.inventory.push(item);
   }
 }
 
 class System {
-  userService: UserService;
-  orderService: OrderService;
-  inventoryService: InventoryService;
-
-  constructor() {
-    this.userService = new UserService();
-    this.orderService = new OrderService();
-    this.inventoryService = new InventoryService();
-  }
+  constructor(
+    public userService: UserService,
+    public orderService: OrderService,
+    public inventoryService: InventoryService
+  ) {}
 }
 ```
 
@@ -525,7 +534,7 @@ processOrder(order: IOrder): string {
 ...
 
 // exemplo de uso
-const order: IOrder = {
+const order = {
   id: 123,
   status: 'pending',
   paymentStatus: 'paid',
@@ -533,9 +542,9 @@ const order: IOrder = {
   shippingAddress: '123 Main St'
 };
 processOrder(order);
-// solução
 
-validateOrder(order: any): string | null {
+// solução
+function validateOrder(order: IOrder): string {
   if (order.status !== 'pending') {
     return 'Order is not pending';
   }
@@ -548,10 +557,10 @@ validateOrder(order: any): string | null {
   if (!order.shippingAddress) {
     return 'Shipping address is missing';
   }
-  return null;
+  return '';
 }
 
-processOrder(order: any): string {
+function processOrder(order: IOrder): string {
   const validationError = validateOrder(order);
   if (validationError) {
     return validationError;
@@ -561,7 +570,7 @@ processOrder(order: any): string {
 }
 
 // exemplo de uso
-const order = {
+const order: IOrder = {
   id: 123,
   status: 'pending',
   paymentStatus: 'paid',
@@ -610,6 +619,7 @@ calculateDiscount(
 
   return 0;
 }
+
 // solução
 
 enum OrderType {

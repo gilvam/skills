@@ -212,11 +212,7 @@ setTimeout(() => {
 // solução
 
 class UserList {
-  users: string[];
-
-  constructor(users: string[]) {
-    this.users = users;
-  }
+  constructor(public users: string[]) {}
 
   render() {
     const listElement = document.createElement('ul');
@@ -297,8 +293,12 @@ console.log(userService.getUserName('1')); // chama o banco de dados
 console.log(userService.getUserName('1')); // retorna do cache
 // solução
 
+class CacheEntry {
+    constructor(public value: string, public timestamp: number) {}
+}
+
 class UserService {
-    private cache: { [key: string]: { value: string, timestamp: number } } = {};
+    private cache: { [key: string]: CacheEntry } = {};
     private cacheExpirationTime: number = 60000; // 1 minuto
 
     // método de consulta com cache adequado
@@ -311,7 +311,7 @@ class UserService {
         }
 
         const userName = this.getUserNameFromDB(userId); // consulta DB
-        this.cache[userId] = { value: userName, timestamp: currentTime };
+        this.cache[userId] = new CacheEntry(userName, currentTime); // armazena em cache
 
         return userName;
     }
@@ -421,11 +421,7 @@ processor.processData(); // o código cria uma promessa desnecessária
 // solução
 
 class DataProcessor {
-    private data: number[];
-
-    constructor(data: number[]) {
-        this.data = data;
-    }
+    constructor(private data: number[]) {}
 
     processData(): void {
         const processedData = this.data.map(num => num * 2);

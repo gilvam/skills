@@ -398,13 +398,15 @@ class UtilityService {
   generateReport(data: any): void { ... }
 }
 // solução
+class Report { ... }
+class Database { ... }
 
 class Logger {
   logToConsole(message: string): void { ... }
 }
 
 class DatabaseService {
-  saveToDatabase(data: any): void { ... }
+  saveToDatabase(data: Database): void { ... }
 }
 
 class EmailService {
@@ -412,7 +414,7 @@ class EmailService {
 }
 
 class ReportService {
-  generateReport(data: any): void { ... }
+  generateReport(data: Report): void { ... }
 }
 ```
 

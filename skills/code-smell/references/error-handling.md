@@ -20,7 +20,9 @@ Tratamento de erros excessivo, ausente, escondido ou inadequado.
 Ocorre quando o bloco de código usa a estrutura try-catch de maneira excessiva, mesmo para situações que não requerem tratamento de exceções. Isso pode gerar uma sobrecarga no código, diminuir a legibilidade e prejudicar o desempenho. Usar try-catch de maneira inadequada pode ocultar falhas inesperadas ou criar um fluxo de controle não claro.
 
 ```typescript
-processData(data: any): string {
+interface Processable { ... }
+
+function processData(data: Processable): string {
   try {
     let processedData = parseData(data); // não precisa do try-catch here
     return `Processed Data: ${processedData}`;
@@ -45,9 +47,10 @@ processData(data: any): string {
     return 'Error during formatting';
   }
 }
+
 // solução
 
-processData(data: any): string {
+function processData(data: Processable): string {
   const processedData = parseData(data);
   const result = computeResult(data);
   const formattedResult = formatResult(data);

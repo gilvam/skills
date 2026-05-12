@@ -400,8 +400,8 @@ class Product {
         // falta de tratamento de erros (e.g., produto não encontrado)
     }
 }
-// solução
 
+// solução
 class ProductResponse {
     constructor(public id: number, public name: string, public price: number){}
 }

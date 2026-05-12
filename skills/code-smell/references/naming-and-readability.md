@@ -52,14 +52,11 @@ class Book {
 // exemplo de uso
 const book = new Book('name', 'Jhon');
 book.getBookName(); // já sabemos que é um book
+
 // solução
 
 class Book {
-
-  constructor(public name: string, public author: string) {
-    this.name = name;
-    this.author = author;
-  }
+  constructor(public name: string, public author: string) {}
 
   getName(): string {
     return this.name;
@@ -125,6 +122,7 @@ class ProductService {
   // 10. uso de um parâmetro sem contexto claro
   updateUserSettings(userId: string, settings: any, type: string, active: boolean, saveImmediately: boolean): void { ... }
 }
+
 // solução
 
 class ProductDetails { ... }
@@ -193,6 +191,7 @@ class User {
 // exemplo de uso
 const user = new User(true, false);
 console.log(user.checkUserStatus());
+
 // solução
 
 class User {
@@ -227,6 +226,7 @@ class User {
 
 const user = new User(true);
 console.log(user.checkStatusActive()); // Não é claro que "flag" é um boleano
+
 // solução
 
 class User {
@@ -264,6 +264,7 @@ class A {
 // exemplo de uso
 const obj = new A(5, 10);
 console.log(obj.doThing()); // o que "doThing" faz?
+
 // solução
 
 class Point {
@@ -312,6 +313,8 @@ class User {
  return this.name;
   }
     }
+
+
 // solução
 
 class User {
@@ -351,6 +354,7 @@ try {
 } catch (error) {
   console.log(error.message); // exibe apenas 'Error', sem detalhes úteis
 }
+
 // solução
 
 calculatePrice(price: number, tax: number): number {

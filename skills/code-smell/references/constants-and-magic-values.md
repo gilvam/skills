@@ -26,6 +26,7 @@ class ShippingCalculator {
     return weight * distance * 5;
   }
 }
+
 // solução
 
 class ShippingCalculator {
@@ -57,6 +58,7 @@ class UserService {
     return "unknown";    
   }
 }
+
 // solução
 
 class UserService {
@@ -104,26 +106,31 @@ class DiscountService {
 const discountService = new DiscountService();
 console.log(discountService.calculateDiscount(1200)); // 120
 console.log(discountService.getCurrencySymbol() + 1200); // $1200
+
 // solução
 
-// arquivo discount-threshold.interface.ts
-export interface IDiscountThreshold {
-  price: number;
-  discount: number;
+// arquivo discount-threshold.ts
+export class DiscountThreshold {
+  constructor(public price: number, public discount: number) {}
 }
 
 // arquivo config.ts
+import { DiscountThreshold } from './discount-threshold';
+
 export const discountThresholds: DiscountThreshold[] = [
-  { price: 1000, discount: 0.1 }, // 10%
-  { price: 500, discount: 0.05 }, // 5%
+  new DiscountThreshold(1000, 0.1), // 10%
+  new DiscountThreshold(500, 0.05), // 5%
 ];
 
 export const currencySymbol: string = '$';
 
 // arquivo discount.service.ts
+import * as config from './config';
+import { DiscountThreshold } from './discount-threshold';
+
 class DiscountService {
-  private readonly discountThresholds = config.discountThresholds;
-  private readonly currencySymbol = config.currencySymbol;
+  private readonly discountThresholds: DiscountThreshold[] = config.discountThresholds;
+  private readonly currencySymbol: string = config.currencySymbol;
 
   calculateDiscount(price: number): number {
     for (const threshold of this.discountThresholds) {
@@ -160,6 +167,7 @@ function readDataFromFile() {
 
 // exemplo de uso
 readDataFromFile();
+
 // solução
 
 const fs = require('fs');
@@ -200,6 +208,7 @@ class TaxCalculator {
     return (price * DISCOUNT_PERCENTAGE) / 100; // uso inadequado
   }
 }
+
 // solução
 
 const PRODUCT_DISCOUNT_PERCENTAGE = 10;
@@ -242,6 +251,7 @@ class DiscountCalculator {
     return amount;
   }
 }
+
 // solução
 
 class DiscountCalculator {
