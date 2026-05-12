@@ -7,7 +7,7 @@
 
 Ative `symlinks` quando o usuário pedir para:
 
-- Criar symlink de `.agents/skills`.
+- mensionar o `.agents/skills/symlink`.
 - Sincronizar skills entre múltiplas ferramentas de IA.
 - Fazer `.claude/skills` ou `.devin/skills` apontarem para `.agents/skills`.
 - Reparar ou verificar links simbólicos dessas pastas.
