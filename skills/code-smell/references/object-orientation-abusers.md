@@ -25,6 +25,7 @@ Aplicação incompleta ou incorreta dos princípios de orientação a objetos.
 Ocorre quando usamos declarações switch ou muitos if-else para realizar a lógica baseada em valores ou tipos. Esse padrão pode levar a dificuldades na manutenção, já que adicionar novos casos frequentemente requer modificar o código existente.
 Violação do Open-Closed Principle (OCP) no SOLID.
 
+#### problema
 ```typescript
 class DiscountCalculator {
   calculateDiscount(customerType: string, purchaseAmount: number): number {
@@ -54,9 +55,8 @@ Fácil de Quebrar: Adicionar ou alterar tipos de clientes requer a modificação
 Baixa Extensibilidade: O código não é extensível sem editar diretamente o método existente.
 Violação do Open-Closed Principle: O método não está fechado para modificações, já que novos casos exigem mudanças na lógica interna.
 
+#### solução
 ```typescript
-// solução
-
 interface DiscountStrategy { // interface para tipos de desconto
   calculate(purchaseAmount: number): number;
 }
@@ -118,6 +118,7 @@ Adesão ao Open-Closed Principle: A classe DiscountCalculator está fechada para
 Ocorre quando uma classe herda de uma classe base, mas rejeita (ou não utiliza) partes da funcionalidade herdada. Isso é um sinal de que a herança pode não ser apropriada, indicando que a relação "é-um" entre a classe base e a classe derivada não é válida.
 Violação do Princípio de Substituição de Liskov (LSP) no SOLID.
 
+#### problema
 ```typescript
 // classe base
 class Animal {
@@ -145,8 +146,10 @@ class Dog extends Animal {
 const dog = new Dog();
 dog.eat(); // funciona corretamente
 dog.fly(); // lança erro: "Cachorros não podem voar."
+```
 
-// solução
+#### solução
+```typescript
 
 // interfaces para habilidades
 interface Eater {
@@ -231,6 +234,7 @@ bird.fly(); // "está voando."
 
 Ocorre quando uma classe possui variáveis de instância que são configuradas apenas em situações específicas ou temporárias, mas que nem sempre são necessárias. Esses campos podem confundir quem lê o código, aumentar o uso de memória e tornar o código mais difícil de manter.
 
+#### problema
 ```typescript
 class Order {
   constructor(
@@ -254,7 +258,11 @@ deliveryOrder.processOrder();
 
 const pickupOrder = new Order(2, "Maria", 50);
 pickupOrder.processOrder();
-// solução
+
+```
+
+#### solução
+```typescript
 
 abstract class Order {
   constructor(
@@ -299,6 +307,7 @@ pickupOrder.processOrder();
 
 Ocorre quando uma classe é usada apenas para armazenar dados e não contém nenhum comportamento ou lógica significativa. Essas classes não têm métodos que realizem ações significativas com os dados, apenas armazenam valores. Isso pode ser problemático, pois uma classe sem comportamento não agrega valor real ao sistema e pode ser substituída por um simples objeto ou estrutura de dados.
 
+#### problema
 ```typescript
 class Product {
   constructor(
@@ -328,7 +337,11 @@ const order = new Order();
 order.addProduct(product1);
 order.addProduct(product2);
 console.log(`Total do pedido: $${order.calculateTotal()}`);
-// solução
+
+```
+
+#### solução
+```typescript
 
 class Product {
   constructor(
@@ -375,6 +388,7 @@ console.log(product1.getProductInfo());  // exibe as informações do produto
 Ocorre quando a herança é utilizada de maneira inadequada, frequentemente criando uma hierarquia de classes complexa e difícil de manter. Em vez de aproveitar o polimorfismo e a reutilização de código de maneira eficiente, o uso excessivo de herança pode levar a dependências desnecessárias entre as classes, acoplamento forte e falta de flexibilidade.
 O uso de herança é adequado quando há uma relação "é um" clara entre as classes, mas quando as classes se tornam muito especializadas ou a hierarquia de classes se torna muito profunda, o código pode se tornar inflexível, difícil de entender e difícil de modificar.
 
+#### problema
 ```typescript
 class Shape {
   constructor(public color: string) {}
@@ -405,7 +419,11 @@ class Triangle extends Shape {
 
   draw(): void { ... }
 }
-// solução
+
+```
+
+#### solução
+```typescript
 
 class Circle {
   constructor(public color: string, public radius: number) {}
@@ -430,6 +448,7 @@ class Triangle {
 
 Ocorre quando uma interface é mal projetada ou usada de forma inadequada em um código. Interfaces são definidas para garantir uma estrutura consistente e facilitar a reutilização de código, mas quando usadas de maneira equivocada, podem tornar o código mais confuso, difícil de manter e menos flexível.
 
+#### problema
 ```typescript
 interface Vehicle {
   speed: number; // velocidade do veículo
@@ -465,7 +484,10 @@ class Bicycle implements Vehicle {
   }
 }
 
-// solução
+```
+
+#### solução
+```typescript
 
 // interface para veículos com combustível
 interface FuelVehicle {
@@ -499,6 +521,7 @@ class Bicycle implements SpeedyVehicle {
 
 Ocorre quando o design do sistema inclui um número excessivo de interfaces que adicionam complexidade desnecessária sem proporcionar benefícios claros. Isso geralmente resulta em código difícil de entender, navegar e manter.
 
+#### problema
 ```typescript
 interface Item {
   name: string;
@@ -527,7 +550,11 @@ class InventoryManager {
 
   displayItemDetails(item: TaxableItem): void { ... }
 }
-// solução
+
+```
+
+#### solução
+```typescript
 
 interface InventoryItem {
   name: string;
@@ -558,6 +585,7 @@ Ocorre quando uma classe possui muitas versões de métodos sobrecarregados com 
 
 Ocorre quando há um uso excessivo de métodos de acesso (getters e setters) em uma classe. Isso pode levar a um design mais rígido, onde as operações em objetos se tornam mais complicadas e menos intuitivas, reduzindo a coesão e violando o princípio de encapsulamento.
 
+#### problema
 ```typescript
 class Product {
   private _name: string;
@@ -591,7 +619,11 @@ console.log(product.getName());
 console.log(product.getPrice());
 product.setPrice(1400);
 console.log(product.getPrice());
-// solução
+
+```
+
+#### solução
+```typescript
 
 class Product {
   constructor(private name: string, private price: number) {}
@@ -627,6 +659,7 @@ Dificuldade de validação: Quando não há controle sobre o acesso aos dados, n
 
 Ocorre quando modificadores de acesso (como public, protected, private) são usados de forma inadequada, comprometendo o encapsulamento e a segurança do código. O uso incorreto pode expor dados sensíveis, dificultar a manutenção e levar a comportamentos inesperados em subclasses ou outras partes do código.
 
+#### problema
 ```typescript
 class User {
     // problema: 'password' deve ser privado
@@ -641,7 +674,11 @@ class User {
 // exemplo de uso
 const user = new User('Alice', 'secret123');
 console.log(user.password);  // está acessível diretamente
-// solução
+
+```
+
+#### solução
+```typescript
 
 class User {
     // 'password' é agora privado
@@ -662,9 +699,9 @@ user.checkPassword('secret123'); // true
 
 Ocorre quando um código realiza muitas conversões de tipos, ou quando há conversões de tipos que não são necessárias, o que pode dificultar a legibilidade e aumentar a complexidade do código. O excesso de castings pode indicar que o código não está bem estruturado e pode ser refatorado para usar tipos mais apropriados ou técnicas que evitem essas conversões.
 
+#### problema
 ```typescript
 calculateDiscount(price: any, discount: any): any {
-  // Excessive casting 
   // (tornar explícito para string e depois de volta para number)
   let priceNumeric = <number>price;
   let discountNumeric = <number>discount;
@@ -681,7 +718,10 @@ calculateDiscount(price: any, discount: any): any {
 // exemplo de uso
 calculateDiscount('100', '20');  // '80.00'
 
-// solução
+```
+
+#### solução
+```typescript
 
 calculateDiscount(price: number, discount: number): number {
   if (isNaN(price) || isNaN(discount)) {

@@ -18,6 +18,7 @@ Smells que indicam acoplamento excessivo entre classes/módulos.
 
 ocorre quando um método de uma classe está mais interessado nos dados de outra classe do que nos dados de sua própria classe. Esse comportamento sugere que a responsabilidade do método não está bem definida, e ele deveria estar na outra classe, que tem os dados necessários. Isso pode aumentar o acoplamento entre as classes e diminuir a coesão, o que torna o código mais difícil de entender e manter.
 
+#### problema
 ```typescript
 class Employee {
   constructor(
@@ -49,8 +50,10 @@ class Payroll {
 const employee = new Employee('John Doe', 50, 160);
 const payroll = new Payroll(employee);
 console.log(`Employee's Pay: $${payroll.calculatePay()}`);
-// solução
+```
 
+#### solução
+```typescript
 class Employee {
   constructor(
     public name: string,
@@ -89,6 +92,7 @@ console.log(`Employee's Pay: $${payroll.processPayroll()}`);
 
 Ocorre quando duas classes têm uma relação muito estreita, acessando diretamente os detalhes internos uma da outra de maneira que quebra o encapsulamento. Esse tipo de acoplamento pode tornar o código difícil de manter e evoluir, além de criar dependências desnecessárias.
 
+#### problema
 ```typescript
 class BankAccount {
   private balance: number;
@@ -133,8 +137,10 @@ const transaction = new Transaction();
 transaction.processDeposit(account, 500); // Saldo atual: 1500
 transaction.processWithdrawal(account, 200); // Saldo atual: 1300
 transaction.processWithdrawal(account, 2000); // Saldo insuficiente.
-// solução
+```
 
+#### solução
+```typescript
 class BankAccount {
   private balance: number;
 
@@ -192,6 +198,7 @@ transaction.processWithdrawal(account, 2000); // Saldo insuficiente.
 
 Ocorre quando uma classe depende de várias chamadas de métodos encadeadas para acessar funcionalidades de outra classe. Esse tipo de acoplamento pode tornar o código frágil e difícil de manter, pois mudanças em uma classe intermediária podem quebrar toda a cadeia.
 
+#### problema
 ```typescript
 class Address {
   constructor(public street: string, public city: string) {}
@@ -217,8 +224,10 @@ const customer = new Customer("João", address);
 const order = new Order(1, customer);
 
 order.printDeliveryAddress(); // Saída: Rua A, 123, São Paulo
-// solução
+```
 
+#### solução
+```typescript
 class Address {
   constructor(private street: string, private city: string) {}
 
@@ -255,6 +264,7 @@ order.printDeliveryAddress(); // saída: Endereço: Rua A, 123, São Paulo
 
 Ocorre quando uma classe ou método atua como um intermediário desnecessário, simplesmente delegando responsabilidades para outra classe ou método sem adicionar valor significativo. Isso cria uma camada extra de complexidade e dificulta a manutenção do código.
 
+#### problema
 ```typescript
 class Order {
   constructor(
@@ -284,8 +294,10 @@ class OrderManager {
     return this.order.total;
   }
 }
-// solução
+```
 
+#### solução
+```typescript
 class Order {
   constructor(
     public id: number,
@@ -314,6 +326,7 @@ _Também conhecido como: High Coupling._
 
 Ocorre quando as classes ou módulos estão fortemente dependentes uns dos outros, ou seja, quando uma classe depende fortemente de outra. Isso torna o código mais difícil de entender, testar e manter, pois mudanças em uma classe podem afetar várias outras. Isso também pode dificultar a reutilização de componentes.
 
+#### problema
 ```typescript
 interface User { ... }
 
@@ -337,7 +350,10 @@ class Database {
   save(name: string, email: string): void { ... }
   get(id: string): User { ... }
 }
-// solução
+```
+
+#### solução
+```typescript
 interface User { ... }
 
 interface Database {
@@ -386,6 +402,7 @@ userServicePostgres.createUser("Bob", "bob@example.com");
 Ocorre quando uma classe ou módulo tem muitas responsabilidades não relacionadas entre si. Em outras palavras, ela realiza tarefas que não têm uma relação clara entre si, o que torna a classe difícil de entender, testar e manter. Classes com baixa coesão tendem a ter métodos e variáveis que fazem coisas muito diferentes, o que dificulta a reutilização e a modificação de código.
 Classes com alta coesão, por outro lado, devem ter um conjunto de responsabilidades que estão intimamente relacionadas entre si. Isso facilita a manutenção, a clareza e os testes, já que cada classe faz uma coisa bem definida.
 
+#### problema
 ```typescript
 class UtilityService {
   // Métodos não relacionados entre si
@@ -397,7 +414,10 @@ class UtilityService {
 
   generateReport(data: any): void { ... }
 }
-// solução
+```
+
+#### solução
+```typescript
 class Report { ... }
 class Database { ... }
 
@@ -423,6 +443,7 @@ class ReportService {
 Ocorre quando uma classe ou módulo depende de outro recurso ou classe de maneira implícita, ou seja, o recurso ou classe necessária não é explicitamente declarada como dependência. Isso dificulta a manutenção, os testes e a compreensão do código, pois fica difícil para um desenvolvedor perceber todas as dependências que uma classe ou módulo realmente possui.
 Essa prática pode resultar em código difícil de testar, pois as dependências não estão claramente definidas ou injetadas. Além disso, isso pode levar a efeitos colaterais inesperados se a classe ou módulo dependente for alterado sem que sua dependência seja visível.
 
+#### problema
 ```typescript
 class OrderProcessor {
   processOrder(orderId: string): void {
@@ -436,8 +457,10 @@ class OrderProcessor {
     ...
   }
 }
-// solução
+```
 
+#### solução
+```typescript
 class InventoryService {
   checkAvailability(orderId: string): boolean {
     // Verificação de disponibilidade (exemplo simples)

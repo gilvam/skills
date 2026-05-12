@@ -22,6 +22,7 @@ _Também conhecido como: Repetitive Naming._
 
 Inconsistência nos nomes ou repetição desnecessária do nome da classe, variáveis ou funções, causando redundância e dificultando a manutenção do código
 
+#### problema
 ```typescript
 // má prática:
 
@@ -52,9 +53,10 @@ class Book {
 // exemplo de uso
 const book = new Book('name', 'Jhon');
 book.getBookName(); // já sabemos que é um book
+```
 
-// solução
-
+#### solução
+```typescript
 class Book {
   constructor(public name: string, public author: string) {}
 
@@ -84,6 +86,7 @@ book.getName();
 
 Similar ao Long Parameter List, ocorre quando os métodos de uma classe têm assinaturas que são difíceis de entender, seja por serem muito longas, terem parâmetros mal nomeados, ou uma ordem de parâmetros confusa. Isso torna o código difícil de usar e compreender, aumentando a chance de erros e dificultando a manutenção.
 
+#### problema
 ```typescript
 class ProductService {
 
@@ -122,9 +125,10 @@ class ProductService {
   // 10. uso de um parâmetro sem contexto claro
   updateUserSettings(userId: string, settings: any, type: string, active: boolean, saveImmediately: boolean): void { ... }
 }
+```
 
-// solução
-
+#### solução
+```typescript
 class ProductDetails { ... }
 class Details { ... }
 class Transaction { ... }
@@ -178,6 +182,7 @@ class ProductService {
 Ocorre quando se usa uma variável booleana de forma inadequada, levando a um código confuso, redundante ou propenso a erros. Esse problema ocorre, principalmente, quando a variável booleana é usada em expressões ou condições complexas de maneira que causa ambiguidades ou torna o código difícil de entender.
 A principal questão aqui é que, ao usar variáveis booleanas de maneira inadequada, pode-se criar armadilhas lógicas, onde o comportamento do código não é claro ou é inesperado.
 
+#### problema
 ```typescript
 class User {
     constructor(private isActive: boolean, private isSuspended: boolean) {}
@@ -191,14 +196,15 @@ class User {
 // exemplo de uso
 const user = new User(true, false);
 console.log(user.checkUserStatus());
+```
 
-// solução
-
+#### solução
+```typescript
 class User {
     constructor(private isActive: boolean, private isSuspended: boolean) {}
 
     public isUserActive(): boolean {
-        // Solução: A lógica é clara e direta
+        // a Solução: A lógica é clara e direta
         return this.isActive && !this.isSuspended;
     }
 }
@@ -214,6 +220,7 @@ _Também conhecido como: Boolean Method Naming._
 
 Ocorre quando uma variável booleana ou um método booleano não segue a convenção de nomenclatura esperada, o que pode causar confusão no código. Para tornar o código mais legível, é recomendado que variáveis e métodos booleanos comecem com os prefixos is, has, can, ou outros prefixos semelhantes, para indicar que o valor ou a operação é do tipo booleano e para expressar claramente o que está sendo verificado ou afirmado.
 
+#### problema
 ```typescript
 class User {
     // nome não apropriado para uma variável booleana
@@ -226,9 +233,10 @@ class User {
 
 const user = new User(true);
 console.log(user.checkStatusActive()); // Não é claro que "flag" é um boleano
+```
 
-// solução
-
+#### solução
+```typescript
 class User {
     // nome de variável booleana com prefixo 'is'
     constructor(private isActive: boolean) {}
@@ -246,6 +254,7 @@ console.log(user.isActive());  // Agora é claro que "isActive" booleano
 
 Ocorre quando nomes de variáveis, funções, classes ou outros elementos do código são vagos, confusos ou não representam claramente sua finalidade. Isso torna o código difícil de entender, mantendo e propenso a erros.
 
+#### problema
 ```typescript
 class A {
   private x: number;
@@ -264,9 +273,10 @@ class A {
 // exemplo de uso
 const obj = new A(5, 10);
 console.log(obj.doThing()); // o que "doThing" faz?
+```
 
-// solução
-
+#### solução
+```typescript
 class Point {
   private xCoordinate: number;
   private yCoordinate: number;
@@ -300,6 +310,7 @@ Sem exemplos de código.
 
 Ocorre quando o código tem indentação inconsistente, o que torna o código difícil de ler, entender e manter. Isso pode acontecer por várias razões, como misturar espaços e tabulações, usar diferentes estilos de indentação (por exemplo, 2 espaços em alguns lugares e 4 espaços em outros), ou simplesmente não seguir um padrão claro para toda a base de código.
 
+#### problema
 ```typescript
 class User {
    name: string;
@@ -313,10 +324,10 @@ class User {
  return this.name;
   }
     }
+```
 
-
-// solução
-
+#### solução
+```typescript
 class User {
   name: string;
   age: number;
@@ -340,6 +351,7 @@ Dificuldade para identificar a causa raiz do erro: Mensagens vagas ou incompleta
 Frustração do usuário: Se um usuário encontra uma mensagem de erro incompreensível, isso pode gerar frustração e dificultar a resolução do problema.
 Aumento no tempo de resolução de problemas: Erros com mensagens imprecisas podem levar mais tempo para serem diagnosticados e corrigidos.
 
+#### problema
 ```typescript
 calculatePrice(price: number, tax: number): number {
   if (price < 0 || tax < 0) {
@@ -354,9 +366,10 @@ try {
 } catch (error) {
   console.log(error.message); // exibe apenas 'Error', sem detalhes úteis
 }
+```
 
-// solução
-
+#### solução
+```typescript
 calculatePrice(price: number, tax: number): number {
   if (price < 0) {
     throw new Error(`Invalid price: ${price}. Price must be a non-negative number.`);

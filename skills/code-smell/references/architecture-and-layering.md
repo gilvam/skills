@@ -22,6 +22,7 @@ Smells em nível de arquitetura, camadas, dependências e separação de respons
 
 Lógica de interface no backend.
 
+#### problema
 ```typescript
 // backend com lógica de UI
 function getProductDetails(productId: number) {
@@ -41,7 +42,10 @@ function getProductDetails(productId: number) {
 const product = getProductDetails(123);
 console.log(product.price);  // '$25.00'
 console.log(product.color);  // 'green'
-// solução
+```
+
+#### solução
+```typescript
 
 // BACKEND: responsável pela lógica de negócios, dados puros sem formatação
 getProductDetails(productId: number) {
@@ -70,9 +74,8 @@ console.log(formattedProduct.color);  // 'green'
 Ocorre quando a lógica de acesso e manipulação de dados, que deveria estar encapsulada no banco de dados (por exemplo, através de stored procedures, views ou triggers), é implementada diretamente no código da aplicação. Isso pode levar a um acoplamento forte entre o banco de dados e a aplicação, dificultando a manutenção, o teste, e a escalabilidade do sistema.
 Esse code smell surge quando operações complexas de banco de dados, como consultas SQL extensas ou manipulação de dados, são diretamente inseridas no código da aplicação. Isso não só pode dificultar a leitura e manutenção do código, mas também pode gerar problemas de desempenho e flexibilidade.
 
+#### problema A
 ```typescript
-// problema A
-
 ...
 <body>
     <h1>Lista de Usuários</h1>
@@ -93,7 +96,10 @@ Esse code smell surge quando operações complexas de banco de dados, como consu
     </script>
 </body>
 ...
-// solução A
+```
+
+#### solução A
+```typescript
 
 // arquivo .ts
 import express from 'express';
@@ -132,8 +138,10 @@ app.listen(3000, () => {
     });
 </script>
 ...
-// problema B
+```
 
+#### problema B
+```typescript
 // entidade de domínio User com lógica de banco de dados embutida
 class User {
   constructor(public id: number, public name: string) {}
@@ -153,7 +161,10 @@ class User {
 // exemplo de uso
 const user = User.findById(1);
 console.log(user);
-// solução B
+```
+
+#### solução B
+```typescript
 
 // DDD - Entidade de domínio User sem lógica de banco de dados
 class User {
@@ -193,6 +204,7 @@ console.log(user);
 Ocorre quando há um número excessivo de eventos ou listeners registrados, frequentemente desnecessários, que tornam o código difícil de entender, manter e podem impactar o desempenho da aplicação. Isso pode acontecer quando eventos são registrados em excesso, ou em momentos desnecessários, ou ainda, quando a lógica por trás de um evento pode ser mais eficiente.
 Eventos devem ser registrados de forma concisa e específica, e sua remoção deve ser feita corretamente para evitar vazamentos de memória. Ter muitos listeners ou um grande número de eventos para interações simples pode resultar em um código difícil de fazer debug e manter.
 
+#### problema
 ```typescript
  class ButtonComponent {
   constructor() {
@@ -214,7 +226,10 @@ Eventos devem ser registrados de forma concisa e específica, e sua remoção de
 
   handleYetAnotherClick() { ... }
 }
-// solução
+```
+
+#### solução
+```typescript
 
 class ButtonComponent {
   constructor() {
@@ -234,6 +249,7 @@ class ButtonComponent {
 
 Ocorre quando anotações (como tipos ou comentários) são usadas em excesso ou de maneira desnecessária, prejudicando a legibilidade e manutenibilidade do código. Isso geralmente acontece quando se tenta adicionar um nível de detalhamento excessivo em áreas que não requerem explicações ou quando as anotações acabam sendo redundantes.
 
+#### problema
 ```typescript
 // funcao que calcula a área passando largura e altura em inteiros
 function calc(width, height) {
@@ -247,8 +263,8 @@ let result: number = calc(10, 20);
 
 Simplifique os métodos e variáveis com os nomes adequados explicando o que cada um deles faz.
 
+#### solução
 ```typescript
-// solução
 
 calculateRectangleArea(width: number, height: number): number {
   return width * height;
@@ -266,6 +282,7 @@ Sem exemplos de código.
 
 Ocorre quando uma classe tem um ou mais métodos que não fazem sentido dentro dela, ou seja, quando uma classe possui comportamento que não se encaixa no seu propósito. Isso pode ocorrer quando uma classe possui métodos ou funcionalidades que estão ali apenas para interagir com outras partes do sistema, mas não têm um papel próprio.
 
+####problema
 ```typescript
 class Employee {
   private name: string;
@@ -305,7 +322,11 @@ const employee1 = new Employee('John Doe', 5000);
 const employee2 = new Employee('Jane Smith', 6000);
 const payrollService = new PayrollService([employee1, employee2]);
 payrollService.generatePayroll();  // "John Doe receives a salary of $5000"
-// solução
+
+```
+
+#### solução
+```typescript
 
 class Employee {
   private name: string;
@@ -367,6 +388,7 @@ Falta de consistência na nomeação de métodos e parâmetros.
 Exposição excessiva de detalhes internos.
 APIs que não seguem os padrões e melhores práticas, o que dificulta a integração e a manutenção.
 
+#### problema
 ```typescript
 class Product {
     id: number;
@@ -401,7 +423,11 @@ class Product {
     }
 }
 
-// solução
+```
+
+#### solução
+```typescript
+
 class ProductResponse {
     constructor(public id: number, public name: string, public price: number){}
 }
