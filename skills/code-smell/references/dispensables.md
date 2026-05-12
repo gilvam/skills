@@ -21,6 +21,7 @@ Código desnecessário, redundante ou que pode ser removido sem prejuízo.
 
 Ocorre quando o mesmo código é repetido em várias partes do sistema. Isso pode ser problemático porque, se houver a necessidade de modificar esse código, será necessário atualizar todas as instâncias em que ele aparece, o que aumenta o risco de erros. Além disso, a duplicação torna o código mais difícil de manter e menos legível. A solução é abstrair a lógica repetida em uma função ou classe reutilizável.
 
+#### problema
 ```typescript
 class Order {
   constructor(
@@ -49,7 +50,10 @@ class Order {
 const order = new Order(101, 'Cadeira Gamer', 1, 500);
 order.printOrderSummary();
 order.sendOrderConfirmation();
-// solução
+```
+
+#### solução
+```typescript
 
 class Order {
   constructor(
@@ -86,8 +90,8 @@ _Também conhecido como: Duplicate Code, Redundant Variables._
 
 Ocorre quando o mesmo código é repetido em diferentes locais ou quando a variável é repetida dentro e fora do construtor sem nenhum tratamento ou regra de negócio . Isso aumenta a complexidade do sistema e torna a manutenção mais difícil, já que qualquer mudança em um desses trechos de código precisará ser refletida em todos os outros lugares onde a duplicação ocorre. Isso pode resultar em erros e maior esforço de manutenção.ocorre quando o mesmo código é repetido em diferentes locais. Isso aumenta a complexidade do sistema e torna a manutenção mais difícil, já que qualquer mudança em um desses trechos de código precisará ser refletida em todos os outros lugares onde a duplicação ocorre. Isso pode resultar em erros e maior esforço de manutenção.
 
+#### problema A
 ```typescript
-// problema 01
 class Project {
   name: string;
   description: string;
@@ -126,7 +130,10 @@ class Project {
 
   ...
 }
-// solucao 01
+```
+
+#### solução A
+```typescript
 class Project {
   constructor(
     public name: string,
@@ -143,7 +150,10 @@ class Project {
 
   ...
 }
-// problema 02
+```
+
+#### problema B
+```typescript
 class Person {
   constructor(public name: string, public birthDate: Date) {}
 
@@ -163,7 +173,10 @@ class Animal {
     return age;
   }
 }
-// solucao 02
+```
+
+#### solução B
+```typescript
 class LifeSpan {
   protected calculateAge(birthDate: Date): number {
     let age = new Date().today.getFullYear() - birthDate.getFullYear();
@@ -193,6 +206,7 @@ class Animal extends LifeSpan {
 
 Refere-se a trechos de código que nunca são executados, ou seja, são totalmente inúteis. Isso pode ocorrer quando funções, métodos, variáveis ou classes são criados, mas nunca são utilizados ou chamadas em nenhum lugar do programa. O código morto pode gerar confusão, aumentar o tamanho do código e dificultar a manutenção, pois pode fazer parecer que há mais funcionalidade do que realmente existe.
 
+#### problema
 ```typescript
 class ShoppingCart {
   private items: string[] = [];
@@ -216,8 +230,10 @@ class ShoppingCart {
 const cart = new ShoppingCart();
 cart.addItem('Camiseta');
 cart.checkout();
-// solução
+```
 
+#### solução
+```typescript
 class ShoppingCart {
   private items: string[] = [];
 
@@ -242,6 +258,7 @@ cart.checkout();
 
 Ocorre quando uma classe tem tão pouca responsabilidade ou funcionalidade que não justifica sua existência. Ou seja, ela não faz nada de útil ou sua funcionalidade poderia ser facilmente incorporada em outra classe. Esse code smell pode indicar que uma classe foi criada de forma excessiva, fragmentando o código em unidades muito pequenas e desnecessárias.
 
+#### problema
 ```typescript
 class Address {
 
@@ -254,7 +271,10 @@ class Address {
   // getters and setters 
   ...
 }
-// solução
+```
+
+#### solução
+```typescript
 class Address {
 
   constructor(
@@ -287,6 +307,7 @@ class Address {
 
 Ocorre quando o código é projetado para um cenário que ainda não existe, ou seja, é excessivamente generalizado e projetado com base em suposições de futuras extensões que talvez nunca ocorram. Isso pode resultar em complexidade desnecessária, já que o código é mais genérico do que o necessário no momento. O problema é que a tentativa de prever o futuro frequentemente leva a abstrações que não são usadas, tornando o código mais difícil de entender e manter.
 
+#### problema
 ```typescript
 class PaymentProcessor {
   constructor(public paymentMethod: string) {}
@@ -320,8 +341,10 @@ class PaymentProcessor {
 // exemplo de uso
 const paymentProcessor = new PaymentProcessor('CreditCard');
 paymentProcessor.processPayment(100);
-// solução
+```
 
+#### solução
+```typescript
 class PaymentProcessor {
   constructor(public paymentMethod: string) {}
 
@@ -337,6 +360,7 @@ paymentProcessor.processCreditCardPayment(100);
 
 Ocorre quando um sistema ou classe possui abstrações que não são necessárias, ou seja, quando um nível extra de complexidade é introduzido sem trazer valor, resultando em um design mais difícil de entender e manter. Isso geralmente acontece quando você cria classes, interfaces ou métodos para representar algo simples demais, ou quando as abstrações são excessivas para o que está sendo feito.
 
+#### problema
 ```typescript
 class Engine {
   public start(): void {
@@ -369,8 +393,10 @@ const engine = new Engine();
 const car = new Car(engine);
 car.startCar();
 car.stopCar();
-// solução
+```
 
+#### solução
+```typescript
 class Car {
   public start(): void {
     console.log("Car started");
@@ -396,6 +422,7 @@ Sem exemplos de código.
 
 Ocorre quando módulos, bibliotecas ou funções são importados no código, mas nunca são utilizados. Isso pode acontecer durante o desenvolvimento, quando as dependências são adicionadas, mas depois não são usadas, ou quando o código é refatorado e as importações antigas não são removidas.
 
+#### problema
 ```typescript
 import { isEmpty } from 'lodash';  // importação não utilizada
 import { format } from 'date-fns';  // importação não utilizada
@@ -407,8 +434,10 @@ function sum(a: number, b: number): number {
 
 // exemplo de uso
 sum(5, 3);
-// solução
+```
 
+#### solução
+```typescript
 import { add } from 'lodash';  // mantemos apenas a importação usada
 
 function sum(a: number, b: number): number {
@@ -423,9 +452,8 @@ sum(5, 3);
 
 Ocorre quando há partes do código que nunca serão executadas devido à lógica existente ou à estrutura de controle. Isso pode resultar de condicionais mal projetadas, loops que nunca terminam, ou código que segue uma declaração de retorno antecipado.
 
+#### problema A
 ```typescript
-// problema A
-
 processOrder(order: string): void {
   if (!order) {
     return;
@@ -436,8 +464,10 @@ processOrder(order: string): void {
 
   console.log('Processing order'); // este código nunca será executado
 }
-// solução A
+```
 
+#### solução A
+```typescript
 processOrder(order: string): void {
   if (!order) {
     return;
@@ -445,8 +475,10 @@ processOrder(order: string): void {
 
   console.log('Order received');
 }
-// problema B
+```
 
+#### problema B
+```typescript
 processData(data: string[]): void {
   let index = 0;
 
@@ -459,8 +491,10 @@ processData(data: string[]): void {
 
   console.log('Processing complete'); // nunca será alcançado
 }
-// solução B
+```
 
+#### solução B
+```typescript
 processData(data: string[]): void {
   let index = 0;
 
@@ -477,6 +511,7 @@ processData(data: string[]): void {
 
 Ocorre quando o código é acompanhado de explicações excessivas ou desnecessárias. Isso pode dificultar a leitura e a manutenção, especialmente quando os comentários se tornam desatualizados ou redundantes devido a alterações no código.
 
+#### problema
 ```typescript
 export class OrderService {
   // este método calcula o total de um pedido
@@ -509,8 +544,10 @@ const items = [ { price: 20, quantity: 3 }, { price: 50, quantity: 1 } ];
 const total = orderService.calculate(items); // calcula o total
 orderService.format(total); // exibe o total formatado
 orderService.verify(total); // verifica o frete grátis
-// solução
+```
 
+#### solução
+```typescript
 export class OrderService {
   calculateTotal(items: { price: number; quantity: number }[]): number {
     return items.reduce((total, item) => total + item.price * item.quantity, 0);

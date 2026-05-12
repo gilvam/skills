@@ -19,6 +19,7 @@ Tratamento de erros excessivo, ausente, escondido ou inadequado.
 
 Ocorre quando o bloco de código usa a estrutura try-catch de maneira excessiva, mesmo para situações que não requerem tratamento de exceções. Isso pode gerar uma sobrecarga no código, diminuir a legibilidade e prejudicar o desempenho. Usar try-catch de maneira inadequada pode ocultar falhas inesperadas ou criar um fluxo de controle não claro.
 
+#### problema
 ```typescript
 interface Processable { ... }
 
@@ -47,9 +48,10 @@ function processData(data: Processable): string {
     return 'Error during formatting';
   }
 }
+```
 
-// solução
-
+#### solução
+```typescript
 function processData(data: Processable): string {
   const processedData = parseData(data);
   const result = computeResult(data);
@@ -63,6 +65,7 @@ function processData(data: Processable): string {
 Ocorre quando uma aplicação lança um número excessivo de exceções, muitas vezes por situações que podem ser tratadas de outras maneiras mais eficazes ou sem o uso de exceções. Lançar exceções frequentemente pode tornar o código mais difícil de entender, diminuir a performance e tornar o gerenciamento de erros mais complexo do que realmente deveria ser.
 Exceções são projetadas para situações excepcionais e imprevistas, e não para controle normal de fluxo ou para eventos que podem ser previstos e tratados de forma mais apropriada. O uso excessivo de exceções pode gerar sobrecarga no código e no desempenho da aplicação, especialmente em linguagens como JavaScript/TypeScript, onde as exceções podem ser caras em termos de desempenho.
 
+#### problema
 ```typescript
 class OrderProcessor {
   processOrder(orderId: string) {
@@ -83,8 +86,10 @@ class OrderProcessor {
     }
   }
 }
-// solução
+```
 
+#### solução
+```typescript
 class OrderProcessor {
   processOrder(orderId: string) {
     if (orderId === '') {
@@ -115,6 +120,7 @@ Supressão de erros sem registro ou notificação.
 Lançar erros genéricos em vez de específicos.
 Uso indevido de estruturas de controle para mascarar erros.
 
+#### problema
 ```typescript
 class FileManager {
   readFile(filePath: string): string {
@@ -129,8 +135,10 @@ class FileManager {
     }
   }
 }
-// solução
+```
 
+#### solução
+```typescript
 class FileManager {
   readFile(filePath: string): string {
     try {
@@ -153,6 +161,7 @@ class FileManager {
 
 Ocorre quando recursos como arquivos, conexões de rede, ou conexões de banco de dados não são gerenciados corretamente, levando a vazamentos de recursos, bloqueios ou outros problemas de desempenho. Recursos precisam ser abertos e fechados de forma apropriada para garantir que sejam liberados corretamente, mesmo em caso de erros.
 
+#### problema
 ```typescript
 readFile(filePath: string): string {
   const fileHandle = openFile(filePath); // abre o arquivo
@@ -160,8 +169,10 @@ readFile(filePath: string): string {
   // não fecha o arquivo, o que pode causar vazamentos de recursos
   return data;
 }
-// solução
+```
 
+#### solução
+```typescript
 readFile(filePath: string): string {
   const fileHandle = openFile(filePath);
   try {
@@ -180,6 +191,7 @@ readFile(filePath: string): string {
 
 Ocorre quando um programa lança ou captura exceções de forma incompleta, sem tratá-las adequadamente. Isso pode ocorrer quando as exceções são capturadas sem uma lógica clara de tratamento ou quando exceções são lançadas mas não são manipuladas corretamente. Isso pode levar a falhas no sistema, mensagens de erro genéricas ou comportamento inesperado do programa.
 
+#### problema
 ```typescript
 readFile(fileName: string): string {
   try {
@@ -191,8 +203,10 @@ readFile(fileName: string): string {
     return '';
   }
 }
-// solução
+```
 
+#### solução
+```typescript
 readFile(fileName: string): string {
   const fs = require('fs');
 
@@ -214,6 +228,7 @@ _Também conhecido como: Empty Catch Block._
 Ocorrem quando exceções são lançadas ou propagadas sem serem verificadas ou tratadas adequadamente, muitas vezes sem a devida tentativa de captura ou de fornecimento de informações suficientes para o diagnóstico do problema.
 Essas exceções são chamadas de "unchecked" porque o compilador não exige que elas sejam tratadas explicitamente em um bloco try-catch ou que sejam declaradas como parte de uma assinatura de função, como ocorre com exceções verificadas (checked exceptions) em outras linguagens, como Java.
 
+#### problema
 ```typescript
 divide(a: number, b: number): number {
   if (b === 0) {
@@ -226,8 +241,10 @@ process(): void {
   // a exceção não é tratada, o código vai quebrar aqui
   const result = divide(10, 0);
 }
-// solução
+```
 
+#### solução
+```typescript
 divide(a: number, b: number): number {
   if (b === 0) {
     throw new Error("Divisão por zero não é permitida.");
@@ -251,6 +268,7 @@ process() {
 
 Ocorre quando o código não lida corretamente com valores null ou undefined, o que pode causar falhas inesperadas em tempo de execução. Esse code smell geralmente é associado a verificações insuficientes para valores nulos ou à falta de tratamento adequado de objetos que podem ser null ou undefined.
 
+#### problema
 ```typescript
 interface User {
   name: string;
@@ -265,8 +283,10 @@ function printCity(user: User): void {
 // exemplo de uso
 const user: User = { name: "Alice" };
 printCity(user); // o código quebra porque `address` é `undefined`
-// solução
+```
 
+#### solução
+```typescript
 class Address {
   constructor(public street = '', public city = '') {}
 
@@ -305,6 +325,7 @@ Vulnerabilidades de segurança: A falta de validação pode permitir ataques com
 Problemas de integridade de dados: Dados incorretos ou malformados podem comprometer a integridade da base de dados e dos sistemas que dependem dessas informações.
 Experiência do usuário comprometida: O sistema pode apresentar resultados inesperados ou falhas para o usuário final.
 
+#### problema
 ```typescript
 registerUser(user: { name: string; email: string }) {
   const userDatabase = [];
@@ -316,8 +337,10 @@ registerUser(user: { name: string; email: string }) {
 // exemplo de uso
 const user = new User('Alice', 'alice@example.com');
 registerUser(user);
-// solução
+```
 
+#### solução
+```typescript
 isValidEmail(email: string): boolean {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   return emailRegex.test(email);

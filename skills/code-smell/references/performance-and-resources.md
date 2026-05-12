@@ -19,6 +19,7 @@ Smells relacionados a desempenho, alocação de recursos e concorrência.
 
 Similar ao Improper Loop Usage mas focado no desempenho. Se referem a algoritmos que não estão implementados da maneira mais eficiente possível, levando a uso excessivo de recursos como tempo de execução ou memória. Esse code smell pode resultar em desempenho insatisfatório, especialmente em casos de grandes volumes de dados ou sistemas em produção com alta demanda..
 
+#### problema
 ```typescript
 function getAllPairs(arr: number[]): number[][] {
   const pairs: number[][] = [];
@@ -34,8 +35,10 @@ function getAllPairs(arr: number[]): number[][] {
 const numbers = [1, 2, 3, 4, 5];
 console.log(getAllPairs(numbers));
 // Saída: [[1, 2], [1, 3], [1, 4], [1, 5], [2, 3], [2, 4], [2, 5], [3, 4], [3, 5], [4, 5]]
-// solução
+```
 
+#### solução
+```typescript
 function* generatePairs(arr: number[]): Generator<[number, number]> {
   let i = 0;
   while (i < arr.length) {
@@ -62,9 +65,8 @@ Usar um loop onde uma operação direta poderia ser realizada (map, forEach,redu
 Usar um loop aninhado sem necessidade, o que resulta em complexidade desnecessária.
 Utilizar um loop de forma que ele execute mais vezes do que o necessário, causando ineficiência no código.
 
+#### problema A
 ```typescript
-// problema A
-
 sumNumbers(numbers: number[]): number {
   let sum = 0;
   for (let i = 0; i < numbers.length; i++) {
@@ -75,16 +77,20 @@ sumNumbers(numbers: number[]): number {
 
 const numbers = [1, 2, 3, 4, 5];
 const total = sumNumbers(numbers); // funciona, mas o loop é ineficiente
-// solução A
+```
 
+#### solução A
+```typescript
 sumNumbers(numbers: number[]): number {
   return numbers.reduce((acc, num) => acc + num, 0);
 }
 
 const numbers = [1, 2, 3, 4, 5];
 sumNumbers(numbers); // correto com código mais eficiente e legível
-// problema B
+```
 
+#### problema B
+```typescript
 findItem(numbers: number[], target: number): boolean {
   for (let i = 0; i < numbers.length; i++) {
     if (numbers[i] === target) {
@@ -96,16 +102,20 @@ findItem(numbers: number[], target: number): boolean {
 
 const numbers = [1, 2, 3, 4, 5];
 findItem(numbers, 3);  // funciona, mas é ineficiente
-// solução B
+```
 
+#### solução B
+```typescript
 findItem(numbers: number[], target: number): boolean {
   return numbers.includes(target);
 }
 
 const numbers = [1, 2, 3, 4, 5];
 console.log(findItem(numbers, 3));
-// problema C
+```
 
+#### problema C
+```typescript
 hasDuplicates(arr: number[]): boolean {
   for (let i = 0; i < arr.length; i++) {
     for (let j = i + 1; j < arr.length; j++) {
@@ -116,7 +126,10 @@ hasDuplicates(arr: number[]): boolean {
   }
   return false;
 }
-// solução C funcional:
+```
+
+#### solução C funcional:
+```typescript
 hasDuplicates(arr: number[]): boolean {
   const seen = new Set();
   for (let num of arr) {
@@ -127,8 +140,10 @@ hasDuplicates(arr: number[]): boolean {
   }
   return false;
 }
+```
 
-// solução C simplificada:
+#### solução C simplificada:
+```typescript
 hasDuplicates(arr: number[]): boolean {
   return arr.some((num, idx) => arr.indexOf(num) !== idx);
 };
@@ -138,6 +153,7 @@ hasDuplicates(arr: number[]): boolean {
 
 São laços (loops) que não têm uma condição de parada clara ou um limite bem definido, fazendo com que o loop continue a rodar indefinidamente, consumindo recursos do sistema, como CPU e memória. Esses loops podem levar a um comportamento inesperado, como a sobrecarga do sistema, travamentos ou até mesmo falhas.
 
+#### problema
 ```typescript
 infiniteLoop(): void {
   let count = 0;
@@ -149,8 +165,10 @@ infiniteLoop(): void {
 }
 
 infiniteLoop();
-// solução
+```
 
+#### solução
+```typescript
 function boundedLoop() {
   let count = 0;
 
@@ -167,6 +185,7 @@ boundedLoop();
 
 Ocorrem quando a memória é alocada, mas não é liberada corretamente. Esse vazamento de memória impede que o coletor de lixo (garbage collector) libere a memória que não está mais sendo usada, o que pode resultar em aumento no uso de memória e, eventualmente, falhas ou degradação do desempenho da aplicação.
 
+#### problema
 ```typescript
 class UserList {
   users: string[];
@@ -209,8 +228,10 @@ userList.render();
 setTimeout(() => {
   userList.destroy();
 }, 5000);
-// solução
+```
 
+#### solução
+```typescript
 class UserList {
   constructor(public users: string[]) {}
 
@@ -267,6 +288,7 @@ Cache excessivo: Caches sendo criados para dados que não precisam ser armazenad
 Cache ineficiente: Usar o cache para dados que não trazem um ganho real de desempenho.
 Cache inconsistente: Dados no cache que não são sincronizados com o banco de dados ou outras fontes de dados, resultando em informações desatualizadas ou inconsistentes.
 
+#### problema
 ```typescript
 class UserService {
     private cache: { [key: string]: string } = {};
@@ -291,8 +313,10 @@ class UserService {
 const userService = new UserService();
 console.log(userService.getUserName('1')); // chama o banco de dados
 console.log(userService.getUserName('1')); // retorna do cache
-// solução
+```
 
+#### solução
+```typescript
 class CacheEntry {
     constructor(public value: string, public timestamp: number) {}
 }
@@ -335,6 +359,7 @@ setTimeout(() => console.log(userService.getUserName('1')), 70000);
 Ocorre quando uma chamada ao sistema (geralmente I/O, como uma requisição de rede, leitura de arquivo ou consulta a banco de dados) bloqueia o fluxo de execução do programa. Isso pode resultar em um desempenho ruim, já que o processo fica "parado" esperando a resposta de uma operação, em vez de continuar com outras tarefas enquanto espera.
 Esse problema é comum quando o código faz chamadas síncronas a operações que podem levar um tempo considerável, como ler arquivos grandes ou aguardar uma resposta de rede. Isso torna a aplicação mais lenta e menos responsiva, principalmente em sistemas que lidam com muitos usuários ou operações simultâneas.
 
+#### problema
 ```typescript
 class DataService {
     private fetchDataFromAPI(): Promise<string> {
@@ -361,8 +386,10 @@ const service = new DataService();
 // execução fica bloqueada até a resposta da API
 const data = await service.processData();
 console.log('After processData');
-// solução
+```
 
+#### solução
+```typescript
 class DataService {
     private fetchDataFromAPI(): Promise<string> {
         return new Promise((resolve) => 
@@ -396,6 +423,7 @@ Maior complexidade: O gerenciamento de threads aumenta a complexidade do código
 Desempenho piorado: Threads adicionais podem adicionar overhead, consumindo mais memória e recursos do sistema sem proporcionar benefícios significativos.
 Gestão inadequada de recursos: O gerenciamento de threads pode causar problemas de recursos, como vazamento de memória ou falhas de sincronização.
 
+#### problema
 ```typescript
 class DataProcessor {
     private data: number[];
@@ -418,8 +446,10 @@ class DataProcessor {
 // exemplo de uso
 const processor = new DataProcessor([1, 2, 3, 4, 5]);
 processor.processData(); // o código cria uma promessa desnecessária
-// solução
+```
 
+#### solução
+```typescript
 class DataProcessor {
     constructor(private data: number[]) {}
 
@@ -439,6 +469,7 @@ processor.processData();
 Ocorre quando múltiplas operações que alteram o estado compartilhado entre threads ou processos não são devidamente sincronizadas. Isso pode levar a condições de corrida (race conditions), onde o comportamento do programa depende da ordem em que as threads ou processos são executados, gerando resultados inesperados ou errôneos.
 Em ambientes de execução paralela ou concorrente, é essencial garantir que apenas uma thread/processo acesse ou modifique o estado compartilhado de cada vez, para evitar conflitos.
 
+#### problema
 ```typescript
 class SharedList {
   private list: number[] = [];
@@ -465,8 +496,10 @@ setTimeout(() => {
   // esperado: [1, 2], mas pode ser incorreto
   console.log(sharedList.getList());
 }, 200);
-// solução
+```
 
+#### solução
+```typescript
 class SharedList {
   private list: number[] = [];
   private lock: Promise<void> = Promise.resolve();

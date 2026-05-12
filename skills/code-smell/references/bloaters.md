@@ -23,8 +23,8 @@ _Também conhecido como: God Function._
 ocorre quando um método realiza muitas tarefas ou tem muitas responsabilidades, dificultando a leitura, manutenção e testes do código.
 Viola o Princípio de Responsabilidade Única(SRP) no SOLID.
 
+#### problema
 ```typescript
-// Má prática:
 class OrderProcessor {
   processOrder(order: any): void {
     // Validação de dados do pedido
@@ -80,9 +80,10 @@ class OrderProcessor {
     ...
   }
 }
+```
 
-// solução
-
+#### solução
+```typescript
 class Customer {
     constructor(public name: string, public email: string) {}
 }
@@ -139,9 +140,8 @@ Ocorre quando uma classe se torna muito grande e possui muitas responsabilidades
 Viola o princípio de Responsabilidade Única (Single Responsibility Principle) no SOLID
 A classe anterior OrderProcessor resolveu um problema do Long Method e agora vamos melhora-la ainda mais criando várias classes cada uma com sua responsabilidade:
 
+#### solução
 ```typescript
-// solução
-
 class OrderValidator { ... }
 class PaymentProcessor { ... }
 class InventoryManager { ... }
@@ -176,6 +176,7 @@ class OrderProcessor {
 
 Ocorre quando uma função ou método tem muitos parâmetros. Isso torna o código difícil de entender, pois é necessário lembrar de todos os parâmetros ao usar ou modificar a função. Além disso, quando há muitas variáveis sendo passadas, pode ser um sinal de que a função está fazendo muitas coisas ou de que o design da aplicação não está bem estruturado.
 
+#### problema
 ```typescript
 class OrderProcessor {
   processOrder(
@@ -195,9 +196,10 @@ class OrderProcessor {
     ...
   }
 }
+```
 
-// solução
-
+#### solução
+```typescript
 class Item {
   constructor(
     public name: string,
@@ -251,6 +253,7 @@ class OrderProcessor {
 
 Ocorre quando tipos primitivos (como string, number, boolean) são usados excessivamente para representar conceitos mais complexos. Em vez de utilizar tipos primitivos, é melhor usar classes ou tipos específicos que encapsulam a lógica relacionada e fornecem maior clareza, flexibilidade e segurança para o código.
 
+#### problema
 ```typescript
 class User {
   constructor(
@@ -270,9 +273,10 @@ class User {
     return this.phoneNumber.length === 10;
   }
 }
+```
 
-// solução
-
+#### solução
+```typescript
 class Email {
   constructor(private email: string) {
     if (!this.validateEmail()) {
@@ -332,6 +336,7 @@ const user = new User("John Doe", email, phoneNumber, 30);
 
 Ocorre quando um grupo de dados relacionados é frequentemente passado juntos entre diferentes métodos ou classes. Isso pode indicar que esses dados pertencem a um único objeto ou entidade, mas estão sendo tratados de maneira separada e não encapsulada.
 
+#### problema
 ```typescript
 class Order {
   constructor(
@@ -361,9 +366,10 @@ class OrderService {
 // exemplo de uso
 const orderService = new OrderService();
 orderService.processOrder("Laptop", 1, 1500);
+```
 
-// solução
-
+#### solução
+```typescript
 class Product { // classe Product encapsula nome, quantidade e preço
   constructor(
     public name: string,
@@ -401,6 +407,7 @@ orderService.processOrder(product);
 
 Ocorre quando uma única classe assume muitas responsabilidades ou funções que deveriam estar distribuídas entre várias classes menores. Essa abordagem vai contra o princípio da responsabilidade única do SOLID e torna o código difícil de entender, testar e manter.
 
+#### problema
 ```typescript
 class OrderManager {
   addProduct() { ... }
@@ -412,9 +419,10 @@ class OrderManager {
   trackShipment() { ... }
   notifyCustomer() { ... }
 }
+```
 
-// solução
-
+#### solução
+```typescript
 class ProductManager {
   addProduct() { ... }
   removeProduct() { ... }
@@ -442,6 +450,7 @@ _Também conhecido como: Poor Separation of Concerns._
 
 Ocorre quando uma classe ou objeto assume responsabilidades demais, tornando-se excessivamente complexo e difícil de manter. Este "objeto deus" concentra muitas responsabilidades e, frequentemente, manipula dados de várias outras partes do sistema. Esse tipo de design viola os princípios de coesão e separação de responsabilidades, tornando o código mais difícil de entender e testar.
 
+#### problema
 ```typescript
 class System {
   users: any[];
@@ -467,7 +476,10 @@ class System {
   }
 }
 
-// solução
+```
+
+#### solução
+```typescript
 
 class User { ... }
 class Order { ... }
@@ -511,6 +523,7 @@ class System {
 Ocorre quando o código possui muitos níveis de aninhamento (como loops dentro de loops, condicionais dentro de condicionais, etc.). Isso dificulta a leitura e compreensão do código, além de aumentar a complexidade e o risco de erros. O aninhamento profundo pode ser um sinal de que o código está tentando fazer muitas coisas ao mesmo tempo ou que a lógica pode ser simplificada.
 ...
 
+#### problema
 ```typescript
 processOrder(order: IOrder): string {
   if (order.status === 'pending') {
@@ -543,7 +556,11 @@ const order = {
 };
 processOrder(order);
 
-// solução
+```
+
+#### solução
+```typescript
+
 function validateOrder(order: IOrder): string {
   if (order.status !== 'pending') {
     return 'Order is not pending';
@@ -620,7 +637,7 @@ calculateDiscount(
   return 0;
 }
 
-// solução
+```typescript
 
 enum OrderType {
   REGULAR = "regular",

@@ -19,6 +19,7 @@ Valores literais espalhados pelo código ou constantes mal gerenciadas.
 refere-se a valores numéricos literais usados diretamente no código sem uma explicação clara do que representam. Esses números "mágicos" podem ser confusos, difíceis de entender e difíceis de manter, pois não é claro por que um determinado número foi escolhido ou qual é seu significado.
 A principal questão com o uso de Magic Numbers é que, ao ver um número diretamente no código, fica difícil para os desenvolvedores entenderem rapidamente o seu propósito sem procurar por um comentário ou documentação adicional. Se o valor precisar ser alterado, pode ser fácil cometer erros, já que o número pode ser usado em várias partes do código sem um contexto claro.
 
+#### problema
 ```typescript
 class ShippingCalculator {
   calculateShippingCost(weight: number, distance: number): number {
@@ -26,9 +27,10 @@ class ShippingCalculator {
     return weight * distance * 5;
   }
 }
+```
 
-// solução
-
+#### solução
+```typescript
 class ShippingCalculator {
   // Explicando o que o valor 5 representa
   private static readonly BASE_SHIPPING_COST = 5;
@@ -43,6 +45,7 @@ class ShippingCalculator {
 
 Muito semelhante ao Magic Numbers, mas no caso, se refere ao uso de strings literais no código sem contexto claro. Assim como os Magic Numbers, as Magic Strings são difíceis de entender, manter e modificar, pois não possuem um significado explícito que explique seu propósito no código.
 
+#### problema
 ```typescript
 class UserService {
 
@@ -58,9 +61,10 @@ class UserService {
     return "unknown";    
   }
 }
+```
 
-// solução
-
+#### solução
+```typescript
 class UserService {
 
   private static readonly ADMIN_STATUS = "ad";
@@ -85,6 +89,7 @@ class UserService {
 
 São valores fixos inseridos diretamente no código, como strings, números ou caminhos. Isso dificulta a manutenção, reutilização e escalabilidade do código. Se esses valores precisarem ser alterados, você terá que modificar múltiplas partes do código.
 
+#### problema
 ```typescript
 class DiscountService {
   calculateDiscount(price: number): number {
@@ -106,9 +111,10 @@ class DiscountService {
 const discountService = new DiscountService();
 console.log(discountService.calculateDiscount(1200)); // 120
 console.log(discountService.getCurrencySymbol() + 1200); // $1200
+```
 
-// solução
-
+#### solução
+```typescript
 // arquivo discount-threshold.ts
 export class DiscountThreshold {
   constructor(public price: number, public discount: number) {}
@@ -153,6 +159,7 @@ ocorre quando caminhos (diretórios ou URLs) são codificados diretamente no có
 Os problemas de hardcoding incluem:
 Manutenção difícil: Se o caminho precisar mudar, o código precisa ser editado em vários lugares, o que pode ser suscetível a erros.
 
+#### problema
 ```typescript
 Falta de flexibilidade: O sistema fica preso a um caminho específico e não pode ser facilmente movido ou configurado para diferentes ambientes (desenvolvimento, teste, produção).
 Portabilidade comprometida: O código pode depender de caminhos específicos do sistema operacional (ex: caminhos absolutos no Windows vs. Linux).
@@ -167,9 +174,10 @@ function readDataFromFile() {
 
 // exemplo de uso
 readDataFromFile();
+```
 
-// solução
-
+#### solução
+```typescript
 const fs = require('fs');
 
 function readDataFromFile() {
@@ -191,6 +199,7 @@ Está intimamente relacionado aos conceitos de Magic Numbers e Magic Strings, ma
 
 Ocorre quando constantes são usadas de forma inconsistente ou inadequada em diferentes partes do código. Por exemplo, uma constante definida para um propósito específico acaba sendo usada em situações que não refletem sua intenção original. Isso pode levar a confusão, bugs e dificulta a manutenção do código.
 
+#### problema
 ```typescript
 const DISCOUNT_PERCENTAGE = 10; // usada para representar desconto de produtos
 
@@ -208,9 +217,10 @@ class TaxCalculator {
     return (price * DISCOUNT_PERCENTAGE) / 100; // uso inadequado
   }
 }
+```
 
-// solução
-
+#### solução
+```typescript
 const PRODUCT_DISCOUNT_PERCENTAGE = 10;
 const TAX_PERCENTAGE = 15;
 
@@ -234,6 +244,7 @@ class TaxCalculator {
 Ocorre quando uma variável ou constante que deveria ser imutável é alterada durante a execução do programa. Isso vai contra o propósito de constantes, que são valores que, uma vez definidos, não devem ser modificados. Alterar um valor de uma constante pode levar a comportamentos imprevisíveis, dificuldade em rastrear o fluxo do código e aumentar a chance de erros, especialmente em sistemas grandes.
 No TypeScript, o uso de const cria uma variável de referência imutável, mas não impede que objetos e arrays referenciados sejam modificados. Isso significa que, embora o valor de uma variável declarada com const não possa ser reatribuído, os dados internos (como propriedades de objetos ou elementos de arrays) podem ser modificados.
 
+#### problema
 ```typescript
 class DiscountCalculator {
   private readonly discountRates: { [key: string]: number } = {
@@ -251,9 +262,10 @@ class DiscountCalculator {
     return amount;
   }
 }
+```
 
-// solução
-
+#### solução
+```typescript
 class DiscountCalculator {
   private readonly discountRates: { [key: string]: number } = Object.freeze({
       "standard": 0.1,

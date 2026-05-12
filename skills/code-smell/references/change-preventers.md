@@ -17,6 +17,7 @@ Smells que fazem com que uma única mudança força modificações em muitos pon
 
 Ocorre quando uma única classe ou módulo precisa ser alterado por vários motivos diferentes. Isso significa que a classe ou módulo está lidando com responsabilidades múltiplas, violando o Princípio da Responsabilidade Única (SRP) no SOLID. Esse tipo de code smell pode dificultar a manutenção e aumentar o risco de introdução de bugs.
 
+#### problema
 ```typescript
 class CustomerService {
   getCustomerDetails(customerId: string): string {
@@ -45,10 +46,10 @@ service.getCustomerDetails("123");
 service.updateCustomerDetails("123", { name: "João Silva" });
 service.processOrder("456");
 service.sendNotification("123", "Seu pedido foi enviado!");
-// solução
+```
 
-// solução
-
+#### solução
+```typescript
 class CustomerDetails { ... }
 
 class CustomerService {
@@ -89,6 +90,7 @@ notificationService.sendNotification("123", "Seu pedido foi enviado!");
 
 Ocorre quando uma única mudança no sistema exige que você modifique várias classes ou módulos ao mesmo tempo. Isso indica que a lógica está espalhada, violando o princípio de alta coesão e dificultando a manutenção do código.
 
+#### problema
 ```typescript
 class Order {
   calculateOrderValue(baseValue: number): number {
@@ -122,8 +124,10 @@ console.log(invoice.generateInvoice(100));
 
 const report = new Report();
 console.log(report.generateReport(100));
-// solução
+```
 
+#### solução
+```typescript
 class TaxCalculator {
   private static readonly TAX_RATE = 0.1; // taxa de imposto fixa de 10%
 
@@ -170,6 +174,7 @@ console.log(report.generateReport(100));
 
 Ocorre quando duas ou mais hierarquias de classes crescem juntas, ou seja, para cada classe criada em uma hierarquia, é necessário criar uma classe correspondente em outra. Isso indica um design acoplado e rígido, o que dificulta a manutenção e a evolução do código.
 
+#### problema
 ```typescript
 // Hierarquia 1: Produtos
 abstract class Product {
@@ -211,8 +216,10 @@ console.log(electronicsDiscount.calculate(electronics)); // 900
 const clothing = new Clothing("Camisa", 50);
 const clothingDiscount = new ClothingDiscount();
 console.log(clothingDiscount.calculate(clothing)); // 40
-// solução
+```
 
+#### solução
+```typescript
 // Classe base para Produtos
 abstract class Product {
   constructor(public name: string, public price: number) {}
@@ -254,6 +261,7 @@ console.log(`${groceries.name} | ${groceries.calculateDiscount()}`);
 
 Ocorrem quando dois ou mais módulos (ou classes) dependem diretamente ou indiretamente uns dos outros, criando um ciclo de dependências. Esse tipo de dependência pode tornar o sistema difícil de entender, testar e manter, além de introduzir problemas de performance e dificuldade na inicialização do código. Em muitas linguagens de programação, a presença de dependências circulares pode causar problemas como erros de importação ou loops infinitos.
 
+#### problema
 ```typescript
 class Author {
   private name: string;
@@ -300,8 +308,10 @@ const author = new Author('J.K. Rowling');
 const book = new Book('Harry Potter', author);
 console.log(book.getAuthorName()); // J.K. Rowling
 console.log(author.listBooks());  // ['Harry Potter']
-// solução
+```
 
+#### solução
+```typescript
 class Author {
   private name: string;
 
@@ -361,6 +371,7 @@ console.log(libraryService.getBooksByAuthor(author)); // ['Harry Potter']
 Ocorre quando a lógica de um programa ou função depende de si mesma de maneira redundante ou infinita, criando um ciclo que não permite que o sistema evolua ou termine de maneira adequada. Esse code smell pode resultar em loops infinitos ou em um comportamento inesperado onde a solução de um problema depende de uma condição que só pode ser resolvida após uma outra ser completada, criando um ciclo sem fim.
 A principal característica da lógica circular é que ela tende a criar dependências cíclicas, onde uma condição depende de outra que, por sua vez, depende da primeira..
 
+#### problema
 ```typescript
 class BankAccount {
   balance: number;
@@ -392,8 +403,10 @@ class BankAccount {
 // exemplo de uso
 const account = new BankAccount(100);
 account.withdraw(50); // O código entra em um ciclo de chamadas
-// solução
+```
 
+#### solução
+```typescript
 class BankAccount {
   balance: number;
 
@@ -437,6 +450,7 @@ Falhas de segurança: Bibliotecas desatualizadas podem conter vulnerabilidades.
 Erros de execução: Dependências incompatíveis ou mal gerenciadas podem causar falhas em tempo de execução.
 Dificuldade de manutenção: Ao não controlar corretamente as dependências, torna-se difícil saber qual versão de uma biblioteca deve ser usada ou como configurar o projeto corretamente..
 
+#### problema
 ```typescript
 // package.json com dependências desnecessárias e versões conflitantes
 {
@@ -449,8 +463,10 @@ Dificuldade de manutenção: Ao não controlar corretamente as dependências, to
     "example_only": "^0.2.3", // não atualizado a 5 anos
   }
 }
-// solução
+```
 
+#### solução
+```typescript
 {
   "name": "my-app",
   "dependencies": {
