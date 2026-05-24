@@ -36,12 +36,12 @@ class Order {
   }
 
   printOrderSummary(): void {
-    const total = this.quantity * this.price;  // código duplicado
+    const total = this.quantity * this.price;  // Evite duplicar a mesma lógica
     console.log(`Pedido #${this.orderId}: ${this.product} - Total: $${total}`);
   }
 
   sendOrderConfirmation(): void {
-    const total = this.quantity * this.price;  // código duplicado
+    const total = this.quantity * this.price;  // Evite duplicar a mesma lógica
     console.log(`Confirmação de pedido #${this.orderId}: ${this.product} - Total: $${total}`);
   }
 }
@@ -68,12 +68,12 @@ class Order {
   }
 
   printOrderSummary(): void {
-    const total = this.calculateTotal();  // reutilizando o código
+    const total = this.calculateTotal();  // Extraia a lógica para um método reutilizável
     console.log(`Pedido #${this.orderId}: ${this.product} - Total: $${total}`);
   }
 
   sendOrderConfirmation(): void {
-    const total = this.calculateTotal();  // reutilizando o código
+    const total = this.calculateTotal();  // Extraia a lógica para um método reutilizável
     console.log(`Confirmação de pedido #${this.orderId}: ${this.product} - Total: $${total}`);
   }
 }
@@ -116,16 +116,16 @@ class Project {
     status: string,
     teamMembers: string[]
   ) {
-    this.name = name;                // variavel Redundante
-    this.description = description;  // variavel Redundante
-    this.startDate = startDate;      // variavel Redundante
-    this.endDate = endDate;          // variavel Redundante
-    this.budget = budget;            // variavel Redundante
-    this.clientName = clientName;    // variavel Redundante
-    this.clientEmail = clientEmail;  // variavel Redundante
-    this.manager= manager;  // variavel Redundante
-    this.status = status;            // variavel Redundante
-    this.teamMembers = teamMembers;  // variavel Redundante
+    this.name = name;                // Evite reatribuição redundante de parâmetros
+    this.description = description;  // Evite reatribuição redundante de parâmetros
+    this.startDate = startDate;      // Evite reatribuição redundante de parâmetros
+    this.endDate = endDate;          // Evite reatribuição redundante de parâmetros
+    this.budget = budget;            // Evite reatribuição redundante de parâmetros
+    this.clientName = clientName;    // Evite reatribuição redundante de parâmetros
+    this.clientEmail = clientEmail;  // Evite reatribuição redundante de parâmetros
+    this.manager= manager;  // Evite reatribuição redundante de parâmetros
+    this.status = status;            // Evite reatribuição redundante de parâmetros
+    this.teamMembers = teamMembers;  // Evite reatribuição redundante de parâmetros
   }
 
   ...
@@ -157,7 +157,7 @@ class Project {
 class Person {
   constructor(public name: string, public birthDate: Date) {}
 
-  calculateAge() { // código repetido
+  calculateAge() { // Evite repetir a mesma lógica em classes diferentes
     let age = new Date().today.getFullYear() - birthDate.getFullYear();
     ...
     return age;
@@ -167,7 +167,7 @@ class Person {
 class Animal {
   constructor(public species: string, public birthDate: Date) {}
 
-  calculateAge() { // código repetido
+  calculateAge() { // Evite repetir a mesma lógica em classes diferentes
     let age = new Date().today.getFullYear() - birthDate.getFullYear();
     ...
     return age;
@@ -177,6 +177,7 @@ class Animal {
 
 #### solução B
 ```typescript
+// Extraia a lógica comum para uma superclasse ou utilitário
 class LifeSpan {
   protected calculateAge(birthDate: Date): number {
     let age = new Date().today.getFullYear() - birthDate.getFullYear();
@@ -217,9 +218,9 @@ class ShoppingCart {
 
   private printReceipt(): void { ... }
 
-  private unusedMethod(): void { ... } // metodo inutilizado
+  private unusedMethod(): void { ... } // Evite manter métodos que nunca são chamados
 
-  private checkInStock(): void { ... } // metodo inutilizado
+  private checkInStock(): void { ... } // Evite manter métodos que nunca são chamados
 
   checkout(): void {
     this.printReceipt();
@@ -282,7 +283,7 @@ class Address {
     private zip: string = '',
     ...
   ) {
-    this.setZip(this.zip); // adicionado validação do zip code
+    this.setZip(this.zip); // Dê responsabilidade real à classe (validação)
   }
 
   private validateZip(): boolean {
@@ -290,7 +291,7 @@ class Address {
     return zipPattern.test(this.zip);
   }
 
-  getFullAddress(): string { // adiconado retorno do endereco completo
+  getFullAddress(): string { // Dê comportamento útil à classe (endereço completo)
     return `${this.street}, ${this.city}, ${this.state}, ${this.zip}`;
   }
 
@@ -318,12 +319,12 @@ class PaymentProcessor {
       return;
     }
 
-    if (this.paymentMethod === 'PayPal') { // não foi chamado
+    if (this.paymentMethod === 'PayPal') { // Evite criar ramos para casos que ainda não existem
       this.processPayPalPayment(amount);
       return;
     }
 
-    if (this.paymentMethod === 'BankTransfer') { // não foi chamado
+    if (this.paymentMethod === 'BankTransfer') { // Evite criar ramos para casos que ainda não existem
       this.processBankTransferPayment(amount);
       return;
     }
@@ -348,6 +349,7 @@ paymentProcessor.processPayment(100);
 class PaymentProcessor {
   constructor(public paymentMethod: string) {}
 
+  // Implemente apenas o caso que existe hoje
   processCreditCardPayment(amount: number): void { ... }
 }
 
@@ -362,6 +364,7 @@ Ocorre quando um sistema ou classe possui abstrações que não são necessária
 
 #### problema
 ```typescript
+// Evite abstrações que não agregam valor
 class Engine {
   public start(): void {
     console.log("Engine started");
@@ -397,6 +400,7 @@ car.stopCar();
 
 #### solução
 ```typescript
+// Mantenha apenas as abstrações que agregam valor
 class Car {
   public start(): void {
     console.log("Car started");
@@ -424,8 +428,8 @@ Ocorre quando módulos, bibliotecas ou funções são importados no código, mas
 
 #### problema
 ```typescript
-import { isEmpty } from 'lodash';  // importação não utilizada
-import { format } from 'date-fns';  // importação não utilizada
+import { isEmpty } from 'lodash';  // Evite importar o que não é usado
+import { format } from 'date-fns';  // Evite importar o que não é usado
 import { add } from 'lodash';  // usado no código
 
 function sum(a: number, b: number): number {
@@ -438,7 +442,7 @@ sum(5, 3);
 
 #### solução
 ```typescript
-import { add } from 'lodash';  // mantemos apenas a importação usada
+import { add } from 'lodash';  // Use apenas as importações necessárias
 
 function sum(a: number, b: number): number {
   return add(a, b);
@@ -462,7 +466,7 @@ processOrder(order: string): void {
   console.log('Order received'); // este código é alcançável
   return;
 
-  console.log('Processing order'); // este código nunca será executado
+  console.log('Processing order'); // Evite código após um return: nunca executa
 }
 ```
 
@@ -482,14 +486,14 @@ processOrder(order: string): void {
 processData(data: string[]): void {
   let index = 0;
 
-  while (true) { // loop infinito com alguma condiçao que sempre retorna true
+  while (true) { // Evite loops cuja condição nunca muda
     if (index >= data.length) {
       break; // pode quebrar o loop, mas até lá o código abaixo não é alcançado
     }
     index++;
   }
 
-  console.log('Processing complete'); // nunca será alcançado
+  console.log('Processing complete'); // Evite deixar código que nunca é alcançado
 }
 ```
 
@@ -498,7 +502,7 @@ processData(data: string[]): void {
 processData(data: string[]): void {
   let index = 0;
 
-  while (index < data.length) { // loop com condição de saída
+  while (index < data.length) { // Garanta uma condição de saída clara
     console.log(data[index]);
     index++;
   }
@@ -513,6 +517,7 @@ Ocorre quando o código é acompanhado de explicações excessivas ou desnecess�
 
 #### problema
 ```typescript
+// Evite comentar o óbvio; deixe o código se explicar
 export class OrderService {
   // este método calcula o total de um pedido
   calculate(items: { price: number; quantity: number }[]): number {
@@ -548,6 +553,7 @@ orderService.verify(total); // verifica o frete grátis
 
 #### solução
 ```typescript
+// Prefira nomes claros a comentários redundantes
 export class OrderService {
   calculateTotal(items: { price: number; quantity: number }[]): number {
     return items.reduce((total, item) => total + item.price * item.quantity, 0);

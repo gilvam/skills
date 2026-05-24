@@ -22,7 +22,7 @@ Ocorre quando uma função, método ou classe altera variáveis externas, parâm
 let items: string[] = ['apple', 'banana', 'cherry']; // global default
 
 function addItemToCart(item: string): void {
-  items.push(item); // modificando o estado global
+  items.push(item); // Evite modificar estado global ou externo (side effect)
   console.log(`Item adicionado: ${item}`);
 }
 
@@ -35,7 +35,7 @@ console.log(items); // ['apple', 'banana', 'cherry', 'orange']
 let items: string[] = ['apple', 'banana', 'cherry']; // global default
 
 function addItemToCart(item: string, items: string[]): string[] {
-  return  [...items, item]; // Criando um novo array com o item adicionado
+  return  [...items, item]; // Retorne um novo valor em vez de mutar o estado
 }
 
 const newItems = addItemToCart('orange', items);
@@ -56,7 +56,7 @@ class User {
 }
 
 updateUser(user: User): void {
-  user.age += 1; // Modificando o parâmetro diretamente
+  user.age += 1; // Evite modificar o parâmetro recebido
   console.log(`O usuário ${user.name} tem agora ${user.age} anos.`);
 }
 
@@ -71,7 +71,7 @@ class User {
 }
 
 updateUser(user: User): User {
-  const updatedUser = new User(user.name, user.age + 1); // Criando uma cópia e modificando a cópia
+  const updatedUser = new User(user.name, user.age + 1); // Crie uma cópia e modifique a cópia
   console.log(`O usuário ${updatedUser.name} tem agora ${updatedUser.age} anos.`);
   return updatedUser;
 }
@@ -92,6 +92,7 @@ Esse problema ocorre quando uma variável booleana é usada para controlar o com
 class OrderProcessor {
 
   processOrder(orderId: string, isPriority: boolean): void {
+    // Evite uma flag booleana para alternar lógicas
     let orderStatus = 'Pending';
 
     if (isPriority) {
@@ -111,6 +112,7 @@ class OrderProcessor {
 
 #### solução
 ```typescript
+// Use Strategy: uma classe por comportamento, sem flag
 interface OrderProcessorStrategy {
   processOrder(orderId: string): void;
 }
@@ -154,7 +156,7 @@ O propósito de uma abstração é esconder os detalhes internos, permitindo que
 ```typescript
 function formatDate(date: Date): string {
   const day = date.getDate();
-  const month = date.getMonth() + 1; // Month starts at 0
+  const month = date.getMonth() + 1; // Evite vazar detalhes de implementação (getMonth começa em 0)
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 }
@@ -166,6 +168,7 @@ Conhecimento interno: O código que usa essa função precisa saber que o mês r
 
 #### solução
 ```typescript
+// Esconda o detalhe atrás de uma abstração estável
 interface DateFormatter {
   format(date: Date): string;
 }

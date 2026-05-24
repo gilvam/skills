@@ -39,8 +39,7 @@ class Employee {
 class Payroll {
   constructor(private employee: Employee) {}
 
-  /** cálculo do pagamento feito na classe Payroll, 
-      acessando dados da classe Employee */
+  // Evite operar sobre dados de outra classe (Feature Envy)
   calculatePay(): number {
     return this.employee.getSalary() * this.employee.getHoursWorked();
   }
@@ -69,7 +68,7 @@ class Employee {
     return this.hoursWorked;
   }
 
-  calculatePay(): number { // calcula o pagamento, agora na classe Employee
+  calculatePay(): number { // Coloque o comportamento na classe dona dos dados
     return this.salary * this.hoursWorked;
   }
 }
@@ -112,14 +111,14 @@ class BankAccount {
 
 class Transaction {
   processDeposit(account: BankAccount, amount: number): void {
-    // manipulação de informações onde apenas o BankAccount deveria saber
+    // Evite manipular o estado interno de outra classe
     const currentBalance = account.getBalance();
     account.setBalance(currentBalance + amount);
     console.log(`Depósito de ${amount} realizado. Saldo: ${account.getBalance()}`);
   }
 
   processWithdrawal(account: BankAccount, amount: number): void {
-    // manipulação de informações onde apenas o BankAccount deveria saber
+    // Evite manipular o estado interno de outra classe
     const currentBalance = account.getBalance();
     if (currentBalance >= amount) {
       account.setBalance(currentBalance - amount);
@@ -148,6 +147,7 @@ class BankAccount {
     this.balance = initialBalance;
   }
 
+  // Encapsule a regra na classe dona do estado
   deposit(amount: number): void {
     if (amount <= 0) {
       console.log("O valor do depósito deve ser positivo.");
@@ -212,6 +212,7 @@ class Order {
   constructor(public id: number, public customer: Customer) {}
 
   printDeliveryAddress(): void {
+    // Evite cadeias longas de acesso (a.b.c.d)
     console.log(
       `${this.customer.address.street}, ${this.customer.address.city}`
     );
@@ -231,6 +232,7 @@ order.printDeliveryAddress(); // Saída: Rua A, 123, São Paulo
 class Address {
   constructor(private street: string, private city: string) {}
 
+  // Exponha um método que esconde a navegação interna
   getFullAddress(): string {
     return `${this.street}, ${this.city}`;
   }
@@ -285,7 +287,7 @@ class OrderManager {
     this.order = order;
   }
 
-  // simplesmente delega chamadas para a classe Order
+  // Evite uma classe que só repassa chamadas sem agregar valor
   getOrderDetails(): string {
     return this.order.getOrderDetails();
   }
@@ -315,6 +317,7 @@ class Order {
 }
 
 // exemplo de uso
+// Acesse a classe diretamente, sem intermediário
 const order = new Order(1, 'John Doe', 150.0);
 console.log(order.getOrderDetails());
 console.log(`Total: $${order.getTotal()}`);
@@ -334,15 +337,15 @@ class UserService {
   private database: Database;
 
   constructor() {
-    this.database = new Database(); // dependência direta de Database
+    this.database = new Database(); // Evite instanciar a dependência concreta dentro da classe
   }
 
   createUser(name: string, email: string): void {
-    this.database.save(name, email); // chamada direta para o banco de dados
+    this.database.save(name, email); // Evite acoplar a classe a uma implementação concreta
   }
 
   getUser(id: string): User {
-    return this.database.get(id); // chamada direta para o banco de dados
+    return this.database.get(id); // Evite acoplar a classe a uma implementação concreta
   }
 }
 
@@ -365,7 +368,7 @@ class UserService {
   private database: Database;
 
   constructor(database: Database) {
-    this.database = database; // Injeção de dependência
+    this.database = database; // Use injeção de dependência via abstração (interface)
   }
 
   createUser(user: User): void {
@@ -405,7 +408,7 @@ Classes com alta coesão, por outro lado, devem ter um conjunto de responsabilid
 #### problema
 ```typescript
 class UtilityService {
-  // Métodos não relacionados entre si
+  // Evite agrupar métodos sem relação entre si
   logToConsole(message: string): void { ... }
 
   saveToDatabase(data: any): void { ... }
@@ -418,6 +421,7 @@ class UtilityService {
 
 #### solução
 ```typescript
+// Agrupe na mesma classe apenas responsabilidades relacionadas
 class Report { ... }
 class Database { ... }
 
@@ -447,7 +451,7 @@ Essa prática pode resultar em código difícil de testar, pois as dependências
 ```typescript
 class OrderProcessor {
   processOrder(orderId: string): void {
-    // A dependência de "InventoryService" está oculta dentro do método
+    // Evite criar dependências ocultas dentro do método
     const inventoryService = new InventoryService();
     const isAvailable = inventoryService.checkAvailability(orderId);
 
@@ -471,7 +475,7 @@ class InventoryService {
 class OrderProcessor {
   private inventoryService: InventoryService;
 
-  // A dependência é passada explicitamente usando Injeção de Dependência
+  // Declare a dependência explicitamente no construtor
   constructor(inventoryService: InventoryService) {
     this.inventoryService = inventoryService;
   }

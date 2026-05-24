@@ -25,7 +25,7 @@ interface Processable { ... }
 
 function processData(data: Processable): string {
   try {
-    let processedData = parseData(data); // não precisa do try-catch here
+    let processedData = parseData(data); // Evite try-catch onde não há exceção a tratar
     return `Processed Data: ${processedData}`;
   } catch (error) {
     console.error('Error during data processing', error);
@@ -33,7 +33,7 @@ function processData(data: Processable): string {
   }
 
   try {
-    let result = computeResult(data); // não precisa
+    let result = computeResult(data); // Evite try-catch desnecessário
     return `Result: ${result}`;
   } catch (error) {
     console.error('Error during result computation', error);
@@ -41,7 +41,7 @@ function processData(data: Processable): string {
   }
 
   try {
-    let formattedResult = formatResult(data); // não precisa
+    let formattedResult = formatResult(data); // Evite try-catch desnecessário
     return `Formatted Result: ${formattedResult}`;
   } catch (error) {
     console.error('Error during result formatting', error);
@@ -52,6 +52,7 @@ function processData(data: Processable): string {
 
 #### solução
 ```typescript
+// Deixe a exceção propagar e trate-a em um nível adequado
 function processData(data: Processable): string {
   const processedData = parseData(data);
   const result = computeResult(data);
@@ -69,6 +70,7 @@ Exceções são projetadas para situações excepcionais e imprevistas, e não p
 ```typescript
 class OrderProcessor {
   processOrder(orderId: string) {
+    // Evite usar exceções para controle de fluxo previsível
     try {
       if (orderId === '') {
         throw new Error('Order ID cannot be empty');
@@ -92,6 +94,7 @@ class OrderProcessor {
 ```typescript
 class OrderProcessor {
   processOrder(orderId: string) {
+    // Trate casos esperados com validação e retorno, não com exceções
     if (orderId === '') {
       console.error('Error: Order ID cannot be empty');
       return;
@@ -131,7 +134,7 @@ class FileManager {
       return "File content"; // simulação de retorno do arquivo
     } catch (error) {
       console.log("An error occurred");
-      return ""; // Retorna um valor vazio sem tratar o problema
+      return ""; // Evite engolir o erro retornando um valor vazio
     }
   }
 }
@@ -147,7 +150,7 @@ class FileManager {
       }
       return "File content";
     } catch (error) {
-      // Registra o erro com detalhes
+      // Registre o erro com detalhes e propague com contexto
       console.error(`Error reading file: ${(error as Error).message}`);
       throw new Error(
         "Failed to read file. Please check the file path and try again."
@@ -166,7 +169,7 @@ Ocorre quando recursos como arquivos, conexões de rede, ou conexões de banco d
 readFile(filePath: string): string {
   const fileHandle = openFile(filePath); // abre o arquivo
   const data = fileHandle.read();
-  // não fecha o arquivo, o que pode causar vazamentos de recursos
+  // Evite deixar o recurso aberto: causa vazamento
   return data;
 }
 ```
@@ -182,7 +185,7 @@ readFile(filePath: string): string {
     ...
   }
   finally {
-    fileHandle.close(); // fecha o arquivo, mesmo em caso de erros
+    fileHandle.close(); // Use finally para liberar o recurso sempre
   }
 }
 ```
@@ -198,7 +201,7 @@ readFile(fileName: string): string {
     const fs = require('fs');
     return fs.readFileSync(fileName, 'utf8');
   } catch (error) {
-    // a exceção é capturada mas sem tratar adequadamente
+    // Evite capturar a exceção sem tratá-la de fato
     console.error('Erro ao ler o arquivo.');
     return '';
   }
@@ -213,9 +216,9 @@ readFile(fileName: string): string {
   try {
     return fs.readFileSync(fileName, 'utf8');
   } catch (error) {
-    // fornecendo informações detalhadas sobre o erro
+    // Registre detalhes do erro
     console.error(`Erro ao ler o arquivo: ${error.message}`);
-    // lançando novamente a exceção, assim o chamador cria o tratamento
+    // Propague a exceção com contexto para o chamador tratar
     throw new Error(`Não foi possível ler o arquivo ${fileName}`);
   }
 }
@@ -238,7 +241,7 @@ divide(a: number, b: number): number {
 }
 
 process(): void {
-  // a exceção não é tratada, o código vai quebrar aqui
+  // Evite chamar código que lança sem tratar a exceção
   const result = divide(10, 0);
 }
 ```
@@ -254,10 +257,10 @@ divide(a: number, b: number): number {
 
 process() {
   try {
-    const result = divide(10, 0);  // a exceção é capturada aqui
+    const result = divide(10, 0);  // Capture e trate a exceção
     ...
   } catch (error) {
-    // feedback claro para o usuário
+    // Dê feedback claro ao usuário
     console.error("Erro ao processar a divisão: ", error.message);
     ...
   }
@@ -276,7 +279,7 @@ interface User {
 }
 
 function printCity(user: User): void {
-  // Erro: Cannot read property 'city' of undefined
+  // Evite acessar propriedades de algo que pode ser undefined
   console.log(user.address.city);
 }
 
@@ -298,6 +301,7 @@ class Address {
 class User {
   constructor(public name: string, public address = new Address()) {}
 
+  // Garanta um valor padrão e verifique antes de acessar
   printCity(): void {
     if (!this.address.isEmpty) {
       console.log(this.address.city);
@@ -329,7 +333,7 @@ Experiência do usuário comprometida: O sistema pode apresentar resultados ines
 ```typescript
 registerUser(user: { name: string; email: string }) {
   const userDatabase = [];
-  // adicionando diretamente o usuário sem verificar o formato do email ou nome
+  // Evite usar a entrada sem validar
   userDatabase.push(user);
   console.log('User registered successfully!');
 }
@@ -351,18 +355,18 @@ isValidName(name: string): boolean {
 }
 
 registerUser(user: User) {
-  if (!isValidName(user.name)) { // validação do nome
+  if (!isValidName(user.name)) { // Valide a entrada antes de usar (nome)
     console.warn('Invalid name.');
     return;
   }
 
-  if (!isValidEmail(user.email)) { // validação do email
+  if (!isValidEmail(user.email)) { // Valide a entrada antes de usar (email)
     console.warn('Invalid email format.');
     return;
   }
 
   const userDatabase = [];
-  userDatabase.push(user);  // só registra se os dados forem válidos
+  userDatabase.push(user);  // Prossiga apenas com dados válidos
   console.log('User registered successfully!');
 }
 

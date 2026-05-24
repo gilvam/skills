@@ -24,12 +24,12 @@ Lógica de interface no backend.
 
 #### problema
 ```typescript
-// backend com lógica de UI
+// Evite lógica de UI no backend
 function getProductDetails(productId: number) {
   // lógica de negócios para obter o produto
   const product = getProductFromDatabase(productId);
 
-  // lógica de UI - deveria estar no frontend
+  // Evite formatação de apresentação no backend
   product.price = `$${product.price.toFixed(2)}`;
   // definindo cor com base no estoque
   product.color = product.stock > 0 ? "green" : "red";
@@ -47,7 +47,7 @@ console.log(product.color);  // 'green'
 #### solução
 ```typescript
 
-// BACKEND: responsável pela lógica de negócios, dados puros sem formatação
+// Backend: retorne dados puros, sem formatação
 getProductDetails(productId: number) {
   const product = getProductFromDatabase(productId);
   return product;
@@ -55,7 +55,7 @@ getProductDetails(productId: number) {
 
 ...
 
-// FRONTEND: responsável pela formatação e exibição
+// Frontend: faça a formatação e a exibição
 formatProductForDisplay(product) {
   product.price = `$${product.price.toFixed(2)}`;
   product.color = product.stock > 0 ? "green" : "red";
@@ -79,7 +79,7 @@ Esse code smell surge quando operações complexas de banco de dados, como consu
 ...
 <body>
     <h1>Lista de Usuários</h1>
-    <!-- Consulta SQL diretamente embutida no HTML -->
+    <!-- Evite SQL embutido no HTML/cliente -->
     <script>
         const query = "SELECT * FROM users WHERE role = 'admin'";
         fetch('/execute-query', {
@@ -142,11 +142,11 @@ app.listen(3000, () => {
 
 #### problema B
 ```typescript
-// entidade de domínio User com lógica de banco de dados embutida
+// Evite lógica de banco de dados na entidade de domínio
 class User {
   constructor(public id: number, public name: string) {}
 
-  // lógica de acesso a banco de dados dentro da entidade de domínio
+  // Evite acesso a banco de dados dentro da entidade
   static findById(id: number): User | null {
     const query = `SELECT * FROM users WHERE id = ${id}`;
     // simulando a execução de uma consulta SQL
@@ -166,16 +166,16 @@ console.log(user);
 #### solução B
 ```typescript
 
-// DDD - Entidade de domínio User sem lógica de banco de dados
+// Mantenha a entidade sem lógica de banco de dados
 class User {
   constructor(public id: number, public name: string) {}
 }
 
-// DDD - Repositório responsável por acessar o banco de dados
+// Isole o acesso a dados em um repositório
 class UserRepository {
   findById(id: number): User | null {
     const query = `SELECT * FROM users WHERE id = ?`;
-    const result = database.query(query, [id]); // Usando prepared statements
+    const result = database.query(query, [id]); // Use prepared statements
     if (result) {
       return new User(result.id, result.name);
     }
@@ -183,7 +183,7 @@ class UserRepository {
   }
 }
 
-// DDD - Serviço de aplicação usando o repositório
+// Use um serviço de aplicação sobre o repositório
 class UserService {
   constructor(private userRepository: UserRepository) {}
 
@@ -211,13 +211,13 @@ Eventos devem ser registrados de forma concisa e específica, e sua remoção de
     this.button = document.getElementById('myButton');
   }
 
-  // registrando muitos eventos desnecessários
+  // Evite registrar muitos listeners desnecessários
   bindEvents() {
     this.button.addEventListener('click', this.handleClick);
     this.button.addEventListener('click', this.handleAnotherClick);
     this.button.addEventListener('click', this.handleYetAnotherClick);
     this.button.addEventListener('click', this.handleClick);
-    // adicionando múltiplos handlers para o mesmo evento
+    // Evite múltiplos handlers para o mesmo evento
   }
 
   handleClick() { ... }
@@ -236,7 +236,7 @@ class ButtonComponent {
     this.button = document.getElementById('myButton');
   }
 
-  // Registrando o evento de forma eficiente
+  // Registre apenas o listener necessário
   bindEvents() {
     this.button.addEventListener('click', this.handleClick);
   }
@@ -251,13 +251,13 @@ Ocorre quando anotações (como tipos ou comentários) são usadas em excesso ou
 
 #### problema
 ```typescript
-// funcao que calcula a área passando largura e altura em inteiros
+// Evite anotações e comentários redundantes
 function calc(width, height) {
-  let area: number = width * height; // variável que armazena a área  
-  return area; // retornando a área
+  let area: number = width * height; // Evite comentar o óbvio
+  return area; // Evite comentar o óbvio
 }
 
-// a variável 'result' é do tipo 'number' e contem o valor da área
+// Evite anotações e comentários que apenas repetem o código
 let result: number = calc(10, 20);
 ```
 
@@ -266,6 +266,7 @@ Simplifique os métodos e variáveis com os nomes adequados explicando o que cad
 #### solução
 ```typescript
 
+// Prefira nomes claros a anotações e comentários redundantes
 calculateRectangleArea(width: number, height: number): number {
   return width * height;
 }
@@ -293,7 +294,7 @@ class Employee {
     this.salary = salary;
   }
 
-  // não faz sentido aqui, deveria estar na classe PayrollService
+  // Evite métodos que não pertencem a esta classe
   generatePayroll() {
     ...
   }
@@ -308,10 +309,10 @@ class PayrollService {
     this.employees = employees;
   }
 
-  // responsabilidade da classe PayrollService é gerar a folha de pagamento, não de Employee
+  // Evite depender de um método poltergeist em outra classe
   generatePayroll() {
     for (let employee of this.employees) {
-      // Chama um método de Employee, o que é um poltergeist
+      // Evite chamar um método que não deveria existir na outra classe
       employee.generatePayroll();
     }
   }
@@ -347,7 +348,7 @@ class PayrollService {
     this.employees = employees;
   }
 
-  // agora, o método generatePayroll está aqui, na classe apropriada
+  // Coloque o método na classe a que ele pertence
   generatePayroll() {
     for (let employee of this.employees) {
       console.log(`${employee.getName()} receives a salary of $${employee.getSalary()}`);
@@ -394,17 +395,17 @@ class Product {
     id: number;
     productName: string;
     price: number;
-    quantityInStock: number; // exposição de detalhes internos
+    quantityInStock: number; // Evite expor detalhes internos na API
     isDiscounted: boolean;
-    discountPercentage: number; // exposição de detalhes internos
+    discountPercentage: number; // Evite expor detalhes internos na API
     ...
 }
 
 class Product {
-    // falta de consistência na nomeação, todos os retornos são um tipo de dados
+    // Evite nomes inconsistentes na API
     async getProductData(productId: number): Promise<Product>;
 
-    // nomeação repetitiva, parametro sem sentido, retorno sem tipagem
+    // Evite nomes repetitivos, parâmetros sem sentido e retorno sem tipo
     async getAllProducts(time: any): Promise<any>;
 
     async create(
@@ -414,12 +415,12 @@ class Product {
         isOnSale: boolean,
         discount: number
     ): Promise<Product> {
-        // parâmetros excessivos e sem significado claro (isOnSale, discount)
-        // lógica de negócio misturada com a API (cálculo de desconto)
+        // Evite parâmetros excessivos e sem significado claro
+        // Evite misturar regra de negócio na camada de API
     }
 
     async updatePrice(productId: number, newPrice: number): Promise<void> {
-        // falta de tratamento de erros (e.g., produto não encontrado)
+        // Evite omitir o tratamento de erros
     }
 }
 
@@ -428,6 +429,7 @@ class Product {
 #### solução
 ```typescript
 
+// Use DTOs claros, nomes consistentes e retornos tipados
 class ProductResponse {
     constructor(public id: number, public name: string, public price: number){}
 }

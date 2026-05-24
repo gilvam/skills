@@ -29,6 +29,7 @@ Violação do Open-Closed Principle (OCP) no SOLID.
 ```typescript
 class DiscountCalculator {
   calculateDiscount(customerType: string, purchaseAmount: number): number {
+    // Evite switch/if-else por tipo: viola Open-Closed (OCP)
     switch (customerType) {
       case "Regular":
         return purchaseAmount * 0.05; // 5% de desconto
@@ -57,7 +58,7 @@ Violação do Open-Closed Principle: O método não está fechado para modifica�
 
 #### solução
 ```typescript
-interface DiscountStrategy { // interface para tipos de desconto
+interface DiscountStrategy { // Use Strategy: uma classe por caso, aberto a extensão (OCP)
   calculate(purchaseAmount: number): number;
 }
 
@@ -138,7 +139,7 @@ class Animal {
 // subclasse
 class Dog extends Animal {
   fly(): void {
-    throw new Error("Cachorros não podem voar."); // método rejeitado
+    throw new Error("Cachorros não podem voar."); // Evite herdar comportamento que a subclasse não suporta (viola LSP)
   }
 }
 
@@ -151,7 +152,7 @@ dog.fly(); // lança erro: "Cachorros não podem voar."
 #### solução
 ```typescript
 
-// interfaces para habilidades
+// Prefira compor habilidades via interfaces a herdar tudo
 interface Eater {
   eat(): void;
 }
@@ -241,7 +242,7 @@ class Order {
     public id: number,
     public customerName: string,
     public total: number,
-    public deliveryInstructions?: string // usado apenas para delivery
+    public deliveryInstructions?: string // Evite campos usados só em alguns casos (Temporary Field)
   ) {}
 
   processOrder(): void {
@@ -264,6 +265,7 @@ pickupOrder.processOrder();
 #### solução
 ```typescript
 
+// Modele cada variante como sua própria subclasse
 abstract class Order {
   constructor(
     public id: number,
@@ -309,6 +311,7 @@ Ocorre quando uma classe é usada apenas para armazenar dados e não contém nen
 
 #### problema
 ```typescript
+// Evite classes só com dados, sem comportamento
 class Product {
   constructor(
     public id: number,
@@ -350,6 +353,7 @@ class Product {
     public price: number
   ) {}
 
+  // Dê comportamento à classe, não apenas dados
   applyDiscount(discount: number): void {
     this.price -= this.price * discount / 100;
   }
@@ -390,6 +394,7 @@ O uso de herança é adequado quando há uma relação "é um" clara entre as cl
 
 #### problema
 ```typescript
+// Evite hierarquias quando não há uma relação "é-um" clara
 class Shape {
   constructor(public color: string) {}
 
@@ -425,6 +430,7 @@ class Triangle extends Shape {
 #### solução
 ```typescript
 
+// Prefira composição ou classes independentes a herança desnecessária
 class Circle {
   constructor(public color: string, public radius: number) {}
 
@@ -472,11 +478,11 @@ class Car implements Vehicle {
 
 class Bicycle implements Vehicle {
   speed: number;
-  fuel: number; // a bicicleta não tem combustível, mas é forçada a ter
+  fuel: number; // Evite forçar a classe a implementar o que não usa (viola ISP)
 
   constructor(speed: number) {
     this.speed = speed;
-    this.fuel = 0; // não faz sentido ter combustível para a bicicleta
+    this.fuel = 0; // Evite valores sem sentido causados por interface inadequada
   }
 
   drive() {
@@ -489,7 +495,7 @@ class Bicycle implements Vehicle {
 #### solução
 ```typescript
 
-// interface para veículos com combustível
+// Segregue interfaces por capacidade (ISP)
 interface FuelVehicle {
   fuel: number;
   drive: () => void;
@@ -523,6 +529,7 @@ Ocorre quando o design do sistema inclui um número excessivo de interfaces que 
 
 #### problema
 ```typescript
+// Evite multiplicar interfaces que só adicionam complexidade
 interface Item {
   name: string;
   price: number;
@@ -556,6 +563,7 @@ class InventoryManager {
 #### solução
 ```typescript
 
+// Consolide em uma interface coesa quando a divisão não agrega valor
 interface InventoryItem {
   name: string;
   price: number;
@@ -596,6 +604,7 @@ class Product {
     this._price = price;
   }
 
+  // Evite expor todo o estado com getters/setters
   public getName(): string {
     return this._name;
   }
@@ -628,6 +637,7 @@ console.log(product.getPrice());
 class Product {
   constructor(private name: string, private price: number) {}
 
+  // Exponha comportamento, não acesso direto ao estado
   public applyDiscount(discount: number): void {
     if (discount < 0 || discount > 1) {
       throw new Error("Discount must be between 0 and 1.");
@@ -662,10 +672,10 @@ Ocorre quando modificadores de acesso (como public, protected, private) são usa
 #### problema
 ```typescript
 class User {
-    // problema: 'password' deve ser privado
+    // Evite expor dados sensíveis como public
     constructor(public name: string, public password: string) {}
 
-    // problema: 'getPassword' expõe o password diretamente
+    // Evite getters que expõem dados sensíveis
     getPassword(): string {
         return this.password;
     }
@@ -673,7 +683,7 @@ class User {
 
 // exemplo de uso
 const user = new User('Alice', 'secret123');
-console.log(user.password);  // está acessível diretamente
+console.log(user.password);  // Evite acesso direto a dados sensíveis
 
 ```
 
@@ -681,10 +691,10 @@ console.log(user.password);  // está acessível diretamente
 ```typescript
 
 class User {
-    // 'password' é agora privado
+    // Use private para dados sensíveis
     constructor(public name: string, private password: string) {}
 
-    // método público que não retorna o password com um mecanismo seguro
+    // Exponha verificação, não o dado em si
     checkPassword(inputPassword: string): boolean {
         return this.password === inputPassword;  // simples de verificação
     }
@@ -702,7 +712,7 @@ Ocorre quando um código realiza muitas conversões de tipos, ou quando há conv
 #### problema
 ```typescript
 calculateDiscount(price: any, discount: any): any {
-  // (tornar explícito para string e depois de volta para number)
+  // Evite conversões de tipo desnecessárias
   let priceNumeric = <number>price;
   let discountNumeric = <number>discount;
 
@@ -712,7 +722,7 @@ calculateDiscount(price: any, discount: any): any {
 
   let discountedPrice = priceNumeric - (priceNumeric * discountNumeric) / 100;
 
-  return <string>discountedPrice.toFixed(2); // Excessive conversion to string
+  return <string>discountedPrice.toFixed(2); // Evite converter de volta sem necessidade
 }
 
 // exemplo de uso
@@ -723,6 +733,7 @@ calculateDiscount('100', '20');  // '80.00'
 #### solução
 ```typescript
 
+// Use tipos corretos desde o início e evite casts
 calculateDiscount(price: number, discount: number): number {
   if (isNaN(price) || isNaN(discount)) {
     throw new Error('Invalid input');
