@@ -44,5 +44,5 @@ When the API returns an array directly, use `createArray`:
 
 ## Local example to mirror
 
-`src/app/services/http/weather/http-weather.service.ts` — typed input, `HttpParams`, and an
+`[app-root]/services/http/weather/http-weather.service.ts` — typed input, `HttpParams`, and an
 explicit `WeatherReportDto.create(...)` inside `map`.

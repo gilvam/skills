@@ -32,5 +32,5 @@ export class HttpUserMockService extends HttpUserService {
 
 ## Local example to mirror
 
-`src/app/services/http/weather/http-weather.mock.service.ts` — extends the real service and
+`[app-root]/services/http/weather/http-weather.mock.service.ts` — extends the real service and
 returns DTO instances built from a `mocks/` fixture.

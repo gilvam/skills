@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "skills": {
+    "skill-best-practices": {
+      "source": "rodrigobranas/f_ia_m1_4",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "example_9/.agents/skills/skill-best-practices/SKILL.md",
+      "computedHash": "8ec13fa8b863613950c311b17920e66397cc6a8bc56a7c1ad978f8c920757444"
+    }
+  }
+}

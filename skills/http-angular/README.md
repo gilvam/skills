@@ -1,7 +1,7 @@
 # Angular HTTP
 
 Skill for creating and standardizing Angular HTTP integration modules: isolated module
-folders under `src/app/services/http/http-[service-name]`, strongly-typed `HttpClient`
+folders under `[app-root]/services/http/http-[service-name]` (default `src/app/services/http`), strongly-typed `HttpClient`
 services, `@NoNull()` DTOs with explicit `create()/createArray()` mapping, a mock service,
 and unit tests. It pulls current Angular patterns via the context7 `ctx7` CLI and guards the
 `@NoNull()` decorator dependency.
@@ -34,7 +34,7 @@ http-angular/
 ## What a generated module contains
 
 ```
-src/app/services/http/http-[service-name]/
+[app-root]/services/http/http-[service-name]/
 ├── http-[service-name].service.ts          # the real HttpClient service
 ├── http-[service-name].service.spec.ts     # service unit tests (HttpTestingController)
 ├── http-[service-name].mock.service.ts     # mock service for component/demo testing
@@ -44,7 +44,7 @@ src/app/services/http/http-[service-name]/
 
 ## Local reference example
 
-The repository's own `src/app/services/http/weather` module is the canonical example to
+The project's own `[app-root]/services/http/weather` module is the canonical example to
 mirror (DTOs in `models/`, service, mock service, and specs).
 
 ## References

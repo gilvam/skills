@@ -1,6 +1,6 @@
 ---
 name: http-angular
-description: Create standardized Angular HTTP integration modules under src/app/services/http/http-[service-name] — typed HttpClient services, @NoNull() DTOs with explicit create()/createArray() mapping, a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @NoNull decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested API payload mapping, HTTP mocks, or service specs.
+description: Create standardized Angular HTTP integration modules under the project's services/http folder (default src/app/services/http) — typed HttpClient services, @NoNull() DTOs with explicit create()/createArray() mapping, a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @NoNull decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested API payload mapping, HTTP mocks, or service specs.
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash, WebFetch
 ---
 
@@ -11,7 +11,7 @@ consultation. Keep **every** class, interface, enum, mock, helper, and spec that
 the integration **inside the module folder** — nothing HTTP-related leaks into shared or
 component folders.
 
-Mirror the local example at `src/app/services/http/weather` for structure and style. The
+Mirror the local example at `[app-root]/services/http/weather` for structure and style. The
 example is illustrative only; where it diverges from the rules in this skill (it mixes a
 legacy `search` flow with the newer `get` flow), **these rules win**.
 
@@ -51,7 +51,7 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
   `Child.createArray(...)` — never rely on `@NoNull()` alone for nested conversion.
 - Services call `Dto.create(...)` / `Dto.createArray(...)` **explicitly** inside the RxJS
   `map`, even when the TypeScript type already looks compatible.
-- New modules live only under `src/app/services/http/http-[service-name]/`.
+- New modules live only under `[app-root]/services/http/http-[service-name]/` (resolve `[app-root]`; default `src/app`). See [references/folder-structure.md](references/folder-structure.md).
 
 ## References
 

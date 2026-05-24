@@ -33,14 +33,15 @@ non-HTTP service.
 1. **context7 docs** — resolve the Angular library id and query HttpClient setup/testing
    patterns (`references/context7-lookup.md`). Cap at 3 `ctx7` calls; on quota error fall
    back to the angular.dev links and say so.
-2. **Validate `@NoNull()`** — Glob for `src/app/_decorators/class.decorator.ts`. Reuse if
+2. **Validate `@NoNull()`** — Glob for the decorator (`**/_decorators/class.decorator.ts`; conventionally `[app-root]/_decorators/class.decorator.ts`). Reuse if
    present; vendor from `gilvam/typescript-utils` only if missing
    (`references/decorator.md`).
 3. **Confirm contracts** — for each endpoint collect method name, HTTP verb, path, typed
    params/body, a success JSON example, error payloads, the response DTO name, and whether
    the response is a single object or array. Ask for the smallest concrete JSON if a shape
    is missing (`references/folder-structure.md`).
-4. **Scaffold** `src/app/services/http/http-[service-name]/` with `models/` and `mocks/`.
+4. **Resolve `[app-root]` and scaffold** `[app-root]/services/http/http-[service-name]/` with `models/`
+   and `mocks/` (`references/folder-structure.md`).
 5. **Generate DTOs inside-out** — leaf DTOs first, then parents (`references/dto.md`).
 6. **Add mocks** under `mocks/[method]/` (200 + relevant 4xx/5xx).
 7. **Implement the service last** so each map calls the final DTO factory explicitly
@@ -52,12 +53,13 @@ non-HTTP service.
 
 ## How to apply correctly
 
-- Treat the import path `../../../../_decorators/class.decorator` as fixed — it resolves the
-  same from both `services/http/weather/models/` and the new
-  `services/http/http-[name]/models/` layout.
+- Resolve the decorator import from the module's actual location (or a TS path alias). For the
+  conventional `[app-root]/services/http/[module]/models/` + `[app-root]/_decorators/` layout it is
+  `../../../../_decorators/class.decorator`; recompute the depth if the project relocates either
+  (`references/decorator.md`).
 - Build DTOs from the inside out so each parent can call its children's factories.
 - Keep services thin: request assembly + explicit DTO mapping only.
-- Mirror the local `src/app/services/http/weather` example for naming and style; when it
+- Mirror the local `[app-root]/services/http/weather` example for naming and style; when it
   diverges from these rules, the rules win.
 
 ## Communication guidelines

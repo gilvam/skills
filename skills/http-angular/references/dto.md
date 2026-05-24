@@ -2,8 +2,9 @@
 
 Every DTO class must:
 
-- Import `NoNull` from `../../../../_decorators/class.decorator` and apply `@NoNull()`
-  immediately above the class.
+- Import `NoNull` from the decorator and apply `@NoNull()` immediately above the class. The relative
+  import depth depends on where the module and decorator land — see [decorator.md](decorator.md); for the
+  conventional layout it is `../../../../_decorators/class.decorator`.
 - Use constructor `public` properties with a safe default for **every** field.
 - Expose `static create(item: Partial<Dto> = new this()): Dto`.
 - Expose `static createArray(items: Partial<Dto>[] = []): Dto[]` when the DTO can appear in
@@ -63,9 +64,9 @@ factories.
 
 ## Local examples to mirror
 
-- `src/app/services/http/weather/models/weather-condition.dto.ts` — leaf DTO with an enum
+- `[app-root]/services/http/weather/models/weather-condition.dto.ts` — leaf DTO with an enum
   default.
-- `src/app/services/http/weather/models/current-weather.dto.ts` — DTO composing a nested DTO
+- `[app-root]/services/http/weather/models/current-weather.dto.ts` — DTO composing a nested DTO
   via `WeatherConditionDto.create(...)`.
-- `src/app/services/http/weather/models/weather-report.dto.ts` — parent composing nested
+- `[app-root]/services/http/weather/models/weather-report.dto.ts` — parent composing nested
   object + array DTOs.

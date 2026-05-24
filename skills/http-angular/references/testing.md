@@ -49,7 +49,7 @@ errorTestCases.forEach(({ name, status, mock }) => {
 
 ## Local examples to mirror
 
-- `src/app/services/http/weather/models/weather-report.dto.spec.ts` — the full DTO
+- `[app-root]/services/http/weather/models/weather-report.dto.spec.ts` — the full DTO
   null-safety matrix (default / null / `{}` / complete / partial / deeply-nested-null).
-- `src/app/services/http/weather/http-weather.service.spec.ts` — `HttpTestingController`
+- `[app-root]/services/http/weather/http-weather.service.spec.ts` — `HttpTestingController`
   setup, trimmed-param assertion, success mocks, and the table-driven 4xx/5xx cases.
