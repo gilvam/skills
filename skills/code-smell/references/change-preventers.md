@@ -29,12 +29,12 @@ class CustomerService {
    ...
   }
 
-  // CustomerService não deve entender de processar ordem
+  // Evite responsabilidades de outro domínio nesta classe (processar pedido)
   processOrder(orderId: string): void {
     ...
   }
 
-  // CustomerService não deve entender envio de msg
+  // Evite responsabilidades de outro domínio nesta classe (envio de notificação)
   sendNotification(customerId: string, message: string): void {
     ...
   }
@@ -50,6 +50,7 @@ service.sendNotification("123", "Seu pedido foi enviado!");
 
 #### solução
 ```typescript
+// Separe cada motivo de mudança em sua própria classe
 class CustomerDetails { ... }
 
 class CustomerService {
@@ -94,14 +95,14 @@ Ocorre quando uma única mudança no sistema exige que você modifique várias c
 ```typescript
 class Order {
   calculateOrderValue(baseValue: number): number {
-    const tax = baseValue * 0.1; // Imposto fixo de 10% na classe Order
+    const tax = baseValue * 0.1; // Evite espalhar a mesma regra (imposto 10%) por várias classes
     return baseValue + tax;
   }
 }
 
 class Invoice {
   generateInvoice(baseValue: number): string {
-    const tax = baseValue * 0.1; // Imposto fixo de 10% na classe Invoice
+    const tax = baseValue * 0.1; // Evite espalhar a mesma regra (imposto 10%) por várias classes
     const total = baseValue + tax;
     return `Valor da Fatura: ${total}`;
   }
@@ -109,7 +110,7 @@ class Invoice {
 
 class Report {
   generateReport(baseValue: number): string {
-    const tax = baseValue * 0.1; // Imposto fixo de 10% na Report
+    const tax = baseValue * 0.1; // Evite espalhar a mesma regra (imposto 10%) por várias classes
     const total = baseValue + tax;
     return `Relatório: Total com imposto: ${total}`;
   }
@@ -129,7 +130,7 @@ console.log(report.generateReport(100));
 #### solução
 ```typescript
 class TaxCalculator {
-  private static readonly TAX_RATE = 0.1; // taxa de imposto fixa de 10%
+  private static readonly TAX_RATE = 0.1; // Centralize a regra em um único ponto
 
   static calculateTax(baseValue: number): number {
     return baseValue * this.TAX_RATE;
@@ -185,7 +186,7 @@ class Electronics extends Product {}
 class Clothing extends Product {}
 class Groceries extends Product {}
 
-// Hierarquia 2: Descontos
+// Evite hierarquias paralelas: cada Produto exige um Desconto correspondente
 abstract class Discount {
   abstract calculate(product: Product): number;
 }
@@ -220,7 +221,7 @@ console.log(clothingDiscount.calculate(clothing)); // 40
 
 #### solução
 ```typescript
-// Classe base para Produtos
+// Una as hierarquias: o comportamento vive no próprio produto
 abstract class Product {
   constructor(public name: string, public price: number) {}
 
@@ -291,7 +292,7 @@ class Book {
   constructor(title: string, author: Author) {
     this.title = title;
     this.author = author;
-    this.author.addBook(this); // Circular dependency ocorre aqui
+    this.author.addBook(this); // Evite dependência circular: Book conhece Author que conhece Book
   }
 
   getTitle(): string {
@@ -340,6 +341,7 @@ class Book {
   }
 }
 
+// Quebre o ciclo com um mediador que conhece ambos os lados
 class LibraryService {
   private authorBooksMap: Map<Author, Book[]> = new Map();
 
@@ -394,8 +396,8 @@ class BankAccount {
   }
 
   checkBalance(): number {
-    // verificação do saldo chama a função que tenta realizar o saque, criando um ciclo
-    this.withdraw(0); // Essa linha cria a lógica circular chamando o checkBalance novamente
+    // Evite que um método dependa de outro que depende dele de volta
+    this.withdraw(0); // Evite a chamada que recria o ciclo
     return this.balance;
   }
 }
@@ -414,6 +416,7 @@ class BankAccount {
     this.balance = balance;
   }
 
+  // Mantenha cada método com um fluxo linear, sem recorrer a si mesmo
   withdraw(amount: number): void {
     if (this.balance >= amount) {
       this.balance -= amount;
@@ -458,9 +461,9 @@ Dificuldade de manutenção: Ao não controlar corretamente as dependências, to
   "dependencies": {
     "lodash": "^4.17.21",
     "axios": "^0.21.1",
-    "moment": "^2.29.1", // Não sendo usado no código
-    "axios": "^0.18.1" // Versão conflitante de axios
-    "example_only": "^0.2.3", // não atualizado a 5 anos
+    "moment": "^2.29.1", // Evite dependências não utilizadas
+    "axios": "^0.18.1" // Evite versões conflitantes da mesma dependência
+    "example_only": "^0.2.3", // Evite dependências desatualizadas
   }
 }
 ```
@@ -471,7 +474,7 @@ Dificuldade de manutenção: Ao não controlar corretamente as dependências, to
   "name": "my-app",
   "dependencies": {
     "lodash": "^4.17.21",
-    "axios": "^0.21.1"  // Somente uma versão de axios, e a mais recente
+    "axios": "^0.21.1"  // Use uma única versão, atualizada, de cada dependência
   }
 }
 ```

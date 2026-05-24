@@ -36,19 +36,24 @@ diagnósticos de runtime (bugs, performance instrumentada).
 Total: **94 smells**. Veja `references/_index.md` para o índice alfabético com
 descrição curta e link direto para cada smell.
 
-## Como aplicar ao revisar código
+## Regras de aplicação ao revisar código
 
-1. **Leia o código** alvo e procure padrões correspondentes aos smells deste catálogo.
-2. **Cite o smell por nome** (em inglês, como no catálogo) quando reportar o problema —
-   usar o vocabulário consagrado ajuda o usuário a pesquisar e discutir.
-3. **Aponte a categoria** para contextualizar a severidade do problema:
+Estas regras são obrigatórias ao aplicar a skill:
+
+1. **Leia o código alvo** e procure padrões correspondentes aos smells deste catálogo.
+2. **Cite o smell pelo nome em inglês** (como no catálogo) ao reportar o problema —
+   o vocabulário consagrado ajuda o usuário a pesquisar e discutir.
+3. **Aponte a categoria** para contextualizar a severidade:
    - _Bloaters_ e _Change Preventers_ tendem a ser críticos para manutenção.
    - _Couplers_ afetam testabilidade.
    - _Dispensables_ são geralmente seguros de remover.
    - _Naming & Readability_ tem alto impacto na produtividade do time.
-4. **Sugira a refatoração** usando o exemplo "solução" do catálogo como base. Adapte ao
-   contexto — não copie cego: o catálogo mostra **melhorias**, não verdades absolutas.
-5. **Justifique** referenciando o princípio SOLID ou Clean Code aplicável quando relevante.
+4. **Mostre o antes e o depois.** Reporte um smell por achado, com o trecho problemático e a
+   refatoração proposta, usando o exemplo "solução" do catálogo como base. Adapte ao contexto —
+   não copie cego: o catálogo mostra **melhorias**, não verdades absolutas.
+5. **Preserve o comportamento.** Garanta que a refatoração não altera o que o código faz; valide
+   com testes, type-check e lint.
+6. **Justifique pelo princípio** SOLID ou Clean Code aplicável sempre que relevante.
 
 ## Diretrizes de comunicação
 

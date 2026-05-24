@@ -37,6 +37,18 @@ Não use esta skill para:
 3. **Aplique a refatoração**: siga o exemplo "solução". Adapte ao contexto — as soluções são **melhorias**, não verdades absolutas.
 4. **Valide**: rode testes, type-check, lint. Verifique que o comportamento foi preservado.
 
+## Regras de aplicação
+
+Ao usar esta skill, siga estas regras:
+
+1. **Cite o smell pelo nome em inglês** (Long Method, Boolean Trap, …) e indique a categoria. Usar o vocabulário consagrado facilita pesquisa e discussão.
+2. **Mostre o antes e o depois.** Aponte o trecho que cheira mal e proponha a refatoração equivalente — nunca apenas "isto está ruim".
+3. **Preserve o comportamento.** Refatoração muda *como* o código é estruturado, não *o que* ele faz. Valide com testes, type-check e lint.
+4. **Justifique pelo princípio.** Relacione cada recomendação a um princípio SOLID (SRP, OCP, LSP, ISP, DIP) ou a uma regra de Clean Code.
+5. **Priorize por impacto.** Havendo vários smells no mesmo trecho, ataque primeiro os de manutenção (Bloaters, Change Preventers), depois Couplers, Dispensables e, por fim, Naming & Readability.
+6. **Refatore sob demanda, não por especulação.** Só introduza abstração quando o segundo ou terceiro caso concreto aparecer — abstrair cedo demais é o smell *Speculative Generality*.
+7. **Confirme antes de mudanças grandes.** Em código existente, alinhe com o usuário antes de uma refatoração ampla; as soluções do catálogo são **melhorias**, não verdades absolutas.
+
 ## Categorias
 
 - **[Bloaters](references/bloaters.md)** — Código, métodos ou classes que cresceram a ponto de serem difíceis de trabalhar.

@@ -23,7 +23,7 @@ A principal questão com o uso de Magic Numbers é que, ao ver um número direta
 ```typescript
 class ShippingCalculator {
   calculateShippingCost(weight: number, distance: number): number {
-    // Número mágico: 5. O que significa esse valor? Por que 5?
+    // Evite números mágicos: extraia para uma constante nomeada
     return weight * distance * 5;
   }
 }
@@ -32,7 +32,7 @@ class ShippingCalculator {
 #### solução
 ```typescript
 class ShippingCalculator {
-  // Explicando o que o valor 5 representa
+  // Use uma constante nomeada para dar significado ao valor
   private static readonly BASE_SHIPPING_COST = 5;
 
   calculateShippingCost(weight: number, distance: number): number {
@@ -50,6 +50,7 @@ Muito semelhante ao Magic Numbers, mas no caso, se refere ao uso de strings lite
 class UserService {
 
   getUserStatus(userId: string): string {
+    // Evite strings mágicas espalhadas pelo código
     if (userId === "ad") {
       return "ad";
     } 
@@ -67,6 +68,7 @@ class UserService {
 ```typescript
 class UserService {
 
+  // Use constantes nomeadas para strings de domínio
   private static readonly ADMIN_STATUS = "ad";
   private static readonly GUEST_STATUS = "gst";
   private static readonly UNKNOWN_STATUS = "unknown";
@@ -94,16 +96,16 @@ São valores fixos inseridos diretamente no código, como strings, números ou c
 class DiscountService {
   calculateDiscount(price: number): number {
     if (price > 1000) {
-      return price * 0.1; // valor fixo de 10% para descontos
+      return price * 0.1; // Evite valores fixos no código; configure-os externamente
     } else if (price > 500) {
-      return price * 0.05; // valor fixo de 5% para descontos
+      return price * 0.05; // Evite valores fixos no código; configure-os externamente
     } else {
       return 0; // sem desconto
     }
   }
 
   getCurrencySymbol(): string {
-    return '$'; // moeda hard-coded
+    return '$'; // Evite hard-coding de configurações (moeda)
   }
 }
 
@@ -123,6 +125,7 @@ export class DiscountThreshold {
 // arquivo config.ts
 import { DiscountThreshold } from './discount-threshold';
 
+// Centralize os valores em configuração
 export const discountThresholds: DiscountThreshold[] = [
   new DiscountThreshold(1000, 0.1), // 10%
   new DiscountThreshold(500, 0.05), // 5%
@@ -167,7 +170,7 @@ Portabilidade comprometida: O código pode depender de caminhos específicos do 
 const fs = require('fs');
 
 function readDataFromFile() {
-  const filePath = '/Users/username/Documents/data.txt';  // path hardcoded
+  const filePath = '/Users/username/Documents/data.txt';  // Evite caminhos fixos no código
   const data = fs.readFileSync(filePath, 'utf-8');
   console.log(data);
 }
@@ -181,7 +184,7 @@ readDataFromFile();
 const fs = require('fs');
 
 function readDataFromFile() {
-  // variável de ambiente
+  // Use variável de ambiente com fallback
   const filePath = process.env.DATA_FILE_PATH || './data.txt';
   const data = fs.readFileSync(filePath, 'utf-8');
   console.log(data);
@@ -212,15 +215,16 @@ class Product {
 }
 
 class TaxCalculator {
-  // usando a mesma constante para calcular impostos
+  // Evite reusar uma constante para um propósito diferente
   public calculateTax(price: number): number {
-    return (price * DISCOUNT_PERCENTAGE) / 100; // uso inadequado
+    return (price * DISCOUNT_PERCENTAGE) / 100; // Evite dar novo significado a uma constante existente
   }
 }
 ```
 
 #### solução
 ```typescript
+// Defina uma constante por propósito
 const PRODUCT_DISCOUNT_PERCENTAGE = 10;
 const TAX_PERCENTAGE = 15;
 
@@ -255,8 +259,8 @@ class DiscountCalculator {
 
   applyDiscount(customerType: string, amount: number): number {
     if (this.discountRates[customerType]) {
-      // Modificando uma constante
-      this.discountRates[customerType] = 0.5; // Um "mutable constant"
+      // Evite modificar o que deveria ser imutável
+      this.discountRates[customerType] = 0.5; // Evite alterar o conteúdo de uma constante
       return amount * (1 - this.discountRates[customerType]);
     }
     return amount;
@@ -267,6 +271,7 @@ class DiscountCalculator {
 #### solução
 ```typescript
 class DiscountCalculator {
+  // Use Object.freeze para tornar o conteúdo realmente imutável
   private readonly discountRates: { [key: string]: number } = Object.freeze({
       "standard": 0.1,
       "premium": 0.2,

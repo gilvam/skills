@@ -25,7 +25,7 @@ function getAllPairs(arr: number[]): number[][] {
   const pairs: number[][] = [];
   for (let i = 0; i < arr.length; i++) {
     for (let j = i + 1; j < arr.length; j++) {
-      pairs.push([arr[i], arr[j]]);
+      pairs.push([arr[i], arr[j]]); // Evite acumular todos os resultados na memória
     }
   }
   return pairs;
@@ -43,7 +43,7 @@ function* generatePairs(arr: number[]): Generator<[number, number]> {
   let i = 0;
   while (i < arr.length) {
     for (let j = i + 1; j < arr.length; j++) {
-      yield [arr[i], arr[j]];  // gerando os pares sob demanda
+      yield [arr[i], arr[j]];  // Gere os resultados sob demanda (lazy) para economizar memória
     }
     i++;
   }
@@ -70,13 +70,13 @@ Utilizar um loop de forma que ele execute mais vezes do que o necessário, causa
 sumNumbers(numbers: number[]): number {
   let sum = 0;
   for (let i = 0; i < numbers.length; i++) {
-    sum += numbers[i]; // loop desnecessário para soma
+    sum += numbers[i]; // Evite um loop manual onde uma operação de array resolve
   }
   return sum;
 }
 
 const numbers = [1, 2, 3, 4, 5];
-const total = sumNumbers(numbers); // funciona, mas o loop é ineficiente
+const total = sumNumbers(numbers); // Evite o loop manual ineficiente para somar
 ```
 
 #### solução A
@@ -86,7 +86,7 @@ sumNumbers(numbers: number[]): number {
 }
 
 const numbers = [1, 2, 3, 4, 5];
-sumNumbers(numbers); // correto com código mais eficiente e legível
+sumNumbers(numbers); // Use reduce para somar de forma clara e eficiente
 ```
 
 #### problema B
@@ -94,20 +94,20 @@ sumNumbers(numbers); // correto com código mais eficiente e legível
 findItem(numbers: number[], target: number): boolean {
   for (let i = 0; i < numbers.length; i++) {
     if (numbers[i] === target) {
-      return true; // loop desnecessário
+      return true; // Evite um loop manual para uma busca simples
     }
   }
   return false;
 }
 
 const numbers = [1, 2, 3, 4, 5];
-findItem(numbers, 3);  // funciona, mas é ineficiente
+findItem(numbers, 3);  // Evite a busca manual ineficiente
 ```
 
 #### solução B
 ```typescript
 findItem(numbers: number[], target: number): boolean {
-  return numbers.includes(target);
+  return numbers.includes(target); // Use includes para verificar existência
 }
 
 const numbers = [1, 2, 3, 4, 5];
@@ -120,7 +120,7 @@ hasDuplicates(arr: number[]): boolean {
   for (let i = 0; i < arr.length; i++) {
     for (let j = i + 1; j < arr.length; j++) {
       if (arr[i] === arr[j]) {
-        return true; // loop aninhado desnecessário para verificar duplicatas
+        return true; // Evite loop aninhado para detectar duplicatas
       }
     }
   }
@@ -131,7 +131,7 @@ hasDuplicates(arr: number[]): boolean {
 #### solução C funcional:
 ```typescript
 hasDuplicates(arr: number[]): boolean {
-  const seen = new Set();
+  const seen = new Set(); // Use um Set para detectar duplicatas em O(n)
   for (let num of arr) {
     if (seen.has(num)) {
       return true;
@@ -160,7 +160,7 @@ infiniteLoop(): void {
 
   while (count < 10) {
     console.log(count);
-    // acondição de parada nunca muda, o loop é infinito
+    // Evite loops cuja condição de parada nunca avança (loop infinito)
   }
 }
 
@@ -174,7 +174,7 @@ function boundedLoop() {
 
   while (count < 10) {
     console.log(count);
-    count++; // agora valor de count é incrementado, o loop terminará
+    count++; // Garanta que a condição de parada progrida a cada iteração
   }
 }
 
@@ -212,7 +212,7 @@ class UserList {
   }
 
   destroy() {
-    // o listener não é removido, o que causa o vazamento de memória
+    // Evite descartar o elemento sem remover seus listeners (vazamento)
     const listElement = document.querySelector('ul');
     if (listElement) {
       document.body.removeChild(listElement);
@@ -247,7 +247,7 @@ class UserList {
       };
       listItem.addEventListener('click', handleClick);
 
-      // Armazenar o listener para removê-lo mais tarde
+      // Guarde a referência do listener para removê-lo depois
       listItem.dataset.listener = 'true';
 
       listElement.appendChild(listItem);
@@ -262,7 +262,7 @@ class UserList {
       return;
     }
     listElement.querySelectorAll('li').forEach(item => {
-        // Remove o listener de clique
+        // Remova os listeners antes de descartar o elemento
       item.removeEventListener('click', () => {});
     });
     document.body.removeChild(listElement);
@@ -293,7 +293,7 @@ Cache inconsistente: Dados no cache que não são sincronizados com o banco de d
 class UserService {
     private cache: { [key: string]: string } = {};
 
-    // método de consulta com cache inadequado
+    // Evite cache sem expiração: serve dados desatualizados
     getUserName(userId: string): string {
         if (this.cache[userId]) {
             return this.cache[userId]; // se no cache, retorna imediatamente
@@ -325,11 +325,11 @@ class UserService {
     private cache: { [key: string]: CacheEntry } = {};
     private cacheExpirationTime: number = 60000; // 1 minuto
 
-    // método de consulta com cache adequado
+    // Use cache com tempo de expiração
     getUserName(userId: string): string {
         const currentTime = Date.now();
 
-        // retorna do cache, se dentro do tempo de expiração
+        // Sirva do cache apenas dentro do tempo de expiração
         if (this.cache[userId] && currentTime - this.cache[userId].timestamp < this.cacheExpirationTime) {
             return this.cache[userId].value;
         }
@@ -369,9 +369,9 @@ class DataService {
         );
     }
 
-    // usa await de forma ineficiente, o que leva a bloqueio desnecessário
+    // Evite aguardar (await) cedo demais e bloquear o fluxo
     async processData(): Promise<Data> {
-        const data = await this.fetchDataFromAPI(); // aguarda a resposta
+        const data = await this.fetchDataFromAPI(); // Evite aguardar a resposta antes de iniciar outro trabalho
 ```
 
 ... // realiza outras ações, mas precisa esperar o retorno do data
@@ -383,7 +383,7 @@ class DataService {
 
 // exemplo de uso
 const service = new DataService();
-// execução fica bloqueada até a resposta da API
+// Evite bloquear a execução esperando a API
 const data = await service.processData();
 console.log('After processData');
 ```
@@ -398,8 +398,8 @@ class DataService {
     }
 
     async processData(): Promise<void> {
-        // usando Promise.all para processar várias promessas ao mesmo tempo (não de forma sequencial)
-        const dataPromise = this.fetchDataFromAPI(); // inicia a requisição sem bloquear
+        // Inicie a operação sem bloquear o fluxo
+        const dataPromise = this.fetchDataFromAPI(); // Inicie a requisição sem bloquear
 ```
 
 ... // realiza outras ações enquando o "dataPromise" é executado
@@ -411,7 +411,7 @@ class DataService {
 }
 
 const service = new DataService();
-service.processData(); // A execução não fica bloqueada, permite outras tarefas
+service.processData(); // Use chamadas não bloqueantes para liberar o fluxo
 console.log('After processData'); // Essa linha agora é executada antes do término da requisição
 ```
 
@@ -432,7 +432,7 @@ class DataProcessor {
         this.data = data;
     }
 
-    // usando uma Promise para simular threading sem necessidade
+    // Evite concorrência (Promise) onde o trabalho é síncrono
     processData(): void {
         new Promise((resolve, reject) => {
             const processedData = this.data.map(num => num * 2);
@@ -445,7 +445,7 @@ class DataProcessor {
 
 // exemplo de uso
 const processor = new DataProcessor([1, 2, 3, 4, 5]);
-processor.processData(); // o código cria uma promessa desnecessária
+processor.processData(); // Evite criar uma promessa desnecessária
 ```
 
 #### solução
@@ -454,6 +454,7 @@ class DataProcessor {
     constructor(private data: number[]) {}
 
     processData(): void {
+        // Faça o trabalho síncrono diretamente, sem Promise
         const processedData = this.data.map(num => num * 2);
         console.log(processedData);
     }
@@ -476,8 +477,8 @@ class SharedList {
 
   addToList(value: number) {
     const currentList = this.list;
-    setTimeout(() => { // simulando uma operação demorada ( não utilize setTimeout nos seus projetos )
-      currentList.push(value);  // tentando adicionar à lista
+    setTimeout(() => { // Evite operar sobre estado compartilhado sem sincronizar
+      currentList.push(value);  // Evite escritas concorrentes sem controle (race condition)
     }, Math.random() * 100);
   }
 
@@ -505,7 +506,7 @@ class SharedList {
   private lock: Promise<void> = Promise.resolve();
 
   addToList(value: number) {
-    // usando um lock para garantir que a operação de adição seja sequencial
+    // Use um lock para serializar o acesso ao estado compartilhado
     this.lock = this.lock.then(() => {
       return new Promise<void>((resolve) => {
         setTimeout(() => {

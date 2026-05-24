@@ -27,6 +27,7 @@ Viola o Princípio de Responsabilidade Única(SRP) no SOLID.
 ```typescript
 class OrderProcessor {
   processOrder(order: any): void {
+    // Evite acumular muitas responsabilidades em um único método
     // Validação de dados do pedido
     if (!order.customer || !order.items || order.items.length === 0) {
       throw new Error('Invalid order data');
@@ -106,6 +107,7 @@ class OrderProcessor {
   ) {}
 
   processOrder(order: OrderData): void {
+    // Delegue cada etapa a um método com responsabilidade única
     this.validateOrder(order);
     const total = this.calculateTotal(order);
     this.processPayment(order.paymentMethod, total);
@@ -142,6 +144,7 @@ A classe anterior OrderProcessor resolveu um problema do Long Method e agora vam
 
 #### solução
 ```typescript
+// Distribua as responsabilidades entre classes coesas
 class OrderValidator { ... }
 class PaymentProcessor { ... }
 class InventoryManager { ... }
@@ -179,6 +182,7 @@ Ocorre quando uma função ou método tem muitos parâmetros. Isso torna o códi
 #### problema
 ```typescript
 class OrderProcessor {
+  // Evite longas listas de parâmetros: difíceis de lembrar e ordenar
   processOrder(
     orderId: string,
     customerName: string,
@@ -200,6 +204,7 @@ class OrderProcessor {
 
 #### solução
 ```typescript
+// Agrupe parâmetros relacionados em objetos
 class Item {
   constructor(
     public name: string,
@@ -258,17 +263,17 @@ Ocorre quando tipos primitivos (como string, number, boolean) são usados excess
 class User {
   constructor(
     public name: string,
-    public email: string,        // Email é apenas uma string
-    public phoneNumber: string,  // PhoneNumber é apenas uma string
+    public email: string,        // Evite primitivos para conceitos de domínio (Email)
+    public phoneNumber: string,  // Evite primitivos para conceitos de domínio (PhoneNumber)
     public age: number
   ) {}
 
-  // validar email (simples e ineficiente)
+  // Evite validar o primitivo fora de um tipo dedicado
   validateEmail(): boolean {
     return this.email.includes("@");
   }
 
-  // validar número de telefone (simples e ineficiente)
+  // Evite validar o primitivo fora de um tipo dedicado
   validatePhoneNumber(): boolean {
     return this.phoneNumber.length === 10;
   }
@@ -312,8 +317,8 @@ class PhoneNumber {
 class User {
   constructor(
     public name: string,
-    private email: Email,              // email é um objeto
-    private phoneNumber: PhoneNumber,  // phoneNumber é um objeto
+    private email: Email,              // Use um tipo dedicado que encapsula a validação
+    private phoneNumber: PhoneNumber,  // Use um tipo dedicado que encapsula a validação
     public age: number
   ) {}
 
@@ -340,7 +345,7 @@ Ocorre quando um grupo de dados relacionados é frequentemente passado juntos en
 ```typescript
 class Order {
   constructor(
-    public productName: string, // parametros repetidos
+    public productName: string, // Evite passar o mesmo grupo de dados solto
     public quantity: number,
     public price: number
   ) {}
@@ -355,9 +360,9 @@ class Order {
 }
 
 class OrderService {
-  // parametros repetidos
+  // Evite passar o mesmo grupo de dados solto
   processOrder(productName: string, quantity: number, price: number): void {
-    // parametros repetidos
+    // Evite passar o mesmo grupo de dados solto
     const order = new Order(productName, quantity, price);
     order.printInvoice();
   }
@@ -370,7 +375,7 @@ orderService.processOrder("Laptop", 1, 1500);
 
 #### solução
 ```typescript
-class Product { // classe Product encapsula nome, quantidade e preço
+class Product { // Use uma classe que encapsula o grupo de dados (nome, quantidade, preço)
   constructor(
     public name: string,
     public quantity: number,
@@ -409,6 +414,7 @@ Ocorre quando uma única classe assume muitas responsabilidades ou funções que
 
 #### problema
 ```typescript
+// Evite uma classe que acumula responsabilidades de vários domínios
 class OrderManager {
   addProduct() { ... }
   removeProduct() { ... }
@@ -423,6 +429,7 @@ class OrderManager {
 
 #### solução
 ```typescript
+// Separe em classes coesas, uma responsabilidade por classe
 class ProductManager {
   addProduct() { ... }
   removeProduct() { ... }
@@ -452,6 +459,7 @@ Ocorre quando uma classe ou objeto assume responsabilidades demais, tornando-se 
 
 #### problema
 ```typescript
+// Evite um objeto que centraliza dados e regras de todo o sistema
 class System {
   users: any[];
   orders: any[];
@@ -481,6 +489,7 @@ class System {
 #### solução
 ```typescript
 
+// Separe responsabilidades em serviços coesos
 class User { ... }
 class Order { ... }
 class InventoryItem { ... }
@@ -526,6 +535,7 @@ Ocorre quando o código possui muitos níveis de aninhamento (como loops dentro 
 #### problema
 ```typescript
 processOrder(order: IOrder): string {
+  // Evite aninhar muitos níveis de condicionais
   if (order.status === 'pending') {
     if (order.paymentStatus === 'paid') {
       if (order.items && order.items.length > 0) {
@@ -562,6 +572,7 @@ processOrder(order);
 ```typescript
 
 function validateOrder(order: IOrder): string {
+  // Use guard clauses (early returns) para achatar o aninhamento
   if (order.status !== 'pending') {
     return 'Order is not pending';
   }
@@ -612,6 +623,7 @@ calculateDiscount(
   customerType: string,
   orderAmount: number
 ): number {
+  // Evite muitos if/else aninhados por valor ou tipo
   if (orderType === 'regular') {
     if (customerType === 'premium') {
       if (orderAmount > 1000) {
@@ -649,7 +661,7 @@ enum CustomerType {
   REGULAR = "regular",
 }
 
-// Lookup Table design pattern
+// Use uma lookup table em vez de condicionais aninhadas
 const discountTable: Record<string, (orderAmount: number) => number> = {
   "regular-premium-high": (amount: number) => amount * 0.2,
   "regular-premium-low": (amount: number) => amount * 0.1,

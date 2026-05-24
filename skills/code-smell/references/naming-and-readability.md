@@ -20,66 +20,69 @@ Nomes confusos, comentários ruins e formatação inconsistente que prejudicam a
 
 _Também conhecido como: Repetitive Naming._
 
-Inconsistência nos nomes ou repetição desnecessária do nome da classe, variáveis ou funções, causando redundância e dificultando a manutenção do código
+Inconsistência nos nomes ou repetição desnecessária do nome da classe nos seus próprios membros (propriedades, parâmetros e métodos), causando redundância e dificultando a leitura e a manutenção do código.
+
+A regra vale para **qualquer classe**: o contexto da classe já está implícito ao acessar seus membros (`entidade.metodo()`), então prefixar membros com o nome da classe é redundante. Em vez de `Entidade.getEntidadeNome()`, prefira `Entidade.getNome()`.
 
 #### problema
 ```typescript
-// má prática:
+// Evite repetir o nome da classe em cada membro
 
-class Book {
-  // repetição desnecessária de 'Book' nos parâmetros e variáveis
-  constructor(public bookName: string, public bookAuthor: string) {
-    this.bookName = bookName;
-    this.bookAuthor = bookAuthor;
+class Entity {
+  // Evite prefixar parâmetros e propriedades com o nome da classe
+  constructor(public entityName: string, public entityValue: number) {
+    this.entityName = entityName;
+    this.entityValue = entityValue;
   }
 
-  getBookName(): string {  // repetição desnecessária de 'Book'
-    return this.bookName;
+  getEntityName(): string {  // Evite repetir 'Entity' no nome do método
+    return this.entityName;
   }
 
-  getBookAuthor(): string {  // repetição...
-    return this.bookAuthor;
+  getEntityValue(): number {  // Evite repetir 'Entity'
+    return this.entityValue;
   }
 
-  setBookName(bookName: string): void {  // repetição...
-    this.bookName = bookName;
+  setEntityName(entityName: string): void {  // Evite repetir 'Entity'
+    this.entityName = entityName;
   }
 
-  setBookAuthor(bookAuthor: string): void {  // repetição...
-    this.bookAuthor = bookAuthor;
+  setEntityValue(entityValue: number): void {  // Evite repetir 'Entity'
+    this.entityValue = entityValue;
   }
 }
 
 // exemplo de uso
-const book = new Book('name', 'Jhon');
-book.getBookName(); // já sabemos que é um book
+const entity = new Entity('foo', 10);
+entity.getEntityName(); // Evite o prefixo 'Entity': o tipo do objeto já dá o contexto
 ```
 
 #### solução
 ```typescript
-class Book {
-  constructor(public name: string, public author: string) {}
+// Nomeie membros pelo papel, sem repetir o nome da classe
+class Entity {
+  constructor(public name: string, public value: number) {}
 
   getName(): string {
     return this.name;
   }
 
-  getAuthor(): string {
-    return this.author;
+  getValue(): number {
+    return this.value;
   }
 
   setName(name: string): void {
     this.name = name;
   }
 
-  setAuthor(author: string): void {
-    this.author = author;
+  setValue(value: number): void {
+    this.value = value;
   }
 }
 
 // exemplo de uso
-const book = new Book('name', 'Jhon');
-book.getName();
+const entity = new Entity('foo', 10);
+entity.getName(); // Use nomes curtos: o tipo do objeto já deixa claro o contexto
 ```
 
 ## Confusing Method Signatures
@@ -90,39 +93,39 @@ Similar ao Long Parameter List, ocorre quando os métodos de uma classe têm ass
 ```typescript
 class ProductService {
 
-  // 1. muitos parâmetros sem clareza
+  // 1. Evite listas longas de parâmetros sem clareza
   addProduct(id: number, name: string, price: number, stock: number, category: string, discount: number, color: string, weight: number, size: string, brand: string): void { ... }
 
-  // 2. ordem dos parâmetros confusa
+  // 2. Evite ordem de parâmetros confusa
   calculateDiscount(price: number, discount: number, quantity: number, category: string, customerType: string, promoCode: string): number {
       // lógica para calcular o desconto
       return price * (1 - discount) * quantity;
   }
 
-  // 3. nomes de parâmetros genéricos
+  // 3. Evite nomes de parâmetros genéricos (a, b, c)
   processOrder(a: number, b: string, c: boolean, d: any, e: string): void { ... }
 
-  // 4. parâmetros com diferentes tipos, sem contexto
+  // 4. Evite muitos parâmetros soltos, sem contexto
   updateProduct(id: string, price: number, availability: boolean, date: Date, description: string): void { ... }
 
-  // 5. método com muitos parâmetros, alguns não claros
+  // 5. Evite muitos parâmetros; agrupe o que é coeso
   handleTransaction(transactionId: number, userId: number, amount: number, transactionType: string, paymentMethod: string, status: string, date: Date): void { ... }
 
-  // 6. parâmetros do tipo "boolean" com nomes não informativos
+  // 6. Evite vários booleanos como parâmetros (boolean trap)
   createAccount(userId: string, active: boolean, verified: boolean, subscription: boolean): void { ... }
 
-  // 7. parâmetros com nomes confusos
+  // 7. Evite abreviações obscuras nos nomes
   setOrderStatus(orderTId: number, flg: boolean, ste: string, ttamp: Date): void { ... }
 
-  // 8. muitos parâmetros para um simples cálculo
+  // 8. Evite muitos parâmetros para um cálculo simples
   calculateTotalCost(price: number, taxRate: number, shippingCost: number, promoCode: string, discountRate: number, isGift: boolean, membershipStatus: string, quantity: number): number {
       return price * quantity + shippingCost + (price * taxRate) - discountRate;
   }
 
-  // 9. parâmetros não relacionados juntos
+  // 9. Evite juntar parâmetros não relacionados
   generateReport(startDate: Date, endDate: Date, format: string, includeCharts: boolean, userId: string, reportType: string): void { ... }
 
-  // 10. uso de um parâmetro sem contexto claro
+  // 10. Evite parâmetros sem contexto claro
   updateUserSettings(userId: string, settings: any, type: string, active: boolean, saveImmediately: boolean): void { ... }
 }
 ```
@@ -139,40 +142,40 @@ class Settings { ... }
 
 class ProductService {
 
-  // 1. simplificando com objeto
+  // 1. Agrupe parâmetros coesos em um objeto
   addProduct(product: ProductDetails): void { ... }
 
-  // 2. melhorando a clareza dos parâmetros
+  // 2. Mantenha apenas os parâmetros essenciais
   calculateDiscount(price: number, discount: number, quantity: number): number {
       // lógica para calcular o desconto
       return price * (1 - discount) * quantity;
   }
 
-  // 3. parâmetros mais descritivos
+  // 3. Use nomes descritivos para os parâmetros
   processOrder(orderId: number, customerName: string, isUrgent: boolean, orderDetails: any): void { ... }
 
-  // 4. melhorando a clareza dos parâmetros
+  // 4. Agrupe os detalhes em um objeto
   updateProduct(productId: string, updatedDetails: Details): void { ... }
 
-  // 5. usando objetos para transações
+  // 5. Use um objeto para representar a transação
   handleTransaction(transaction: Transaction): void { ... }
 
-  // 6. nomeando parâmetros com mais clareza
+  // 6. Use um objeto de status em vez de vários booleanos
   createAccount(userId: string, accountStatus: AccountStatus): void { ... }
 
-  // 7. parâmetros com nomes mais claros
+  // 7. Use nomes claros e completos
   setOrderStatus(orderId: number, status: string, timestamp: Date): void { ... }
 
-  // 8. agrupando parâmetros de custo em objeto
+  // 8. Agrupe os parâmetros de custo em um objeto
   calculateTotalCost(order: Order): number {
     // lógica para calcular o custo total
     return order.price * order.quantity + order.shippingCost + (order.price * order.taxRate) - order.discountRate;
   }
 
-  // 9. agrupando parâmetros relacionados ao relatório
+  // 9. Agrupe os parâmetros do relatório em um objeto
   generateReport(reportDetails: ReportDetails): void { ... }
 
-  // 10. usando objeto para configurações do usuário
+  // 10. Use um objeto para as configurações do usuário
   updateUserSettings(userId: string, settings: Settings): void { ... }
 }
 ```
@@ -188,7 +191,7 @@ class User {
     constructor(private isActive: boolean, private isSuspended: boolean) {}
 
     checkUserStatus(): boolean {
-        // armadilha booleana: a negação dupla não faz sentido
+        // Evite negação dupla: ela ofusca a intenção da condição
         return !(this.isActive && !this.isSuspended); 
     }
 }
@@ -204,7 +207,7 @@ class User {
     constructor(private isActive: boolean, private isSuspended: boolean) {}
 
     public isUserActive(): boolean {
-        // a Solução: A lógica é clara e direta
+        // Prefira condições afirmativas e diretas
         return this.isActive && !this.isSuspended;
     }
 }
@@ -223,7 +226,7 @@ Ocorre quando uma variável booleana ou um método booleano não segue a conven�
 #### problema
 ```typescript
 class User {
-    // nome não apropriado para uma variável booleana
+    // Evite nomes genéricos como 'flag' para booleanos
     constructor(private flag: boolean) {}
 
     checkStatusActive(): boolean {
@@ -232,13 +235,13 @@ class User {
 }
 
 const user = new User(true);
-console.log(user.checkStatusActive()); // Não é claro que "flag" é um boleano
+console.log(user.checkStatusActive()); // Evite nomes que não revelam que o valor é booleano
 ```
 
 #### solução
 ```typescript
 class User {
-    // nome de variável booleana com prefixo 'is'
+    // Use prefixo is/has/can em variáveis booleanas
     constructor(private isActive: boolean) {}
 
     isActive(): boolean {
@@ -247,7 +250,7 @@ class User {
 }
 
 const user = new User(true);
-console.log(user.isActive());  // Agora é claro que "isActive" booleano
+console.log(user.isActive());  // Use prefixo is/has/can: o nome revela que é booleano
 ```
 
 ## Non-Descriptive Names
@@ -256,6 +259,7 @@ Ocorre quando nomes de variáveis, funções, classes ou outros elementos do có
 
 #### problema
 ```typescript
+// Evite nomes vagos como 'A', 'x', 'y' e 'doThing'
 class A {
   private x: number;
   private y: number;
@@ -272,11 +276,12 @@ class A {
 
 // exemplo de uso
 const obj = new A(5, 10);
-console.log(obj.doThing()); // o que "doThing" faz?
+console.log(obj.doThing()); // Evite nomes que não revelam o que o código faz
 ```
 
 #### solução
 ```typescript
+// Use nomes que revelam a intenção de cada elemento
 class Point {
   private xCoordinate: number;
   private yCoordinate: number;
@@ -355,7 +360,7 @@ Aumento no tempo de resolução de problemas: Erros com mensagens imprecisas pod
 ```typescript
 calculatePrice(price: number, tax: number): number {
   if (price < 0 || tax < 0) {
-    throw new Error('Error');
+    throw new Error('Error'); // Evite mensagens genéricas como 'Error'
   }
   return price + (price * tax);
 }
@@ -364,13 +369,14 @@ calculatePrice(price: number, tax: number): number {
 try {
   const total = calculatePrice(-10, 0.15); // valor negativo, o que gera erro
 } catch (error) {
-  console.log(error.message); // exibe apenas 'Error', sem detalhes úteis
+  console.log(error.message); // Evite mensagens sem contexto: dificultam o diagnóstico
 }
 ```
 
 #### solução
 ```typescript
 calculatePrice(price: number, tax: number): number {
+  // Use mensagens que dizem o valor inválido e a regra violada
   if (price < 0) {
     throw new Error(`Invalid price: ${price}. Price must be a non-negative number.`);
   }
@@ -384,6 +390,6 @@ calculatePrice(price: number, tax: number): number {
 try {
   const total = calculatePrice(-10, 0.15); // valor negativo, o que gera erro
 } catch (error) {
-  console.log(error.message); // mensagem de erro mais clara e útil
+  console.log(error.message); // Use mensagens específicas: facilitam o diagnóstico
 }
 ```
