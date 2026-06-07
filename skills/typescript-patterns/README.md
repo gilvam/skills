@@ -19,7 +19,7 @@ typescript-patterns/
     ├── classes.md                 # .model.ts, instances over literals, one class per file
     ├── interfaces.md              # .interface.ts, I prefix, filename rule
     ├── enums.md                   # .enum.ts, closed sets, enum vs union literals
-    ├── code-style.md              # braces on every if
+    ├── code-style.md              # braces on every if; all array iteration methods over loops; .at() over []
     └── testing.md                 # a unit test per unit
 ```
 
@@ -41,6 +41,12 @@ typescript-patterns/
 - **Interfaces prefixed with `I`** (`IUserGeneric` → `user-generic.interface.ts`).
 - **Enums for closed domain value sets**, never loose magic strings.
 - **Braces on every `if`** — no single-line `if`.
+- **Array iteration methods over loops** — the full set (`map`, `filter`, `forEach`, `reduce`, `reduceRight`,
+  `some`, `every`, `find`, `findIndex`, `findLast`, `findLastIndex`, `flatMap`, `flat`, `entries`, `keys`,
+  `values`) instead of `for`/`while`/`do...while` for data; `for...of`/`for await...of` only for sequential
+  `await` or imperative side-effects.
+- **`.at()` over bracket indexing** — `array.at(i)` (and `array.at(-1)` for the last element) instead of
+  `array[i]` / `array[array.length - 1]`.
 - **Component folders echo their name** in inner files (`x-card/` → `x-card.component.ts`).
 - **A unit test for every unit** (`*.spec.ts`).
 

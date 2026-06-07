@@ -1,6 +1,6 @@
 ---
 name: typescript-patterns
-description: Apply this project's TypeScript house standards when writing or reviewing TypeScript — kebab-case filenames whose base matches the symbol, one declaration per file with a type suffix (.model.ts / .interface.ts / .enum.ts), classes for domain models instantiated with new (not object literals), interfaces prefixed with I, enums for closed domain value sets, braces on every if, component folder names echoed in inner files, and a unit test for every unit. Pulls current TypeScript guidance via the context7 ctx7 CLI. Use when authoring or reviewing TypeScript files, naming files/types, or modeling data. Defers identifier casing to code-standards-en, Angular folder layout to angular-folder-structure, and HTTP DTO modules to angular-http.
+description: Apply this project's TypeScript house standards when writing or reviewing TypeScript — kebab-case filenames whose base matches the symbol, one declaration per file with a type suffix (.model.ts / .interface.ts / .enum.ts), classes for domain models instantiated with new (not object literals), interfaces prefixed with I, enums for closed domain value sets, braces on every if, array iteration methods (map/filter/reduce/some/every/find/flatMap/…) over for/while loops, .at() over bracket indexing, component folder names echoed in inner files, and a unit test for every unit. Pulls current TypeScript guidance via the context7 ctx7 CLI. Use when authoring or reviewing TypeScript files, naming files/types, or modeling data. Defers identifier casing to code-standards-en, Angular folder layout to angular-folder-structure, and HTTP DTO modules to angular-http.
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash, WebFetch
 ---
 
@@ -42,7 +42,8 @@ Do **not** redefine here (defer to the owning skill):
 4. **Model data** — classes for domain models, interfaces for contracts, enums for closed sets. See
    [references/classes.md](references/classes.md), [references/interfaces.md](references/interfaces.md),
    [references/enums.md](references/enums.md).
-5. **Write structured control flow** — braces always. See [references/code-style.md](references/code-style.md).
+5. **Write structured control flow** — braces always; array iteration methods over loops. See
+   [references/code-style.md](references/code-style.md).
 6. **Add unit tests** for every new unit. See [references/testing.md](references/testing.md).
 7. **Verify** — `tsc --noEmit` / lint pass; no `any`; tests present and green.
 
@@ -60,6 +61,14 @@ Do **not** redefine here (defer to the owning skill):
   Google/Microsoft TS style guides, which advise against the `I` prefix; applied consistently here by choice.*
 - **Enums for closed domain value sets** — never loose, untyped string arrays/magic strings.
 - **Braces on every `if`** — never a single-line `if` without `{}`.
+- **Array iteration methods over loop statements.** Use the array iteration methods (`map`, `filter`,
+  `forEach`, `reduce`, `reduceRight`, `some`, `every`, `find`, `findIndex`, `findLast`, `findLastIndex`,
+  `flatMap`, `flat`, and the iterator-producers `entries`/`keys`/`values` — full list in `code-style.md`) for
+  collection work; avoid `for` / `while` / `do...while` for transforming, filtering, testing, or aggregating
+  data. Loops (`for...of` / `for await...of`) are allowed **only** for sequential `await` or genuinely
+  imperative side-effect flows.
+- **`.at()` over bracket indexing.** Read elements with `array.at(i)` instead of `array[i]` — especially from
+  the end (`array.at(-1)` rather than `array[array.length - 1]`); it returns `T | undefined` out of range.
 - **Component folders echo their name.** In a component folder, inner files start with the folder name
   (`x-card/` → `x-card.component.ts`); a nested subfolder may extend it (`x-card/item/x-card-item.html`).
 - **A unit test for every unit.** Always create the accompanying `.spec.ts` / test file.
@@ -71,7 +80,8 @@ Do **not** redefine here (defer to the owning skill):
 - [classes.md](references/classes.md) — `.model.ts`, instances over literals, one class per file.
 - [interfaces.md](references/interfaces.md) — `.interface.ts`, `I` prefix, filename rule.
 - [enums.md](references/enums.md) — `.enum.ts`, closed sets, enum vs union literals.
-- [code-style.md](references/code-style.md) — braces on control flow (defers to `code-standards-en`).
+- [code-style.md](references/code-style.md) — braces on control flow, the full array-iteration-method set
+  over loops, and `.at()` over bracket indexing (defers the rest to `code-standards-en`).
 - [testing.md](references/testing.md) — unit test per unit.
 
 ## Avoid
@@ -81,6 +91,9 @@ Do **not** redefine here (defer to the owning skill):
 - Object literals for domain data where a class exists — use `new Class(...)`.
 - Interfaces without the `I` prefix (house standard); enums replaced by magic strings.
 - Single-line `if` without braces.
+- `for` / `while` / `do...while` for data processing — use array iteration methods; reserve `for...of` /
+  `for await...of` for sequential `await` or imperative side-effects.
+- `arr[arr.length - 1]` / from-the-end index arithmetic — use `arr.at(-1)`.
 - New code without a unit test.
 - Forcing these standards onto an existing codebase with a different, consistent convention — mirror it.
 - Redefining casing/Angular/HTTP rules owned by the sibling skills.

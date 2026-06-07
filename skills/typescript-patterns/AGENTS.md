@@ -25,7 +25,7 @@ HTTP DTO/service modules → `angular-http`.
 | `references/classes.md` | `.model.ts`, instances over object literals, one class per file. |
 | `references/interfaces.md` | `.interface.ts`, `I` prefix (with divergence note), filename rule. |
 | `references/enums.md` | `.enum.ts`, closed sets, enum vs union literals/`as const`. |
-| `references/code-style.md` | Braces on every `if` (defers the rest to `code-standards-en`). |
+| `references/code-style.md` | Braces on every `if`; full array-iteration-method set over loops; `.at()` over bracket indexing (defers the rest to `code-standards-en`). |
 | `references/testing.md` | A unit test per unit. |
 
 ## Operational workflow
@@ -38,7 +38,11 @@ HTTP DTO/service modules → `angular-http`.
    (`.model.ts`/`.interface.ts`/`.enum.ts`); component folders echo their name (`references/naming-and-files.md`).
 4. **Model data** — class for domain models (`new`, not literals); interface (`I…`) for contracts; enum for
    closed sets; `type` only for unions/tuples/mapped types (`classes.md`/`interfaces.md`/`enums.md`).
-5. **Control flow** — braces on every `if`/`else`/loop (`code-style.md`).
+5. **Control flow & iteration** — braces on every `if`/`else`/loop; array iteration methods
+   (`map`/`filter`/`reduce`/`reduceRight`/`some`/`every`/`find`/`findIndex`/`findLast`/`findLastIndex`/
+   `flatMap`/`flat`/`entries`/`keys`/`values`) over `for`/`while`/`do...while` for data; reserve
+   `for...of`/`for await...of` for sequential `await` or imperative side-effects; `.at()` over `[]` for
+   positional access, `.at(-1)` for the last element (`code-style.md`).
 6. **Test** — co-located `*.spec.ts` for every new unit (`testing.md`).
 7. **Verify** — `tsc --noEmit` / lint pass; no `any`; tests present.
 
@@ -65,6 +69,9 @@ HTTP DTO/service modules → `angular-http`.
 - Object literals for a concept that has a `.model.ts` class.
 - Interfaces without the `I` prefix; magic strings instead of a closed type.
 - Brace-less single-line `if`.
+- `for`/`while`/`do...while` for data processing (use array methods); `arr.forEach(async …)` for sequential
+  awaits (use `for...of`/`for await...of`).
+- `arr[arr.length - 1]` / from-the-end index arithmetic — use `arr.at(-1)`.
 - New code without a unit test.
 - Forcing these standards onto a codebase with a different consistent convention.
 - Redefining casing/Angular/HTTP rules owned by sibling skills.
