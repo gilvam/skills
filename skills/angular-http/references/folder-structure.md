@@ -26,7 +26,7 @@ success (and the relevant error payloads).
 2. **Existing `services/` without `http/`** — if `**/services/` exists, create `http/` inside it.
 3. **Greenfield fallback** — set `[app-root]` to where `app.config.ts`/`app.routes.ts`/`main.ts` live
    (default `src/app`) and create `[app-root]/services/http/`, matching Angular conventions (see the
-   `folder-structure-angular` skill for the standard layout).
+   `angular-folder-structure` skill for the standard layout).
 
 State which case applied when you report back. `[app-root]` **defaults to `src/app`**, so the conventional
 path is `src/app/services/http/`.

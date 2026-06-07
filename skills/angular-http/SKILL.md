@@ -1,5 +1,5 @@
 ---
-name: http-angular
+name: angular-http
 description: Create standardized Angular HTTP integration modules under the project's services/http folder (default src/app/services/http) — typed HttpClient services, @NoNull() DTOs with explicit create()/createArray() mapping, a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @NoNull decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested API payload mapping, HTTP mocks, or service specs.
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash, WebFetch
 ---

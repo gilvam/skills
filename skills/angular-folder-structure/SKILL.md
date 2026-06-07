@@ -1,6 +1,6 @@
 ---
-name: folder-structure-angular
-description: Scaffold and standardize an Angular application's folder structure using current Angular conventions — feature-based organization under src/app with core/_shared/features layers, standalone components, co-located files, lazy-loaded routes, and hyphenated naming. Pulls current Angular patterns via the Angular CLI MCP (get_best_practices/search_documentation) with the context7 ctx7 CLI as fallback. Use when starting a new Angular project, scaffolding a new feature folder, or standardizing an existing app's directory layout. Do not use for HTTP service modules — use http-angular for those.
+name: angular-folder-structure
+description: Scaffold and standardize an Angular application's folder structure using current Angular conventions — feature-based organization under src/app with core/_shared/features layers, standalone components, co-located files, lazy-loaded routes, and hyphenated naming. Pulls current Angular patterns via the Angular CLI MCP (get_best_practices/search_documentation) with the context7 ctx7 CLI as fallback. Use when starting a new Angular project, scaffolding a new feature folder, or standardizing an existing app's directory layout. Do not use for HTTP service modules — use angular-http for those.
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash, WebFetch
 ---
 
@@ -25,7 +25,7 @@ Use it when you are asked to:
 
 Do **not** use this skill for:
 
-- HTTP/REST integration modules (DTOs, typed `HttpClient` services, mocks) — use the **`http-angular`** skill.
+- HTTP/REST integration modules (DTOs, typed `HttpClient` services, mocks) — use the **`angular-http`** skill.
 - Component/UI implementation logic, state management, or styling decisions.
 
 ## Recommended flow
@@ -56,7 +56,7 @@ Do **not** use this skill for:
 - **Standalone-first** — no `NgModule` files unless the existing project already uses them.
 - **Lazy-load features** via `loadComponent` / `loadChildren` in `app.routes.ts` and `<feature>.routes.ts`.
 - **Mirror an existing app's convention** when one exists; standardize only greenfield or on explicit request.
-- HTTP modules are owned by **`http-angular`** and live under the project's `services/http` folder
+- HTTP modules are owned by **`angular-http`** and live under the project's `services/http` folder
   (default `src/app/services/http`).
 
 ## References
@@ -75,5 +75,5 @@ Do **not** use this skill for:
 - No `NgModule` files in a standalone project.
 - No feature-specific code in `core/` or `_shared/`, and no app-wide singletons in `_shared/`.
 - Never force this layout onto an existing app that has a different, consistent convention — mirror it.
-- Never redefine HTTP service modules here — defer to `http-angular`.
+- Never redefine HTTP service modules here — defer to `angular-http`.
 - Never silently skip the docs lookup — say which source you used (Angular MCP, `ctx7`, or angular.dev).

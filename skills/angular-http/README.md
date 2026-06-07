@@ -9,7 +9,7 @@ and unit tests. It pulls current Angular patterns via the context7 `ctx7` CLI an
 ## Structure
 
 ```
-http-angular/
+angular-http/
 ├── SKILL.md                       # Main entry (frontmatter for agent discovery)
 ├── README.md                      # This file
 ├── AGENTS.md                      # Detailed guide for agents/LLMs

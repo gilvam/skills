@@ -1,11 +1,11 @@
 # Angular HTTP — Guide for Agents
 
-> This document is optimized for agents/LLMs applying the `http-angular` skill when
+> This document is optimized for agents/LLMs applying the `angular-http` skill when
 > generating or standardizing Angular HTTP integration code. Humans can use it too.
 
 ## When to activate this skill
 
-Activate `http-angular` when the user asks to:
+Activate `angular-http` when the user asks to:
 
 - Create or standardize an Angular service for a REST/HTTP query.
 - Model request/response payloads as typed, null-tolerant DTOs.

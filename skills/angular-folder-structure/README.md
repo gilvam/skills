@@ -9,7 +9,7 @@ covers both a brand-new project scaffold and adding a feature to an existing app
 ## Structure
 
 ```
-folder-structure-angular/
+angular-folder-structure/
 ├── SKILL.md                       # Main entry (frontmatter for agent discovery)
 ├── README.md                      # This file
 ├── AGENTS.md                      # Detailed guide for agents/LLMs
@@ -54,7 +54,7 @@ src/
 
 - **In scope**: project-wide directory layout, feature folder anatomy, where a file belongs, naming, and the
   CLI commands that put files in the right place.
-- **Out of scope**: HTTP/REST integration modules (use the **`http-angular`** skill, which owns
+- **Out of scope**: HTTP/REST integration modules (use the **`angular-http`** skill, which owns
   the project's `services/http` folder, default `src/app/services/http`), and component/UI implementation
   logic.
 
@@ -62,5 +62,5 @@ src/
 
 - Angular style guide — https://angular.dev/style-guide
 - Angular CLI MCP Server — https://angular.dev/ai/mcp
-- Related skill: `http-angular` — typed `HttpClient` services and DTO modules.
+- Related skill: `angular-http` — typed `HttpClient` services and DTO modules.
 - Related skill: `code-standards-en` — identifier and naming rules used across the codebase.

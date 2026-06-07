@@ -112,7 +112,7 @@ export const appConfig: ApplicationConfig = {
 
 ## Relationship to other skills
 
-- **HTTP modules are owned by `http-angular`.** Typed `HttpClient` services + DTOs live under
+- **HTTP modules are owned by `angular-http`.** Typed `HttpClient` services + DTOs live under
   the project's `services/http` folder (default `src/app/services/http`); this skill places everything else
   and does not redefine them.
 - Identifier/casing rules come from the **`code-standards-en`** skill (see `naming-conventions.md`).

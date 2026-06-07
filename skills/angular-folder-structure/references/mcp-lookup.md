@@ -22,7 +22,7 @@ standalone routes"*), not single words.
 
 ## 2. Fallback — context7 `ctx7` CLI
 
-Same pattern the `http-angular` and `context7` skills use. Resolve the library id first, then query docs:
+Same pattern the `angular-http` and `context7` skills use. Resolve the library id first, then query docs:
 
 ```bash
 # 1. Resolve the library id (always run this first)

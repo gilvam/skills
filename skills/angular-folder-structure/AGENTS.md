@@ -1,18 +1,18 @@
 # Angular Folder Structure — Guide for Agents
 
-> This document is optimized for agents/LLMs applying the `folder-structure-angular` skill when scaffolding
+> This document is optimized for agents/LLMs applying the `angular-folder-structure` skill when scaffolding
 > or standardizing an Angular project's directory layout. Humans can use it too.
 
 ## When to activate this skill
 
-Activate `folder-structure-angular` when the user asks to:
+Activate `angular-folder-structure` when the user asks to:
 
 - Set up the folder structure for a **new** Angular project.
 - Add or organize a **feature** folder in an existing app.
 - **Standardize** or refactor an existing app's directory layout toward feature-based organization.
 - Decide **where a file belongs** (`core` vs `_shared` vs a feature).
 
-**Do not activate** for: HTTP/REST integration modules (use `http-angular`), component/UI logic, state
+**Do not activate** for: HTTP/REST integration modules (use `angular-http`), component/UI logic, state
 management, or styling decisions.
 
 ## File map
@@ -55,7 +55,7 @@ management, or styling decisions.
 - **`core` vs `_shared`.** `core/` = app-wide singletons provided once (guards, interceptors, app config,
   cross-cutting services). `_shared/` = reusable, stateless presentational components/pipes/directives.
 - **Standalone-first.** Do not generate `NgModule` files unless the project already uses them.
-- **Defer HTTP modules** to the `http-angular` skill (they live under the project's `services/http` folder,
+- **Defer HTTP modules** to the `angular-http` skill (they live under the project's `services/http` folder,
   default `src/app/services/http`).
 
 ## Communication guidelines
@@ -74,5 +74,5 @@ management, or styling decisions.
 - No `NgModule` files in a standalone project.
 - No feature-specific code in `core/`/`_shared/`; no singleton state in `_shared/`.
 - Never force this layout onto an existing app with a different consistent convention.
-- Never redefine HTTP service modules — defer to `http-angular`.
+- Never redefine HTTP service modules — defer to `angular-http`.
 - Never silently skip the docs lookup.
