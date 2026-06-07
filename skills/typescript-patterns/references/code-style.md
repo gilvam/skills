@@ -1,9 +1,10 @@
-# Code style — control flow & iteration
+# Code style — control flow, iteration & type usage
 
 Statement-level style (verb-led names, early returns, no boolean-flag params, CQS, method/class sizing, one
 binding per statement, minimal comments) is owned by the **`code-standards-en`** skill. This file pins the
-two house-standard rules called out explicitly: **braces on control flow** and **array iteration methods over
-loop statements**.
+house-standard rules called out explicitly: **braces on control flow**, **array iteration methods over loop
+statements**, **`.at()` over bracket indexing**, **no `any` (use `unknown` at boundaries)**, and **type
+annotations only when there's no initializer**.
 
 ## Always use braces on `if` — never a single-line `if`
 
@@ -142,6 +143,61 @@ const secondLast = items.at(-2);
 - It replaces **positional element access only** — it is not a substitute for object property access, and
   array destructuring (`const [first] = items`) is still fine for leading elements.
 
+## Avoid `any` — reach for `unknown` at the boundary
+
+`any` switches off type checking for everything it touches, so a typo or wrong shape passes silently. Never
+annotate our own code with `any`, and keep `noImplicitAny` on so the compiler flags inferred `any` (an
+un-annotated parameter, a bare `[]` that infers `any[]`, etc.).
+
+**Only exception — values outside our control.** When a value genuinely comes from outside our code (an
+untyped external library, `JSON.parse`, a raw API payload), use **`unknown`**, not `any`, and narrow it with
+a type guard before use — this is the TypeScript handbook's own *Do's and Don'ts* guidance.
+
+```ts
+// ❌ any — no checking; `data.naem` would not error
+function handle(data: any) { /* ... */ }
+
+// ✅ unknown at the boundary, then narrow
+function handle(data: unknown) {
+  if (data instanceof UserDefault) {
+    // data is UserDefault here
+  }
+}
+```
+
+## Annotate a variable only when there's no initializer
+
+Let inference do the work: when you assign an initial value, **don't** add a redundant type annotation — the
+value already fixes the type. Add an explicit annotation only when there's no initializer (otherwise the
+binding has nothing to infer from and falls back to `any` under loose settings).
+
+```ts
+// ❌ redundant annotation — the value already fixes the type
+const name: string = '';
+const total: number = 0;
+
+// ✅ inferred from the value
+const name = '';
+const total = 0;
+
+// ✅ no initializer → annotate (assigned later)
+let selected: UserDefault;
+```
+
+**Array exception — type *and* assign for an empty `[]`.** An empty array literal infers `never[]` / `any[]`,
+so an empty-array initializer is the one case where you both annotate and assign:
+
+```ts
+// ❌ infers any[] / never[] — loses the element type
+private list = [];
+
+// ✅ typed and initialized
+private list: UserDefault[] = [];
+```
+
+> Grouping/placement of declarations (one binding per statement, declared adjacent to first use) is owned by
+> the **`code-standards-en`** skill — this rule only governs *when the type annotation is redundant*.
+
 ## Avoid
 
 - Brace-less single-statement `if`/`else`/`for`/`while`.
@@ -153,3 +209,6 @@ const secondLast = items.at(-2);
 - `arr[arr.length - 1]` (or other from-the-end index arithmetic) — use `arr.at(-1)`.
 - Mutating in place (`sort` / `reverse` / `splice`) when a copy is wanted — use `toSorted` / `toReversed` /
   `toSpliced` / `with`.
+- `any` on our own code — use a precise type, or `unknown` + a guard for values outside our control.
+- Redundant type annotations on initialized bindings (`const n: number = 0`) — let inference work; annotate
+  only when there's no initializer (the empty-array `[]` case excepted).

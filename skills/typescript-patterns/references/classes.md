@@ -58,8 +58,63 @@ For domain concepts, reach for a **class** (data + behavior), an **interface** (
 (closed set) before a bare `type` alias. Keep `type` for what only `type` can express — unions, tuples,
 mapped/conditional types, and aliases of primitives.
 
+## No optional (`?`) members — model presence explicitly
+
+Don't mark class fields optional with `?`. An optional member widens the type to `T | undefined` (the TS
+handbook treats optional members as nullable under `strictNullChecks`), which forces a guard at every read
+and lets a half-built instance exist. Give the field a real default instead (see below) so the type stays
+non-nullable. The same rule applies to interface members, object shapes, and variables.
+
+```ts
+// ❌ optional — type is `string | undefined`, every reader must guard
+export class UserDefault {
+  name?: string;
+}
+
+// ✅ required with a safe default — type stays `string`
+export class UserDefault {
+  name: string = '';
+}
+```
+
+**Only exception — values outside our control.** When a value genuinely originates outside our code (an
+external library type, or a raw API payload that may legitimately omit the field), `?` / `| undefined` is
+acceptable because the absence is real. For HTTP/DTO payloads, prefer the `@NoNull()` + safe-default
+approach in the **`angular-http`** skill over leaking `?` into the domain.
+
+## Initialize every field with a safe default
+
+Every class field starts in a valid state — this satisfies `strictPropertyInitialization` and keeps the
+field non-optional (above). Required identity fields come through the constructor; everything else is
+initialized at the declaration, by type:
+
+| Field type | Default |
+| --- | --- |
+| `string` | `''` |
+| `number` | `0` |
+| `boolean` | `false` |
+| enum | the **first** member of the enum |
+| array | typed and `[]` (see the annotation rule in `code-style.md`) |
+| nested model | a `new Child()` / the right factory |
+
+```ts
+// user-default.model.ts
+export class UserDefault {
+  name: string = '';
+  age: number = 0;
+  role: UserRole = UserRole.Admin;   // first enum member
+  tags: string[] = [];               // typed + []
+}
+```
+
+So an instance is never half-initialized: no field is `undefined` unless its value is genuinely outside our
+control (see the exception above).
+
 ## Avoid
 
 - Object literals for a concept that has a `.model.ts` class.
 - Extra top-level declarations sharing the class's file.
 - A bare `type` where a class/interface/enum models the concept better.
+- Optional (`?`) fields for values we control — give the field a default instead.
+- Leaving a field uninitialized (half-built instance) — default it by type (`''` / `0` / `false` / first enum
+  member / typed `[]`).

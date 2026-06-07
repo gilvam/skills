@@ -15,6 +15,17 @@ Mirror the local example at `[app-root]/services/http/weather` for structure and
 example is illustrative only; where it diverges from the rules in this skill (it mixes a
 legacy `search` flow with the newer `get` flow), **these rules win**.
 
+## Companion skills
+
+This skill **composes with** the base standards — it does not redefine them. When generating an HTTP module,
+also apply these (each owns its own rules):
+
+- **`typescript-patterns`** — base TypeScript standards (DTO classes, types, default values).
+- **`code-standards-en`** — identifier naming, casing, function shaping.
+- **`code-smell`** — refactoring catalogue for clean code.
+
+(Component/template patterns belong to `angular-patterns`; folder layout to `angular-folder-structure`.)
+
 ## When to use this skill
 
 Use it when you are asked to:
