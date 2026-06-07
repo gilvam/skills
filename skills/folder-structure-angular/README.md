@@ -1,7 +1,7 @@
 # Angular Folder Structure
 
 Skill for creating and standardizing an Angular application's **folder structure** using current Angular
-conventions: feature-based organization under `src/app` with `core/` / `shared/` / `features/` layers,
+conventions: feature-based organization under `src/app` with `core/` / `_shared/` / `features/` layers,
 standalone components with co-located template/style/spec files, lazy-loaded routes, and hyphenated naming.
 It pulls current Angular patterns via the **Angular CLI MCP** (with the context7 `ctx7` CLI as fallback) and
 covers both a brand-new project scaffold and adding a feature to an existing app.
@@ -15,7 +15,7 @@ folder-structure-angular/
 ├── AGENTS.md                      # Detailed guide for agents/LLMs
 └── references/
     ├── mcp-lookup.md              # Pull current Angular docs (Angular CLI MCP → ctx7 → angular.dev)
-    ├── project-structure.md       # Canonical core/shared/features layout + routing
+    ├── project-structure.md       # Canonical core/_shared/features layout + routing
     ├── feature-structure.md       # Anatomy of one feature folder + existing-app rules
     ├── naming-conventions.md      # File and symbol naming rules
     └── scaffolding.md             # ng new / ng generate commands to materialize the layout
@@ -35,14 +35,14 @@ folder-structure-angular/
 src/
 ├─ app/
 │  ├─ core/        # app-wide singletons: guards, interceptors, app config, base services
-│  ├─ shared/      # reusable presentational components, pipes, directives (no singleton state)
+│  ├─ _shared/     # reusable presentational components, pipes, directives (no singleton state)
 │  ├─ features/
-│  │  └─ <feature>/
-│  │     ├─ pages/        # routed/container components
-│  │     ├─ components/   # presentational components local to the feature
+│  │  └─ orders/          # example feature
+│  │     ├─ pages/        # routed components ONLY (e.g. order-list/, order-detail/) — every route target
+│  │     ├─ components/   # presentational components local to the feature (e.g. order-row/)
 │  │     ├─ services/     # feature-scoped services
 │  │     ├─ models/       # feature-scoped types/DTOs
-│  │     └─ <feature>.routes.ts
+│  │     └─ orders.routes.ts
 │  ├─ app.config.ts
 │  ├─ app.routes.ts
 │  └─ app.ts / app.html / app.css   # root component (current suffix-less style)

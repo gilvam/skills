@@ -30,7 +30,7 @@ project or when explicitly standardizing. Configure the generator default accord
 
 ## Folder names
 
-- **kebab-case** for all folders: `features/order-history/`, `shared/components/data-table/`.
+- **kebab-case** for all folders: `features/order-history/`, `_shared/components/data-table/`.
 - Folder names describe the **feature or concept**, not the file type — no `components/` / `services/`
   buckets at the app or feature root beyond the agreed `pages/` / `components/` split inside a feature.
 

@@ -2,7 +2,7 @@
 
 The current Angular style guide asks you to **organize by feature, not by file type**, keep all UI code under
 `src/`, and co-locate each component's files. On top of that baseline this skill standardizes the widely-used
-**`core` / `shared` / `features`** layering so app-wide singletons, reusable presentational pieces, and
+**`core` / `_shared` / `features`** layering so app-wide singletons, reusable presentational pieces, and
 feature code each have a clear home.
 
 ## Layout
@@ -15,14 +15,21 @@ src/
 │  │  ├─ interceptors/              # HttpInterceptor functions
 │  │  ├─ services/                  # cross-cutting singleton services (auth, config, logging)
 │  │  └─ core.providers.ts          # optional: groups core EnvironmentProviders for app.config
-│  ├─ shared/                       # reusable, STATELESS presentational building blocks
+│  ├─ _shared/                      # reusable, STATELESS presentational building blocks
 │  │  ├─ components/                # dumb/presentational components reused across features
 │  │  ├─ directives/
 │  │  ├─ pipes/
 │  │  └─ models/                    # cross-feature value types / interfaces
-│  ├─ features/
-│  │  └─ <feature>/                 # one folder per feature (see feature-structure.md)
-│  │     └─ <feature>.routes.ts
+│  ├─ features/                     # one folder per feature; concrete example below
+│  │  └─ orders/                    # ← example feature (see feature-structure.md for the full anatomy)
+│  │     ├─ pages/                  # routed components ONLY — every route target lives here
+│  │     │  ├─ order-list/          # order-list.ts (class OrderList) + .html/.css/.spec.ts
+│  │     │  └─ order-detail/        # order-detail.ts (class OrderDetail) + .html/.css/.spec.ts
+│  │     ├─ components/             # presentational, feature-local (e.g. order-row, order-status-badge)
+│  │     │  └─ order-row/
+│  │     ├─ services/               # feature-scoped services (e.g. order-store.ts)
+│  │     ├─ models/                 # feature-scoped types (e.g. order.ts, order-status.ts)
+│  │     └─ orders.routes.ts        # this feature's lazy-loaded route group
 │  ├─ app.config.ts                 # application providers (router, http, interceptors)
 │  ├─ app.routes.ts                 # top-level routes, lazy-loading each feature
 │  ├─ app.ts                        # root component (current suffix-less naming)
@@ -40,11 +47,11 @@ src/
 | Put it in… | When it is… |
 | --- | --- |
 | `core/` | An **app-wide singleton** provided once: guard, interceptor, auth/config/logging service, app-level providers. |
-| `shared/` | A **reusable, stateless** presentational component, pipe, directive, or cross-feature type. **No singleton state.** |
+| `_shared/` | A **reusable, stateless** presentational component, pipe, directive, or cross-feature type. **No singleton state.** |
 | `features/<feature>/` | Used by **one feature only** — its pages, local components, services, and models. |
 
 **Promote only on the second use.** Keep code inside its feature until a second consumer appears; only then
-move it to `shared/` (presentational) or `core/` (singleton). Premature sharing is the *Speculative
+move it to `_shared/` (presentational) or `core/` (singleton). Premature sharing is the *Speculative
 Generality* smell (see the `code-smell` skill).
 
 ## Routing (standalone, lazy-loaded)
@@ -75,6 +82,10 @@ export const ordersRoutes: Routes = [
 ```
 
 - Use `loadComponent` for a single standalone page and `loadChildren` for a feature's route group.
+- **Every route target points into `pages/`.** The imports above resolve to `./pages/order-list/order-list`
+  and `./pages/order-detail/order-detail` — routed components always live under the feature's `pages/`
+  folder, with **suffix-less** names (`order-list.ts` → `class OrderList`), never under `components/` or a
+  feature root (see `feature-structure.md`).
 - **Standalone-first — no `NgModule` files.** Only keep modules if the existing project already uses them.
 
 ## Application config
@@ -110,7 +121,7 @@ export const appConfig: ApplicationConfig = {
 
 1. Look up current conventions (`mcp-lookup.md`).
 2. `ng new` (see `scaffolding.md`).
-3. Create `app/core/`, `app/shared/`, `app/features/`.
+3. Create `app/core/`, `app/_shared/`, `app/features/`.
 4. Wire `app.config.ts` and `app.routes.ts`.
 5. Generate the first feature (`feature-structure.md` + `scaffolding.md`).
 6. `ng build` / `ng lint`.

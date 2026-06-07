@@ -20,7 +20,7 @@ Then create the layering (folders are created on first `ng generate`, or explici
 
 ```bash
 # created implicitly by the generate commands below, or up front if you prefer
-mkdir src/app/core src/app/shared src/app/features
+mkdir src/app/core src/app/_shared src/app/features
 ```
 
 ## Generate into the right folders
@@ -35,7 +35,7 @@ ng generate component features/orders/pages/order-list
 ng generate component features/orders/components/order-row
 
 # Reusable presentational component (shared)
-ng generate component shared/components/data-table
+ng generate component _shared/components/data-table
 
 # App-wide singleton service (core)
 ng generate service core/services/auth
@@ -68,5 +68,5 @@ ng build
 ng lint        # if the project has a linter configured
 ```
 
-Confirm the build passes and that the generated files landed in the documented paths (`core/`, `shared/`,
+Confirm the build passes and that the generated files landed in the documented paths (`core/`, `_shared/`,
 `features/<feature>/pages|components`).

@@ -29,7 +29,7 @@ Same pattern the `http-angular` and `context7` skills use. Resolve the library i
 npx ctx7@latest library angular "Angular project structure, folders by feature, and naming conventions"
 
 # 2. Query the docs with the id returned above (currently /websites/angular_dev)
-npx ctx7@latest docs /websites/angular_dev "Angular folder structure organized by feature, core and shared"
+npx ctx7@latest docs /websites/angular_dev "Angular folder structure organized by feature, core and _shared"
 npx ctx7@latest docs /websites/angular_dev "Lazy loading standalone components with loadChildren and loadComponent"
 ```
 
