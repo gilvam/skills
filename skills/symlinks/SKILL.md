@@ -1,6 +1,6 @@
 ---
 name: symlinks
-description: Skill para criar, reparar ou verificar links simbólicos dos itens dentro de .agents/skills para pastas de skills de outros agentes locais, especialmente .claude/skills e .devin/skills. Use quando o usuário pedir para sincronizar, linkar, espelhar, compartilhar, "colar" ou expor as mesmas skills em múltiplas ferramentas de IA, independentemente do sistema operacional.
+description: Skill para criar, reparar ou verificar links simbólicos dos itens dentro de .agents/skills para pastas de skills de outros agentes locais, especialmente .claude/skills e .devin/skills. Use quando o usuário pedir para sincronizar, linkar, espelhar, compartilhar, "colar" ou expor as mesmas skills em múltiplas ferramentas de IA, independentemente do sistema operacional. Não use para editar o conteúdo das próprias skills (use as skills específicas) nem para copiar arquivos sem criar vínculo simbólico.
 ---
 
 # Symlinks - Links de Skills entre Agentes

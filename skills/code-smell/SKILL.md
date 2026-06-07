@@ -49,20 +49,33 @@ Ao usar esta skill, siga estas regras:
 6. **Refatore sob demanda, não por especulação.** Só introduza abstração quando o segundo ou terceiro caso concreto aparecer — abstrair cedo demais é o smell *Speculative Generality*.
 7. **Confirme antes de mudanças grandes.** Em código existente, alinhe com o usuário antes de uma refatoração ampla; as soluções do catálogo são **melhorias**, não verdades absolutas.
 
+## Contraindicações e trade-offs
+
+As soluções do catálogo são **melhorias**, não verdades absolutas. Contraindicações importantes:
+
+- **Speculative Generality** — abstrair antecipadamente também é um smell. Refatore para abstrações apenas quando o segundo/terceiro caso concreto aparecer.
+- **Switch Statements** — em código frio (não hot-path) com baixa probabilidade de novos casos, um `switch` simples é mais legível do que uma hierarquia de strategies.
+- **Primitive Obsession** — para valores efêmeros e locais, primitivos são adequados; o smell ocorre quando o valor primitivo carrega semântica de domínio reusada em vários lugares.
+- **Magic Numbers/Strings** — constantes só agregam valor quando há reuso ou quando o número carrega um significado de domínio. `array[0]` não é um magic number.
+
+Sempre confirme com o usuário antes de aplicar uma refatoração grande em código existente.
+
 ## Categorias
 
-- **[Bloaters](references/bloaters.md)** — Código, métodos ou classes que cresceram a ponto de serem difíceis de trabalhar.
-- **[Change Preventers](references/change-preventers.md)** — Smells que fazem com que uma única mudança força modificações em muitos pontos do código.
-- **[Couplers](references/couplers.md)** — Smells que indicam acoplamento excessivo entre classes/módulos.
-- **[Dispensables](references/dispensables.md)** — Código desnecessário, redundante ou que pode ser removido sem prejuízo.
-- **[Object-Orientation Abusers](references/object-orientation-abusers.md)** — Aplicação incompleta ou incorreta dos princípios de orientação a objetos.
-- **[Naming & Readability](references/naming-and-readability.md)** — Nomes confusos, comentários ruins e formatação inconsistente que prejudicam a leitura do código.
-- **[Constants & Magic Values](references/constants-and-magic-values.md)** — Valores literais espalhados pelo código ou constantes mal gerenciadas.
-- **[Side Effects & State](references/side-effects-and-state.md)** — Funções/métodos que modificam estado inesperado ou expõem detalhes internos.
-- **[Error Handling](references/error-handling.md)** — Tratamento de erros excessivo, ausente, escondido ou inadequado.
-- **[Architecture & Layering](references/architecture-and-layering.md)** — Smells em nível de arquitetura, camadas, dependências e separação de responsabilidades.
-- **[Performance & Resources](references/performance-and-resources.md)** — Smells relacionados a desempenho, alocação de recursos e concorrência.
-- **[Testing & Observability](references/testing-and-observability.md)** — Falhas de cobertura de teste e ruído excessivo de logs/observabilidade.
+- **[Bloaters](references/bloaters.md)** (9) — Código, métodos ou classes que cresceram a ponto de serem difíceis de trabalhar.
+- **[Change Preventers](references/change-preventers.md)** (6) — Smells que fazem com que uma única mudança força modificações em muitos pontos do código.
+- **[Couplers](references/couplers.md)** (7) — Smells que indicam acoplamento excessivo entre classes/módulos.
+- **[Dispensables](references/dispensables.md)** (10) — Código desnecessário, redundante ou que pode ser removido sem prejuízo.
+- **[Object-Orientation Abusers](references/object-orientation-abusers.md)** (13) — Aplicação incompleta ou incorreta dos princípios de orientação a objetos.
+- **[Naming & Readability](references/naming-and-readability.md)** (9) — Nomes confusos, comentários ruins e formatação inconsistente que prejudicam a leitura do código.
+- **[Constants & Magic Values](references/constants-and-magic-values.md)** (7) — Valores literais espalhados pelo código ou constantes mal gerenciadas.
+- **[Side Effects & State](references/side-effects-and-state.md)** (4) — Funções/métodos que modificam estado inesperado ou expõem detalhes internos.
+- **[Error Handling](references/error-handling.md)** (8) — Tratamento de erros excessivo, ausente, escondido ou inadequado.
+- **[Architecture & Layering](references/architecture-and-layering.md)** (11) — Smells em nível de arquitetura, camadas, dependências e separação de responsabilidades.
+- **[Performance & Resources](references/performance-and-resources.md)** (8) — Smells relacionados a desempenho, alocação de recursos e concorrência.
+- **[Testing & Observability](references/testing-and-observability.md)** (2) — Falhas de cobertura de teste e ruído excessivo de logs/observabilidade.
+
+Total: **94 smells** em 12 categorias.
 
 ## Índice rápido
 
