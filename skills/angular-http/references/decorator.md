@@ -5,15 +5,18 @@ Every DTO depends on the `@NoNull()` decorator. Confirm it exists before generat
 Glob for the decorator anywhere in the project (e.g. `**/_decorators/class.decorator.ts`); it
 conventionally lives at `[app-root]/_decorators/class.decorator.ts`.
 
-- **If present** (the normal case): reuse it. **Compute the import relative to the DTO's actual location**
-  (or use the project's TS path alias if one is configured). For the conventional layout — a DTO at
-  `[app-root]/services/http/http-[service-name]/models/` and the decorator at `[app-root]/_decorators/` —
-  the import is:
+- **If present** (the normal case): reuse it. The decorator stays **app-wide at `[app-root]/_decorators/`**,
+  but the module may sit at any `[host]` (an owning feature, or the app root — see `folder-structure.md`), so
+  **prefer the project's TS path alias** if one is configured (e.g. `import { NoNull } from '@decorators/class.decorator';`)
+  — it survives wherever `[host]` lands. Otherwise **compute the import relative to the DTO's actual
+  location**. For the app-root layout — a DTO at `[app-root]/services/http/http-[service-name]/models/` and the
+  decorator at `[app-root]/_decorators/` — the import is:
   ```typescript
   import { NoNull } from '../../../../_decorators/class.decorator';
   ```
-  That `../../../../` depth holds only while both the module and the decorator stay under the same
-  `[app-root]`; if the project keeps them at different depths, recompute the relative path accordingly.
+  That `../../../../` depth holds only for an app-root `[host]`. A **feature-scoped** module
+  (`features/<feature>/services/http/http-[service-name]/models/`) is deeper, so recompute the relative path
+  (it gains the feature segments) — or, better, use the path alias.
 
 - **If missing**: vendor it before continuing. WebFetch the decorator source from
   `https://github.com/gilvam/typescript-utils/tree/main/src/decorators` (use the raw file

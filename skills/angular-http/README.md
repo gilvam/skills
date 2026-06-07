@@ -1,10 +1,11 @@
 # Angular HTTP
 
 Skill for creating and standardizing Angular HTTP integration modules: isolated module
-folders under `[app-root]/services/http/http-[service-name]` (default `src/app/services/http`), strongly-typed `HttpClient`
-services, `@NoNull()` DTOs with explicit `create()/createArray()` mapping, a mock service,
-and unit tests. It pulls current Angular patterns via the context7 `ctx7` CLI and guards the
-`@NoNull()` decorator dependency.
+folders placed **closest to the consumer** — `[host]/services/http/http-[service-name]`, where `[host]` is the
+owning feature (`features/<feature>/services/http`) when a single feature uses it, or the app root (default
+`src/app/services/http`) for app-wide or single-service projects — with strongly-typed `HttpClient` services,
+`@NoNull()` DTOs with explicit `create()/createArray()` mapping, a mock service, and unit tests. It pulls
+current Angular patterns via the context7 `ctx7` CLI and guards the `@NoNull()` decorator dependency.
 
 ## Structure
 
@@ -34,7 +35,7 @@ angular-http/
 ## What a generated module contains
 
 ```
-[app-root]/services/http/http-[service-name]/
+[host]/services/http/http-[service-name]/      # [host] = owning feature, else app root
 ├── http-[service-name].service.ts          # the real HttpClient service
 ├── http-[service-name].service.spec.ts     # service unit tests (HttpTestingController)
 ├── http-[service-name].mock.service.ts     # mock service for component/demo testing

@@ -1,6 +1,6 @@
 ---
 name: angular-http
-description: Create standardized Angular HTTP integration modules under the project's services/http folder (default src/app/services/http) — typed HttpClient services, @NoNull() DTOs with explicit create()/createArray() mapping, a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @NoNull decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested API payload mapping, HTTP mocks, or service specs.
+description: Create standardized Angular HTTP integration modules in a services/http folder placed closest to its consumer — inside the owning feature (features/<feature>/services/http) when one feature uses it, or at the app root (default src/app/services/http) for app-wide or single-service projects — with typed HttpClient services, @NoNull() DTOs with explicit create()/createArray() mapping, a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @NoNull decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested API payload mapping, HTTP mocks, or service specs.
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash, WebFetch
 ---
 
@@ -51,7 +51,10 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
   `Child.createArray(...)` — never rely on `@NoNull()` alone for nested conversion.
 - Services call `Dto.create(...)` / `Dto.createArray(...)` **explicitly** inside the RxJS
   `map`, even when the TypeScript type already looks compatible.
-- New modules live only under `[app-root]/services/http/http-[service-name]/` (resolve `[app-root]`; default `src/app`). See [references/folder-structure.md](references/folder-structure.md).
+- New modules live in a `services/http/http-[service-name]/` folder placed **closest to its consumer**:
+  inside the owning feature (`features/<feature>/services/http/…`) when a single feature uses it, otherwise at
+  the app root (`[app-root]/services/http/…`, default `src/app`). Promote to the app root only on a **second**
+  consumer. See [references/folder-structure.md](references/folder-structure.md).
 
 ## References
 
@@ -67,6 +70,8 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
 
 - No Angular `NgModule` files for these HTTP modules.
 - No HTTP DTOs in component or shared/global folders.
+- Don't park a single-feature client at the app root — co-locate it with its feature; promote to the root
+  only when a second feature consumes it.
 - No raw API JSON returned from services.
 - Never skip `create()` / `createArray()` in services, even when the type looks compatible.
 - Never lean on `@NoNull()` for nested conversion — parents must call child factories.

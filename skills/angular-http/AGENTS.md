@@ -40,8 +40,10 @@ non-HTTP service.
    params/body, a success JSON example, error payloads, the response DTO name, and whether
    the response is a single object or array. Ask for the smallest concrete JSON if a shape
    is missing (`references/folder-structure.md`).
-4. **Resolve `[app-root]` and scaffold** `[app-root]/services/http/http-[service-name]/` with `models/`
-   and `mocks/` (`references/folder-structure.md`).
+4. **Resolve `[host]` (closest consumer) and scaffold** `[host]/services/http/http-[service-name]/` with
+   `models/` and `mocks/`. `[host]` = the owning feature (`features/<feature>/`) when a single feature uses
+   the service, else the app root (`[app-root]`, default `src/app`); promote to the root only on a second
+   consumer (`references/folder-structure.md`).
 5. **Generate DTOs inside-out** — leaf DTOs first, then parents (`references/dto.md`).
 6. **Add mocks** under `mocks/[method]/` (200 + relevant 4xx/5xx).
 7. **Implement the service last** so each map calls the final DTO factory explicitly
@@ -53,10 +55,11 @@ non-HTTP service.
 
 ## How to apply correctly
 
-- Resolve the decorator import from the module's actual location (or a TS path alias). For the
-  conventional `[app-root]/services/http/[module]/models/` + `[app-root]/_decorators/` layout it is
-  `../../../../_decorators/class.decorator`; recompute the depth if the project relocates either
-  (`references/decorator.md`).
+- Resolve the decorator import from the module's actual location — **prefer a TS path alias**, since a
+  feature-scoped `[host]` sits deeper than the app root. For the app-root layout
+  (`[app-root]/services/http/[module]/models/` + `[app-root]/_decorators/`) the relative import is
+  `../../../../_decorators/class.decorator`; recompute the depth whenever `[host]` differs (a feature folder
+  adds segments) — see (`references/decorator.md`). The `@NoNull()` decorator stays app-wide at `[app-root]`.
 - Build DTOs from the inside out so each parent can call its children's factories.
 - Keep services thin: request assembly + explicit DTO mapping only.
 - Mirror the local `[app-root]/services/http/weather` example for naming and style; when it
