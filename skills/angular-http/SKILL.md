@@ -24,7 +24,7 @@ Use it when you are asked to:
 - Map nested API JSON (objects and arrays) into typed classes.
 - Add HTTP mocks and unit tests for a service.
 
-Do **not** use it for component/UI logic, state management, or non-HTTP services.
+Do **not** use it for component/UI logic, state management, or non-HTTP services — use the **`angular-patterns`** skill for those.
 
 ## Recommended flow
 

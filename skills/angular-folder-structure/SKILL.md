@@ -26,7 +26,7 @@ Use it when you are asked to:
 Do **not** use this skill for:
 
 - HTTP/REST integration modules (DTOs, typed `HttpClient` services, mocks) — use the **`angular-http`** skill.
-- Component/UI implementation logic, state management, or styling decisions.
+- Component/UI implementation logic, state management, or styling decisions — use the **`angular-patterns`** skill.
 
 ## Recommended flow
 
