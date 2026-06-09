@@ -1,6 +1,6 @@
 ---
 name: angular-http
-description: Create standardized Angular HTTP integration modules in a services/http folder placed closest to its consumer — inside the owning feature (features/<feature>/services/http) when one feature uses it, or at the app root (default src/app/services/http) for app-wide or single-service projects — with typed HttpClient services, @NoNull() DTOs with explicit create()/createArray() mapping, a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @NoNull decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested API payload mapping, HTTP mocks, or service specs.
+description: Create standardized Angular HTTP integration modules in a services/http folder placed closest to its consumer — inside the owning feature (features/<feature>/services/http) when one feature uses it, or at the app root (default src/app/services/http) for app-wide or single-service projects — with typed HttpClient services, @NoNull() DTOs with explicit create()/createArray() mapping, a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @NoNull decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested API payload mapping, HTTP mocks, or service specs. Do not use for general component/template patterns (use angular-patterns) or application folder structure (use angular-folder-structure).
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash, WebFetch
 ---
 
@@ -14,6 +14,17 @@ component folders.
 Mirror the local example at `[app-root]/services/http/weather` for structure and style. The
 example is illustrative only; where it diverges from the rules in this skill (it mixes a
 legacy `search` flow with the newer `get` flow), **these rules win**.
+
+## Companion skills
+
+This skill **composes with** the base standards — it does not redefine them. When generating an HTTP module,
+also apply these (each owns its own rules):
+
+- **`typescript-patterns`** — base TypeScript standards (DTO classes, types, default values).
+- **`code-standards-en`** — identifier naming, casing, function shaping.
+- **`code-smell`** — refactoring catalogue for clean code.
+
+(Component/template patterns belong to `angular-patterns`; folder layout to `angular-folder-structure`.)
 
 ## When to use this skill
 

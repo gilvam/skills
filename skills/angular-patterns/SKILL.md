@@ -14,6 +14,17 @@ Ground every decision in current Angular docs: consult the **Angular CLI MCP** (
 first, fall back to the **context7 `ctx7` CLI**, then to **angular.dev** — never assert a pattern from
 memory alone. See [references/mcp-lookup.md](references/mcp-lookup.md).
 
+## Companion skills
+
+This skill **composes with** the base standards — it does not redefine them. When writing Angular code, also
+apply these (each owns its own rules):
+
+- **`typescript-patterns`** — base TypeScript standards (classes, interfaces, types, default values).
+- **`code-standards-en`** — identifier naming, casing, function shaping.
+- **`code-smell`** — refactoring catalogue for clean code.
+
+(HTTP/DTO modules belong to `angular-http`; folder layout to `angular-folder-structure`.)
+
 ## When to use this skill
 
 Use it when you are asked to:

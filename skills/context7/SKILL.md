@@ -12,14 +12,15 @@ description: >-
    Common scenarios:
    - looking up API endpoints, classes, functions, or method parameters
    - checking configuration options or CLI commands
-   - answering "how do I" technical questions
+   - answering how-to technical questions
    - generating code that uses a specific library or service
    - debugging issues related to frameworks, SDKs, or APIs
    - retrieving setup instructions, examples, or migration guides
    - verifying version-specific behavior or breaking changes
 
    Prefer this skill whenever documentation accuracy matters or when model
-   knowledge may be outdated.
+   knowledge may be outdated. Do not use for this repository's own internal
+   code or for non-technical content.
 ---
 
 # Documentation Lookup

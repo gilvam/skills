@@ -1,6 +1,6 @@
 ---
 name: typescript-patterns
-description: Apply this project's TypeScript house standards when writing or reviewing TypeScript — kebab-case filenames whose base matches the symbol, one declaration per file with a type suffix (.model.ts / .interface.ts / .enum.ts), classes for domain models instantiated with new (not object literals), interfaces prefixed with I, enums for closed domain value sets, braces on every if, array iteration methods (map/filter/reduce/some/every/find/flatMap/…) over for/while loops, .at() over bracket indexing, component folder names echoed in inner files, and a unit test for every unit. Pulls current TypeScript guidance via the context7 ctx7 CLI. Use when authoring or reviewing TypeScript files, naming files/types, or modeling data. Defers identifier casing to code-standards-en, Angular folder layout to angular-folder-structure, and HTTP DTO modules to angular-http.
+description: Apply this project's TypeScript house standards when writing or reviewing TypeScript — kebab-case filenames whose base matches the symbol, one declaration per file with a type suffix (.model.ts / .interface.ts / .enum.ts), classes for domain models instantiated with new (not object literals) and preferred over interfaces (reserving interfaces for implements contracts), default-initialized class fields ('' / 0 / false / first enum member / typed []), no optional (?) members for values we control, no any (prefer unknown plus a guard at boundaries), type annotations only when there is no initializer (empty [] excepted), interfaces using the `IName` prefix convention, enums for closed domain value sets, braces on every if, array iteration methods (map/filter/reduce/some/every/find/flatMap/…) over for/while loops, .at() over bracket indexing, component folder names echoed in inner files, and a unit test for every unit. Pulls current TypeScript guidance via the context7 ctx7 CLI. Use when authoring or reviewing TypeScript files, naming files/types, or modeling data. Defers identifier casing to code-standards-en, Angular folder layout to angular-folder-structure, and HTTP DTO modules to angular-http.
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash, WebFetch
 ---
 
@@ -57,6 +57,17 @@ Do **not** redefine here (defer to the owning skill):
 - **Type suffix per kind.** Class → `.model.ts`, interface → `.interface.ts`, enum → `.enum.ts`.
 - **Classes for domain data; instantiate with `new`.** Prefer `new User('Jenifer', 'j@j.com')` over an object
   literal `{ name, email }`. Prefer classes/models/enums over bare `type` for domain modeling.
+- **Classes over interfaces; reserve interfaces for `implements` contracts.** Model data as a class
+  (`.model.ts`); use an `interface` mainly as the contract a class will `implement` — not as a plain data bag.
+- **Default-initialize every class field.** `string → ''`, `number → 0`, `boolean → false`, enum → its first
+  member, array → typed and `[]`. Required identity fields come via the constructor; an instance is never
+  half-built.
+- **No optional (`?`) members** on classes, interfaces, object shapes, or variables — give a default instead.
+  *Only exception:* values outside our control (external libs / raw API payloads), where the absence is real.
+- **No `any`.** Use a precise type; for values outside our control reach for **`unknown`** + a type guard.
+  Keep `noImplicitAny` on.
+- **Annotate only without an initializer.** Let inference type initialized bindings (`const total = 0`);
+  annotate when there's no value — except an empty array, which is typed *and* assigned (`list: User[] = []`).
 - **Interfaces are prefixed with `I`** (`IUserGeneric`). *House standard — note this diverges from the
   Google/Microsoft TS style guides, which advise against the `I` prefix; applied consistently here by choice.*
 - **Enums for closed domain value sets** — never loose, untyped string arrays/magic strings.
@@ -77,11 +88,14 @@ Do **not** redefine here (defer to the owning skill):
 
 - [context7-lookup.md](references/context7-lookup.md) — confirm current TS behavior via `ctx7`.
 - [naming-and-files.md](references/naming-and-files.md) — file naming, suffixes, one-per-file, folder echo.
-- [classes.md](references/classes.md) — `.model.ts`, instances over literals, one class per file.
-- [interfaces.md](references/interfaces.md) — `.interface.ts`, `I` prefix, filename rule.
+- [classes.md](references/classes.md) — `.model.ts`, instances over literals, one class per file, default-
+  initialized fields, no optional (`?`) members.
+- [interfaces.md](references/interfaces.md) — `.interface.ts`, `I` prefix, filename rule, classes over
+  interfaces (reserve interfaces for `implements`), no optional members.
 - [enums.md](references/enums.md) — `.enum.ts`, closed sets, enum vs union literals.
 - [code-style.md](references/code-style.md) — braces on control flow, the full array-iteration-method set
-  over loops, and `.at()` over bracket indexing (defers the rest to `code-standards-en`).
+  over loops, `.at()` over bracket indexing, no `any` (use `unknown` at boundaries), and type annotations only
+  without an initializer (defers the rest to `code-standards-en`).
 - [testing.md](references/testing.md) — unit test per unit.
 
 ## Avoid
@@ -90,6 +104,10 @@ Do **not** redefine here (defer to the owning skill):
 - Two top-level declarations in one file (a class plus a loose type/enum/const).
 - Object literals for domain data where a class exists — use `new Class(...)`.
 - Interfaces without the `I` prefix (house standard); enums replaced by magic strings.
+- Interfaces as plain data bags — model data as a class; reserve interfaces for `implements` contracts.
+- Optional (`?`) members or uninitialized fields for values we control — default them by type.
+- `any` on our own code — use a precise type, or `unknown` + a guard for values outside our control.
+- Redundant annotations on initialized bindings — annotate only without an initializer (empty `[]` excepted).
 - Single-line `if` without braces.
 - `for` / `while` / `do...while` for data processing — use array iteration methods; reserve `for...of` /
   `for await...of` for sequential `await` or imperative side-effects.
