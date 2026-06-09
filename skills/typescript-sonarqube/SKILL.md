@@ -1,6 +1,6 @@
 ---
 name: typescript-sonarqube
-description: Review TypeScript/JavaScript against SonarQube/SonarJS rules and run SonarQube-style static analysis locally. Use ANY time TypeScript/JavaScript code is written, edited, refactored, or reviewed — after creating or changing `.ts`/`.tsx`/`.js`/`.jsx` files, before committing or opening a PR, or when the user asks for a "SonarQube", "Sonar", "SonarLint" or "SonarJS" review, wants to check code smells/bugs/complexity/security the way SonarQube would, or wants to set up Sonar analysis. Offers two scopes: validate the whole project, or only the new/changed code.
+description: 'Reviews TypeScript/JavaScript against SonarQube/SonarJS rules and runs SonarQube-style static analysis locally. Use ANY time TypeScript/JavaScript code is written, edited, refactored, or reviewed — after creating or changing `.ts`/`.tsx`/`.js`/`.jsx` files, before committing or opening a PR, or when the user asks for a "SonarQube", "Sonar", "SonarLint" or "SonarJS" review, wants to check code smells/bugs/complexity/security the way SonarQube would, or wants to set up Sonar analysis. Offers two scopes: validate the whole project, or only the new/changed code.'
 ---
 
 # SonarQube for TypeScript
