@@ -1,6 +1,6 @@
 ---
-name: sonarqube-typescript
-description: Review TypeScript code against SonarQube/SonarJS rules and run a SonarQube-style static analysis locally. Use when the user asks for a "SonarQube", "Sonar", "SonarLint" or "SonarJS" review of TypeScript, wants to check code smells/bugs/complexity the way SonarQube would, or wants to set up Sonar analysis for the project.
+name: typescript-sonarqube
+description: Review TypeScript/JavaScript against SonarQube/SonarJS rules and run SonarQube-style static analysis locally. Use ANY time TypeScript/JavaScript code is written, edited, refactored, or reviewed — after creating or changing `.ts`/`.tsx`/`.js`/`.jsx` files, before committing or opening a PR, or when the user asks for a "SonarQube", "Sonar", "SonarLint" or "SonarJS" review, wants to check code smells/bugs/complexity/security the way SonarQube would, or wants to set up Sonar analysis. Offers two scopes: validate the whole project, or only the new/changed code.
 ---
 
 # SonarQube for TypeScript
@@ -11,6 +11,28 @@ engine ships as the open-source ESLint plugin **`eslint-plugin-sonarjs`**, so th
 rules run locally with no server. Use that for code review; use a real SonarQube/SonarCloud
 server only when the user wants the dashboard, quality gate, security (taint) analysis, or
 coverage tracking.
+
+## When to run
+
+Run this skill on **every TypeScript/JavaScript change**, not only when "Sonar" is mentioned.
+As soon as `.ts`/`.tsx`/`.js`/`.jsx` files are created, edited, or refactored — and again
+before a commit or PR — do a quick pass before reporting the change as done.
+
+### Choose the scope first
+Before reviewing, decide (or ask the user) which scope applies:
+
+- **New / changed code only** (default for an ongoing change) — review just what this change
+  touched. Get the file/line set from `git`:
+  - Unstaged + staged vs `HEAD`: `git diff --name-only HEAD -- "*.ts" "*.tsx" "*.js" "*.jsx"`
+  - Staged only: `git diff --name-only --cached -- "*.ts" "*.tsx" "*.js" "*.jsx"`
+  - A branch vs its base: `git diff --name-only <base>...HEAD -- "*.ts" "*.tsx"`
+  - For tooling (step 2): `npx eslint $(git diff --name-only HEAD -- "*.ts" "*.tsx")`
+- **Whole project** — review/scan the entire codebase (full audit, onboarding, quality gate,
+  or when the user asks "check the whole project"). For tooling, run ESLint / the scanner over
+  the configured source globs, not a git diff.
+
+If the user has not said which they want, default to **new / changed code only** and tell them
+they can ask for a full-project scan.
 
 This skill is split into reference files. **Load only what the task needs** — do not read all
 of them up front.
@@ -25,7 +47,8 @@ of them up front.
 ## Workflow
 
 ### 1. Manual review (default — no credentials, offline)
-Read the changed/target `.ts` files. Load `references/rules-reference.md` and check the code
+Read the files in the chosen scope (the `git diff` set for *new/changed code*, or the target
+source tree for *whole project*). Load `references/rules-reference.md` and check the code
 against those rule keys. If the user mentioned security, also load `references/security.md`.
 Report findings as:
 
