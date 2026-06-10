@@ -65,7 +65,8 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
 - Nested objects/arrays are mapped **explicitly** with `Child.create(...)` /
   `Child.createArray(...)` — never rely on `@Dto()` alone for nested conversion.
 - Services call `Dto.create(...)` / `Dto.createArray(...)` **explicitly** inside the RxJS
-  `map`, even when the TypeScript type already looks compatible.
+  `map`, even when the TypeScript type already looks compatible — with `keyCamelCase` this is
+  also what triggers the key conversion (it runs only in the factories, not in `new`).
 - New modules live in a `services/http/http-[service-name]/` folder placed **closest to its consumer**:
   inside the owning feature (`features/<feature>/services/http/…`) when a single feature uses it, otherwise at
   the app root (`[app-root]/services/http/…`, default `src/app`). Promote to the app root only on a **second**

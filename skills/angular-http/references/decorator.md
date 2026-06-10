@@ -29,12 +29,14 @@ The decorator normalizes the **constructor** arguments and the static **`create`
 
 | Option         | Default | Behavior                                                                                                                                                                                                  |
 | -------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `noNullValue`  | `true`  | Converts `null` → `undefined` (shallow, at argument level), letting the TypeScript default parameter values take over — `null`, `{}`, missing keys, and partial payloads all collapse to safe defaults. |
-| `keyCamelCase` | `false` | Recursively converts the keys of incoming objects to camelCase — nested objects and arrays included — before they reach the constructor/factory.                                                          |
+| `noNullValue`  | `true`  | Converts `null` → `undefined` (shallow, at argument level) for the constructor **and** the factories, letting the TypeScript default parameter values take over — `null`, `{}`, missing keys, and partial payloads all collapse to safe defaults. |
+| `keyCamelCase` | `false` | Recursively converts the keys of received objects to camelCase — nested objects and arrays included. Applied **only** to the static `create()` / `createArray()` arguments; a plain `new` receives the keys as-is.                                                          |
 
 Enable `keyCamelCase` whenever the API payload uses keys that are **not camelCase**
 (`first_name`, `UserData`, `user-id`, …): apply `@Dto({ keyCamelCase: true })` and keep the DTO
-properties in camelCase — never mirror the API's casing into the class. See
+properties in camelCase — never mirror the API's casing into the class. Because the conversion
+runs **only in the factories**, raw API JSON must always enter through `create()` /
+`createArray()` — never through `new` (which this skill already mandates for services). See
 [dto.md](dto.md).
 
 Null conversion is shallow, and the key conversion does **not** instantiate nested DTOs. Parent
