@@ -33,8 +33,11 @@ The decorator normalizes the **constructor** arguments and the static **`create`
 | `keyCamelCase` | `false` | Recursively converts the keys of received objects to camelCase — nested objects and arrays included. Applied **only** to the static `create()` / `createArray()` arguments; a plain `new` receives the keys as-is.                                                          |
 
 Enable `keyCamelCase` whenever the API payload uses keys that are **not camelCase**
-(`first_name`, `UserData`, `user-id`, …): apply `@Dto({ keyCamelCase: true })` and keep the DTO
-properties in camelCase — never mirror the API's casing into the class. Because the conversion
+(`first_name`, `UserData`, `user-id`, …) — but only on the **root DTOs** whose `create()` /
+`createArray()` the `http-*` files call inside the RxJS `map` with the raw API response. The
+conversion is deep, so nested DTOs receive already-camelCased objects and keep the plain
+`@Dto()` — do not put the flag on every `.dto.ts`. Keep the DTO properties in camelCase —
+never mirror the API's casing into the class. Because the conversion
 runs **only in the factories**, raw API JSON must always enter through `create()` /
 `createArray()` — never through `new` (which this skill already mandates for services). See
 [dto.md](dto.md).

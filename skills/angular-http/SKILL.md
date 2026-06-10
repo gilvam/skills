@@ -59,7 +59,9 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
 
 - Every DTO has `@Dto()` and a safe default for **every** constructor field.
 - API payloads with keys that are **not camelCase** (snake_case, PascalCase, kebab-case) →
-  use `@Dto({ keyCamelCase: true })` on every DTO of the module; class properties stay
+  use `@Dto({ keyCamelCase: true })` **only on the root DTOs** whose `create()`/`createArray()`
+  the `http-*` files call inside the RxJS `map` with the raw API response — the deep conversion
+  already covers the nested DTOs, which keep the plain `@Dto()`. Class properties stay
   camelCase, and the `jsons/` fixtures keep the API's original casing. See
   [references/decorator.md](references/decorator.md) and [references/dto.md](references/dto.md).
 - Nested objects/arrays are mapped **explicitly** with `Child.create(...)` /
@@ -93,4 +95,6 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
 - Never lean on `@Dto()` for nested conversion — parents must call child factories.
 - Never declare DTO properties in the API's casing (e.g. `first_name`) — enable
   `keyCamelCase` and keep the class camelCase.
+- Don't spread `{ keyCamelCase: true }` across every `.dto.ts` — only the root DTOs whose
+  factories the `http-*` files call with the raw API response need it.
 - Never silently skip the context7 lookup — fall back to angular.dev and say so.

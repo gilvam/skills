@@ -11,9 +11,10 @@ Prove null-safety and explicit mapping. Cover:
 - partial JSON → provided values kept, the rest defaulted
 - root `null` nested objects/arrays → default nested DTO instances / `[]`
 - deeply nested `null` fields → nested DTO instances with their own defaults
-- modules using `@Dto({ keyCamelCase: true })`: JSON with the API's **original** keys
+- root DTOs using `@Dto({ keyCamelCase: true })`: JSON with the API's **original** keys
   (e.g. `first_name`, `user_data`) → camelCase properties mapped (`firstName`, `userData`),
-  including nested objects and arrays
+  including nested objects and arrays. Nested DTOs (plain `@Dto()`) are specced with
+  already-camelCased input — the root factory converts the tree before they are reached.
 
 ## Service specs (`http-[service-name].service.spec.ts`)
 

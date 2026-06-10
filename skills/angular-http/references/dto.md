@@ -6,11 +6,13 @@ Every DTO class must:
   import depth depends on where the module and decorator land — see [decorator.md](decorator.md); for the
   conventional layout it is `../../../../_decorators/class.decorator`.
 - When the API payload has keys that are **not camelCase** (snake_case, PascalCase, kebab-case),
-  apply `@Dto({ keyCamelCase: true })` instead — on **every** DTO of the module — and keep the
-  class properties in camelCase. The decorator converts the incoming keys to camelCase deeply
-  (nested objects and arrays included) — but **only** in `create()` / `createArray()`, never in
-  `new` — so the classes never mirror the API's casing and raw JSON always enters through the
-  factories. See [Non-camelCase API payloads](#non-camelcase-api-payloads).
+  apply `@Dto({ keyCamelCase: true })` — but **only on the root DTOs** whose `create()` /
+  `createArray()` the `http-*` files (service and mock service) call inside the RxJS `map` with
+  the raw API response. The conversion is deep (nested objects and arrays included), so nested
+  DTOs receive already-camelCased objects and keep the plain `@Dto()`. Class properties stay in
+  camelCase everywhere — never mirror the API's casing — and the conversion runs **only** in
+  `create()` / `createArray()`, never in `new`, so raw JSON always enters through the factories.
+  See [Non-camelCase API payloads](#non-camelcase-api-payloads).
 - Use constructor `public` properties with a safe default for **every** field.
 - Expose `static create(item: Partial<Dto> = new this()): Dto`.
 - Expose `static createArray(items: Partial<Dto>[] = []): Dto[]` when the DTO can appear in
@@ -85,11 +87,13 @@ export class UserDto {
 ```
 
 `UserDto.create({ first_name: 'Ana', user_data: { … } })` yields `firstName: 'Ana'` and hands the
-already-camelCased `userData` object to `UserDataDto.create(...)`. Apply the same
-`{ keyCamelCase: true }` to the nested DTOs too (`UserDataDto` here), so each factory also works
-when called directly with raw API JSON. Two limits to keep in mind: the conversion renames keys
-only — explicit `create()`/`createArray()` mapping for nested DTOs is still required — and it
-runs **only** in the static factories, so `new UserDto(rawJson)` would skip it entirely.
+already-camelCased `userData` object to `UserDataDto.create(...)`. That is exactly why the flag
+belongs **only on this root DTO** — the one whose factory the `http-*` service calls in the
+`map` with the raw API response: the deep conversion normalizes the whole tree up front, so the
+nested `UserDataDto` keeps the plain `@Dto()`. Do not spread `{ keyCamelCase: true }` across
+every `.dto.ts` of the module. Two limits to keep in mind: the conversion renames keys only —
+explicit `create()`/`createArray()` mapping for nested DTOs is still required — and it runs
+**only** in the static factories, so `new UserDto(rawJson)` would skip it entirely.
 
 Keep the `jsons/` fixtures in the API's **original** casing so the specs prove the conversion —
 see [testing.md](testing.md).
