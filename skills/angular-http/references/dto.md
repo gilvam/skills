@@ -2,7 +2,7 @@
 
 Every DTO class must:
 
-- Import `NoNull` from the decorator and apply `@NoNull()` immediately above the class. The relative
+- Import `Dto` from the decorator and apply `@Dto()` immediately above the class. The relative
   import depth depends on where the module and decorator land — see [decorator.md](decorator.md); for the
   conventional layout it is `../../../../_decorators/class.decorator`.
 - Use constructor `public` properties with a safe default for **every** field.
@@ -13,7 +13,7 @@ Every DTO class must:
 - Map nested arrays explicitly with `ChildDto.createArray(item.items)`.
 
 Never use `Object.assign`, spreads, raw JSON passthrough, or implicit constructor mapping for
-nested DTOs. Never rely on `@NoNull()` alone to convert nested structures (it does not recurse
+nested DTOs. Never rely on `@Dto()` alone to convert nested structures (it does not recurse
 — see [decorator.md](decorator.md)).
 
 ## Safe defaults by type
@@ -30,11 +30,11 @@ nested DTOs. Never rely on `@NoNull()` alone to convert nested structures (it do
 ## Preferred DTO shape
 
 ```typescript
-import { NoNull } from '../../../../_decorators/class.decorator';
+import { Dto } from '../../../../_decorators/class.decorator';
 import { UserDto } from './user.dto';
 import { RoleDto } from './role.dto';
 
-@NoNull()
+@Dto()
 export class UserResponseDto {
 	constructor(
 		public user = new UserDto(),
@@ -51,7 +51,7 @@ export class UserResponseDto {
 	}
 
 	static createArray(items: Partial<UserResponseDto>[] = []): UserResponseDto[] {
-		return (items ?? []).map((item) => UserResponseDto.create(item));
+		return (items).map((item) => UserResponseDto.create(item));
 	}
 }
 ```

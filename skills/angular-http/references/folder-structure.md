@@ -26,7 +26,7 @@ Two folders matter, and they are not always the same:
 - **`[host]`** — where this module's `services/http/` goes: the nearest folder enclosing **every** consumer of
   the service (a single feature, or the app root).
 - **`[app-root]`** — the application root that holds `app.config.ts`/`app.routes.ts`/`main.ts` and the shared
-  `_decorators/` (default `src/app`). The `@NoNull()` decorator always stays here, app-wide, regardless of
+  `_decorators/` (default `src/app`). The `@Dto()` decorator always stays here, app-wide, regardless of
   where the module lands.
 
 Resolve `[host]` in this order:
@@ -65,7 +65,7 @@ Create new modules **only** under `[host]/services/http/http-[service-name]/` (r
 │   ├── [nested-entity].dto.ts               # nested sub-DTOs
 │   ├── [domain].enum.ts                      # enums / literal types for this module
 │   └── [query-name].dto.spec.ts             # DTO null-safety specs
-└── mocks/
+└── jsons/
     └── [method]/                            # one folder per service method (get, search, …)
         ├── 200-ok.json
         ├── 400-invalid-request.json

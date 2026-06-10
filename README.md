@@ -8,7 +8,7 @@ Repositório de skills locais para orientar agentes/LLMs em tarefas específicas
 
 - [angular-developer](skills/angular-developer/SKILL.md) — Geração de código Angular e orientação arquitetural: reatividade (signals, linkedSignal, resource), forms, injeção de dependência, rotas, SSR, acessibilidade (ARIA), animações, estilos, testes e CLI.
 - [angular-folder-structure](skills/angular-folder-structure/SKILL.md) — Padroniza a estrutura de pastas de uma aplicação Angular (organização por feature sob `src/app`, componentes standalone, arquivos co-localizados, rotas lazy-loaded e nomes hifenizados).
-- [angular-http](skills/angular-http/SKILL.md) — Cria módulos de integração HTTP padronizados (serviços tipados com `HttpClient`, DTOs com `@NoNull()`, serviço mock e testes unitários) na pasta `services/http` mais próxima do consumidor.
+- [angular-http](skills/angular-http/SKILL.md) — Cria módulos de integração HTTP padronizados (serviços tipados com `HttpClient`, DTOs com `@Dto()`, serviço mock e testes unitários) na pasta `services/http` mais próxima do consumidor.
 - [angular-patterns](skills/angular-patterns/SKILL.md) — Aplica boas práticas atuais de Angular ao escrever ou revisar componentes, templates, reatividade e forms (standalone, signals, OnPush/zoneless, control flow nativo, `inject()`, forms reativos tipados).
 
 ### TypeScript
@@ -24,7 +24,6 @@ Repositório de skills locais para orientar agentes/LLMs em tarefas específicas
 ### Ferramentas e utilidades
 
 - [context7](skills/context7/SKILL.md) — Recupera documentação técnica atualizada, referências de API e exemplos de código para qualquer tecnologia de desenvolvimento.
-- [symlinks](skills/symlinks/SKILL.md) — Guia para criar links simbólicos de `.agents/skills` para pastas de skills usadas por outros agentes locais.
 
 ## Estrutura geral
 

@@ -1,6 +1,6 @@
 ---
 name: angular-http
-description: Create standardized Angular HTTP integration modules in a services/http folder placed closest to its consumer — inside the owning feature (features/<feature>/services/http) when one feature uses it, or at the app root (default src/app/services/http) for app-wide or single-service projects — with typed HttpClient services, @NoNull() DTOs with explicit create()/createArray() mapping, a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @NoNull decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested API payload mapping, HTTP mocks, or service specs. Do not use for general component/template patterns (use angular-patterns) or application folder structure (use angular-folder-structure).
+description: Create standardized Angular HTTP integration modules in a services/http folder placed closest to its consumer — inside the owning feature (features/<feature>/services/http) when one feature uses it, or at the app root (default src/app/services/http) for app-wide or single-service projects — with typed HttpClient services, @Dto() DTOs with explicit create()/createArray() mapping, a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @Dto decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested API payload mapping, HTTP mocks, or service specs. Do not use for general component/template patterns (use angular-patterns) or application folder structure (use angular-folder-structure).
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash, WebFetch
 ---
 
@@ -41,13 +41,13 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
 
 1. **Consult current Angular patterns via context7** — see
    [references/context7-lookup.md](references/context7-lookup.md).
-2. **Validate the `@NoNull()` decorator** (vendor it only if missing) — see
+2. **Validate the `@Dto()` decorator** (vendor it only if missing) — see
    [references/decorator.md](references/decorator.md).
 3. **Confirm the endpoint contracts and scaffold the folder** — see
    [references/folder-structure.md](references/folder-structure.md).
 4. **Generate DTOs inside-out** (leaf DTOs first, then parents) — see
    [references/dto.md](references/dto.md).
-5. **Add success + error mocks** under `mocks/[method]/`.
+5. **Add success + error mocks** under `jsons/[method]/`.
 6. **Implement the service last** so every map calls the final DTO factory explicitly — see
    [references/service.md](references/service.md).
 7. **Add the mock service** if consumers need it — see
@@ -57,9 +57,9 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
 
 ## Non-negotiable rules (summary)
 
-- Every DTO has `@NoNull()` and a safe default for **every** constructor field.
+- Every DTO has `@Dto()` and a safe default for **every** constructor field.
 - Nested objects/arrays are mapped **explicitly** with `Child.create(...)` /
-  `Child.createArray(...)` — never rely on `@NoNull()` alone for nested conversion.
+  `Child.createArray(...)` — never rely on `@Dto()` alone for nested conversion.
 - Services call `Dto.create(...)` / `Dto.createArray(...)` **explicitly** inside the RxJS
   `map`, even when the TypeScript type already looks compatible.
 - New modules live in a `services/http/http-[service-name]/` folder placed **closest to its consumer**:
@@ -70,7 +70,7 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
 ## References
 
 - [context7-lookup.md](references/context7-lookup.md) — pull current Angular docs with `ctx7`.
-- [decorator.md](references/decorator.md) — validate/vendor the `@NoNull()` decorator.
+- [decorator.md](references/decorator.md) — validate/vendor the `@Dto()` decorator.
 - [folder-structure.md](references/folder-structure.md) — required inputs + folder contract.
 - [dto.md](references/dto.md) — DTO rules, safe defaults, preferred shape.
 - [service.md](references/service.md) — service rules and examples.
@@ -85,5 +85,5 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
   only when a second feature consumes it.
 - No raw API JSON returned from services.
 - Never skip `create()` / `createArray()` in services, even when the type looks compatible.
-- Never lean on `@NoNull()` for nested conversion — parents must call child factories.
+- Never lean on `@Dto()` for nested conversion — parents must call child factories.
 - Never silently skip the context7 lookup — fall back to angular.dev and say so.

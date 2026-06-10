@@ -18,7 +18,7 @@ Use Angular's HTTP testing utilities:
 
 - Provide `provideHttpClient()` **before** `provideHttpClientTesting()`.
 - Inject `HttpTestingController`; assert method, URL, trimmed query params, and body.
-- Flush `mocks/[method]/200-ok.json` and assert the result is a DTO instance with mapped data.
+- Flush `jsons/[method]/200-ok.json` and assert the result is a DTO instance with mapped data.
 - Flush 4xx/5xx mocks (table-driven) and assert `HttpErrorResponse` propagates with the
   original `status` and `error` payload.
 - Call `httpMock.verify()` in `afterEach`.
