@@ -5,6 +5,11 @@ Every DTO class must:
 - Import `Dto` from the decorator and apply `@Dto()` immediately above the class. The relative
   import depth depends on where the module and decorator land — see [decorator.md](decorator.md); for the
   conventional layout it is `../../../../_decorators/class.decorator`.
+- When the API payload has keys that are **not camelCase** (snake_case, PascalCase, kebab-case),
+  apply `@Dto({ keyCamelCase: true })` instead — on **every** DTO of the module — and keep the
+  class properties in camelCase. The decorator converts the incoming keys to camelCase deeply
+  (nested objects and arrays included), so the classes never mirror the API's casing — see
+  [Non-camelCase API payloads](#non-camelcase-api-payloads).
 - Use constructor `public` properties with a safe default for **every** field.
 - Expose `static create(item: Partial<Dto> = new this()): Dto`.
 - Expose `static createArray(items: Partial<Dto>[] = []): Dto[]` when the DTO can appear in
@@ -55,6 +60,37 @@ export class UserResponseDto {
 	}
 }
 ```
+
+## Non-camelCase API payloads
+
+When the endpoint returns keys like `first_name` / `UserData` / `user-id`, the DTO stays
+**identical** to the camelCase case — only the decorator options change:
+
+```typescript
+import { Dto } from '../../../../_decorators/class.decorator';
+import { UserDataDto } from './user-data.dto';
+
+@Dto({ keyCamelCase: true })
+export class UserDto {
+	constructor(
+		public firstName = '',
+		public userData = new UserDataDto(),
+	) {}
+
+	static create(item: Partial<UserDto> = new this()): UserDto {
+		return new this(item.firstName, UserDataDto.create(item.userData));
+	}
+}
+```
+
+`UserDto.create({ first_name: 'Ana', user_data: { … } })` yields `firstName: 'Ana'` and hands the
+already-camelCased `userData` object to `UserDataDto.create(...)`. Apply the same
+`{ keyCamelCase: true }` to the nested DTOs too (`UserDataDto` here), so each factory also works
+when called directly with raw API JSON. The conversion renames keys only — explicit
+`create()`/`createArray()` mapping for nested DTOs is still required.
+
+Keep the `jsons/` fixtures in the API's **original** casing so the specs prove the conversion —
+see [testing.md](testing.md).
 
 ## Build order
 

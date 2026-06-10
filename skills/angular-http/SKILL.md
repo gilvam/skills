@@ -1,6 +1,6 @@
 ---
 name: angular-http
-description: Create standardized Angular HTTP integration modules in a services/http folder placed closest to its consumer — inside the owning feature (features/<feature>/services/http) when one feature uses it, or at the app root (default src/app/services/http) for app-wide or single-service projects — with typed HttpClient services, @Dto() DTOs with explicit create()/createArray() mapping, a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @Dto decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested API payload mapping, HTTP mocks, or service specs. Do not use for general component/template patterns (use angular-patterns) or application folder structure (use angular-folder-structure).
+description: Create standardized Angular HTTP integration modules in a services/http folder placed closest to its consumer — inside the owning feature (features/<feature>/services/http) when one feature uses it, or at the app root (default src/app/services/http) for app-wide or single-service projects — with typed HttpClient services, @Dto() DTOs with explicit create()/createArray() mapping (and the keyCamelCase option converting non-camelCase API keys such as snake_case to camelCase properties), a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @Dto decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested or non-camelCase API payload mapping, HTTP mocks, or service specs. Do not use for general component/template patterns (use angular-patterns) or application folder structure (use angular-folder-structure).
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash, WebFetch
 ---
 
@@ -58,6 +58,10 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
 ## Non-negotiable rules (summary)
 
 - Every DTO has `@Dto()` and a safe default for **every** constructor field.
+- API payloads with keys that are **not camelCase** (snake_case, PascalCase, kebab-case) →
+  use `@Dto({ keyCamelCase: true })` on every DTO of the module; class properties stay
+  camelCase, and the `jsons/` fixtures keep the API's original casing. See
+  [references/decorator.md](references/decorator.md) and [references/dto.md](references/dto.md).
 - Nested objects/arrays are mapped **explicitly** with `Child.create(...)` /
   `Child.createArray(...)` — never rely on `@Dto()` alone for nested conversion.
 - Services call `Dto.create(...)` / `Dto.createArray(...)` **explicitly** inside the RxJS
@@ -86,4 +90,6 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
 - No raw API JSON returned from services.
 - Never skip `create()` / `createArray()` in services, even when the type looks compatible.
 - Never lean on `@Dto()` for nested conversion — parents must call child factories.
+- Never declare DTO properties in the API's casing (e.g. `first_name`) — enable
+  `keyCamelCase` and keep the class camelCase.
 - Never silently skip the context7 lookup — fall back to angular.dev and say so.

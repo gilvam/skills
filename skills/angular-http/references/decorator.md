@@ -24,17 +24,29 @@ conventionally lives at `[app-root]/_decorators/class.decorator.ts`.
 
 ## What `@Dto()` does (and does not) do
 
-It converts `null` → `undefined` for **constructor arguments** and for the static
-**`create`** / **`createArray`** arguments, which lets the TypeScript default parameter values
-take over. As a result, `null`, `{}`, missing keys, and partial payloads all collapse to safe
-defaults.
+The decorator normalizes the **constructor** arguments and the static **`create`** /
+**`createArray`** arguments, driven by an options object:
 
-It does **not** recurse into nested objects or arrays. Parent DTOs must map their children
-**explicitly** via `Child.create(...)` / `Child.createArray(...)` — see
+| Option         | Default | Behavior                                                                                                                                                                                                  |
+| -------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `noNullValue`  | `true`  | Converts `null` → `undefined` (shallow, at argument level), letting the TypeScript default parameter values take over — `null`, `{}`, missing keys, and partial payloads all collapse to safe defaults. |
+| `keyCamelCase` | `false` | Recursively converts the keys of incoming objects to camelCase — nested objects and arrays included — before they reach the constructor/factory.                                                          |
+
+Enable `keyCamelCase` whenever the API payload uses keys that are **not camelCase**
+(`first_name`, `UserData`, `user-id`, …): apply `@Dto({ keyCamelCase: true })` and keep the DTO
+properties in camelCase — never mirror the API's casing into the class. See
 [dto.md](dto.md).
+
+Null conversion is shallow, and the key conversion does **not** instantiate nested DTOs. Parent
+DTOs must still map their children **explicitly** via `Child.create(...)` /
+`Child.createArray(...)` — see [dto.md](dto.md).
 
 ## Reference
 
-The decorator's behavior is covered by `[app-root]/_decorators/class.decorator.spec.ts`: it
-verifies null→undefined for constructor args and for `create`/`createArray`, that other static
-methods are untouched, and that the prototype chain / static properties are preserved.
+The decorator's behavior is covered by `[app-root]/_decorators/class.decorator.spec.ts`
+(upstream:
+`https://github.com/gilvam/typescript-utils/blob/main/src/decorators/class/class.decorator.spec.ts`):
+it verifies null→undefined for constructor args and for `create`/`createArray`, the deep
+key→camelCase conversion when `keyCamelCase: true` (and that keys pass through untouched when
+it is off), that other static methods are untouched, and that the prototype chain / static
+properties are preserved.

@@ -73,7 +73,9 @@ Create new modules **only** under `[host]/services/http/http-[service-name]/` (r
 ```
 
 Keep tests beside the code under test. Do not place integration DTOs in shared/global or
-component folders unless the user explicitly asks for cross-module reuse.
+component folders unless the user explicitly asks for cross-module reuse. The `jsons/` fixtures
+mirror the **real API responses**, keeping the original key casing (snake_case etc.) — they are
+the input that proves the DTO mapping and the `keyCamelCase` conversion.
 
 ## Naming conventions
 

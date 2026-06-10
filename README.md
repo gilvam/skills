@@ -23,7 +23,7 @@ Repositório de skills locais para orientar agentes/LLMs em tarefas específicas
 
 ### Ferramentas e utilidades
 
-- [context7](skills/context7/SKILL.md) — Recupera documentação técnica atualizada, referências de API e exemplos de código para qualquer tecnologia de desenvolvimento.
+- [context7](skills/context7/SKILL.md) — Recupera documentação técnica atualizada, referências de API e exemplos de código para qualquer tecnologia de desenvolvimento. Inspirado no projeto [pedronauck/skills](https://github.com/pedronauck/skills).
 
 ## Estrutura geral
 
