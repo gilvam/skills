@@ -21,7 +21,4 @@ relevante **antes** de escrever ou revisar código na área coberta por ela.
 | **typescript-sonarqube**    | Revisa TypeScript/JavaScript contra as regras do SonarQube/SonarJS e roda análise estática estilo Sonar localmente (via `eslint-plugin-sonarjs`) ou em servidor. Cita regras `Sxxxx` verificadas, agrupa por Bug/Code Smell/Vulnerability/Security Hotspot. Oferece dois escopos: projeto inteiro ou só o código novo/alterado (via `git diff`).                       | Em **toda alteração** de `.ts`/`.tsx`/`.js`/`.jsx` (ao escrever/editar/refatorar) e antes de commit/PR; ou quando pedirem revisão "SonarQube"/"Sonar"/"SonarLint". Escolha o escopo: por padrão só o código novo/alterado; projeto inteiro sob demanda. Para smells gerais → `code-smell`; padrões TS → `typescript-patterns`.                |
 | **vitest-testing**          | Orienta testes unitários e de integração com Vitest: mocks com `vi`, Arrange–Act–Assert, fake timers para `Date`, testes de endpoint HTTP sem supertest.                                                                                                                          | Ao **escrever ou refatorar** testes: mocks com `vi`, Arrange–Act–Assert, um comportamento por teste, fake timers para `Date`, HTTP como integração. Não usar em projetos Jest/Sinon.                                                  |
 
-## Skills declaradas
-
-As skills instaladas e seus hashes estão em [`skills-lock.json`](./skills-lock.json).
 Cada skill vive em `.agents/skills/<nome>/SKILL.md`, com material de apoio em `references/`.

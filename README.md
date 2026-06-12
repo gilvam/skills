@@ -1,6 +1,32 @@
 # Skills
 
-Repositório de skills locais para orientar agentes/LLMs em tarefas específicas.
+Repositório de skills para orientar agentes/LLMs em tarefas específicas.
+
+## Instalação
+
+As skills são instaladas com o CLI [`skills`](https://skills.sh) (sem necessidade de
+instalar nada globalmente):
+
+```bash
+# Instala todas as skills do repositório
+npx skills add gilvam/skills
+
+# Instala apenas skills específicas
+npx skills add gilvam/skills --skill angular-http --skill typescript-patterns
+```
+
+O CLI detecta o agente em uso e copia as skills para o diretório correto do projeto
+(`.claude/skills/` para Claude Code, `.agents/skills/` para Cursor/Codex/universais).
+O `skills-lock.json` é gravado no **seu** projeto, registrando origem e hash de cada skill.
+
+### Atualizando
+
+Para puxar as versões mais recentes das skills já instaladas:
+
+```bash
+npx skills update            # verifica e atualiza (interativo)
+npx skills update -y         # não-interativo
+```
 
 ## Skills disponíveis
 
@@ -25,16 +51,6 @@ Repositório de skills locais para orientar agentes/LLMs em tarefas específicas
 
 - [context7](skills/context7/SKILL.md) — Recupera documentação técnica atualizada, referências de API e exemplos de código para qualquer tecnologia de desenvolvimento. Inspirado no projeto [pedronauck/skills](https://github.com/pedronauck/skills).
 
-## Estrutura geral
+### Autoria de skills
 
-Cada skill fica em `skills/<nome-da-skill>/` e segue o padrão:
-
-```text
-SKILL.md      # Entrada principal e única para agentes (frontmatter: name + description)
-references/   # Contexto carregado sob demanda (progressive disclosure), um nível de profundidade
-scripts/      # Scripts CLI determinísticos, quando necessário
-assets/       # Templates e arquivos estáticos, quando necessário
-```
-
-As skills seguem a especificação [agentskills.io](https://agentskills.io): metadados validados,
-`SKILL.md` enxuto (< 500 linhas) e detalhes movidos para `references/`.
+- [skill-best-practices](skills/skill-best-practices/SKILL.md) — Cria e estrutura skills de agente seguindo a especificação [agentskills.io](https://agentskills.io). Inspirado no projeto [rodrigobranas](https://github.com/rodrigobranas).

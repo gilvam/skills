@@ -1,0 +1,10 @@
+# Agent install targets — these are destinations for `npx skills add`,
+# not source content. The skills source of truth lives in `skills/`.
+.agents/
+.claude/
+
+# Skills lockfile belongs in the *consumer's* project, not in this source repo.
+skills-lock.json
+
+# IDE
+.idea/
