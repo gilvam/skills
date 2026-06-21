@@ -1,6 +1,6 @@
 ---
 name: angular-http
-description: Create standardized Angular HTTP integration modules in a services/http folder placed closest to its consumer — inside the owning feature (features/<feature>/services/http) when one feature uses it, or at the app root (default src/app/services/http) for app-wide or single-service projects — with typed HttpClient services, @Dto() DTOs with explicit create()/createArray() mapping (and the keyCamelCase option converting non-camelCase API keys such as snake_case to camelCase properties), a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @Dto decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested or non-camelCase API payload mapping, HTTP mocks, or service specs. Do not use for general component/template patterns (use angular-patterns) or application folder structure (use angular-folder-structure).
+description: Create standardized Angular HTTP integration modules in a services/http folder placed closest to its consumer (the owning feature, or the app root for app-wide/single-service projects) — with typed HttpClient services, @Dto() DTOs with explicit create()/createArray() mapping (and the keyCamelCase option converting non-camelCase API keys such as snake_case to camelCase properties, plus the defaultValues option that backfills the missing or empty fields of a partial API response from a default JSON template), a mock service, and unit tests. Pulls current Angular patterns via the context7 ctx7 CLI and guards the @Dto decorator dependency. Use when generating or standardizing Angular REST/HTTP queries, request/response DTOs, nested or non-camelCase API payload mapping, completing/backfilling partial API responses from a default JSON, HTTP mocks, or service specs. Do not use for general component/template patterns (use angular-patterns) or application folder structure (use angular-folder-structure).
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash, WebFetch
 ---
 
@@ -33,6 +33,8 @@ Use it when you are asked to:
 - Generate or standardize an Angular service for a REST/HTTP query.
 - Model request/response payloads as DTOs with safe defaults and null-tolerance.
 - Map nested API JSON (objects and arrays) into typed classes.
+- Backfill a partial API response — fill missing or empty fields from a default JSON template via
+  `@Dto({ defaultValues })`.
 - Add HTTP mocks and unit tests for a service.
 
 Do **not** use it for component/UI logic, state management, or non-HTTP services — use the **`angular-patterns`** skill for those.
@@ -64,6 +66,13 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
   already covers the nested DTOs, which keep the plain `@Dto()`. Class properties stay
   camelCase, and the `jsons/` fixtures keep the API's original casing. See
   [references/decorator.md](references/decorator.md) and [references/dto.md](references/dto.md).
+- When the consumer asks for a **default JSON to complete a partial API response**, add
+  `@Dto({ defaultValues: jsonDefault })` — **only on the root DTOs** whose `create()` / `createArray()`
+  the `http-*` files call with the raw response (the deep fill normalizes the whole tree, like
+  `keyCamelCase`). Reuse the success fixture **`jsons/[method]/200-ok.json`** (imported as
+  `jsonDefault`) as the **camelCase** template; it runs **only** in the factories, keeps `0`/`false`
+  but replaces `''`, and does **not** instantiate nested DTOs (parents still call `Child.create(...)`).
+  See [references/decorator.md](references/decorator.md) and [references/dto.md](references/dto.md).
 - Nested objects/arrays are mapped **explicitly** with `Child.create(...)` /
   `Child.createArray(...)` — never rely on `@Dto()` alone for nested conversion.
 - Services call `Dto.create(...)` / `Dto.createArray(...)` **explicitly** inside the RxJS
@@ -106,4 +115,7 @@ Do **not** use it for component/UI logic, state management, or non-HTTP services
   `keyCamelCase` and keep the class camelCase.
 - Don't spread `{ keyCamelCase: true }` across every `.dto.ts` — only the root DTOs whose
   factories the `http-*` files call with the raw API response need it.
+- Don't put `defaultValues` on nested DTOs, author its template in the API's raw casing, lean on it
+  to instantiate nested DTOs (parents still call `Child.create(...)`), or enable it on a field where
+  an empty `''` is a legitimate value — the deep fill replaces `''`.
 - Never silently skip the context7 lookup — fall back to angular.dev and say so.

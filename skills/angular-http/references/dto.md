@@ -13,6 +13,9 @@ Every DTO class must:
   camelCase everywhere — never mirror the API's casing — and the conversion runs **only** in
   `create()` / `createArray()`, never in `new`, so raw JSON always enters through the factories.
   See [Non-camelCase API payloads](#non-camelcase-api-payloads).
+- When the consumer asks for a **default JSON to complete a partial API response**, add
+  `@Dto({ defaultValues: jsonDefault })` on the **root DTOs only** — see
+  [Completing partial API responses](#completing-partial-api-responses-defaultvalues).
 - Use constructor `public` properties with a safe default for **every** field.
 - Expose `static create(item: Partial<Dto> = new this()): Dto`.
 - Expose `static createArray(items: Partial<Dto>[] = []): Dto[]` when the DTO can appear in
@@ -97,6 +100,89 @@ explicit `create()`/`createArray()` mapping for nested DTOs is still required �
 
 Keep the `jsons/` fixtures in the API's **original** casing so the specs prove the conversion —
 see [testing.md](testing.md).
+
+## Completing partial API responses (`defaultValues`)
+
+When the endpoint returns **partial** data and the consumer asks for a default JSON to fill the
+gaps, pass a template to `@Dto({ defaultValues })`. The decorator deep-fills every **empty** field
+(`null` / `undefined` / `''`) — and any **missing** key — from the template, inside
+`create()` / `createArray()` only (never `new`). `0` and `false` survive; `''` is replaced; each
+`createArray` element is filled independently. See [decorator.md](decorator.md) for the full
+mechanics and a worked template → argument → result example.
+
+The template is **always the DTO's own shape** (or an array of it) — a complete, known-good default.
+**Reuse the module's success fixture `jsons/[method]/200-ok.json`** as that default: import it as
+`jsonDefault` and hand it to the decorator. No extra file is needed — the same canonical response the
+service spec flushes doubles as the backfill source.
+
+```json
+// jsons/get/200-ok.json — the complete known-good response, reused as the default
+{
+	"id": 25,
+	"name": "pikachu",
+	"experience": 112,
+	"sprites": {
+		"front": "25.png",
+		"back": "back/25.png",
+		"other": { "officialArtwork": { "default": "25.png" } }
+	},
+	"stats": [{ "baseStat": 35, "stat": { "name": "hp", "url": "https://pokeapi.co/api/v2/stat/1/" } }]
+}
+```
+
+```typescript
+// models/pokemon.dto.ts
+import { Dto } from '../../../../_decorators/class.decorator';
+import jsonDefault from '../jsons/get/200-ok.json'; // tsconfig: resolveJsonModule
+import { PokemonSpritesDto } from './pokemon-sprites.dto';
+import { PokemonStatDto } from './pokemon-stat.dto';
+
+@Dto({ defaultValues: jsonDefault }) // root DTO only — the deep fill covers the whole tree
+export class PokemonDto {
+	constructor(
+		public id = 0,
+		public name = '',
+		public experience = 0,
+		public sprites = new PokemonSpritesDto(),
+		public stats: PokemonStatDto[] = [],
+	) {}
+
+	static create(item: Partial<PokemonDto> = new this()): PokemonDto {
+		return new this(
+			item.id,
+			item.name,
+			item.experience,
+			PokemonSpritesDto.create(item.sprites),
+			PokemonStatDto.createArray(item.stats),
+		);
+	}
+
+	static createArray(items: Partial<PokemonDto>[] = []): PokemonDto[] {
+		return items.map((item) => PokemonDto.create(item));
+	}
+}
+```
+
+`PokemonDto.create({ id: null, name: 'Raichu', sprites: { front: '30.png', back: '', other: undefined } })`
+first deep-fills the raw argument from `jsonDefault` (`id` → `25`, `sprites.back` → `'back/25.png'`,
+`sprites.other` → the template subtree, and the absent `experience` / `stats` → the template),
+**then** the `create()` body maps the now-complete item explicitly. `name: 'Raichu'` and
+`front: '30.png'` are kept.
+
+Two rules carry over from `keyCamelCase`, for the same reason (the deep fill normalizes the tree
+once, in the factory):
+
+- Put `defaultValues` **only on the root DTO** whose factory the `http-*` files call with the raw
+  response. Nested DTOs keep the plain `@Dto()` — they receive already-filled objects.
+- It supplies **values only** — it does **not** instantiate nested DTOs. Parents still map children
+  **explicitly** via `Child.create(...)` / `Child.createArray(...)`.
+
+**Casing.** The fill runs **after** the `keyCamelCase` conversion, so `jsonDefault` must be in the
+DTO's **camelCase** shape. Reusing `200-ok.json` works precisely when the API is already camelCase
+(the fixture *is* the DTO shape, as above). When the API is snake_case and you pass
+`keyCamelCase: true`, keep `200-ok.json` in the API's casing — it proves the conversion (see
+[testing.md](testing.md)) — and point `defaultValues` at a separate **camelCase** default JSON
+instead.
 
 ## Build order
 

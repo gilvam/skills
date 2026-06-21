@@ -15,6 +15,11 @@ Prove null-safety and explicit mapping. Cover:
   (e.g. `first_name`, `user_data`) → camelCase properties mapped (`firstName`, `userData`),
   including nested objects and arrays. Nested DTOs (plain `@Dto()`) are specced with
   already-camelCased input — the root factory converts the tree before they are reached.
+- root DTOs using `@Dto({ defaultValues: jsonDefault })`: a **partial / empty** payload → every
+  missing or empty (`null` / `undefined` / `''`) field deep-filled from `jsonDefault` (the reused
+  `jsons/[method]/200-ok.json`), while valid `0` / `false` survive and a meaningful-looking `''` is
+  replaced; `createArray` fills **each element independently** (assert two rows' filled subtrees are
+  `not.toBe` each other).
 
 ## Service specs (`http-[service-name].service.spec.ts`)
 
