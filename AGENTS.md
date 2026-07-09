@@ -17,29 +17,13 @@ próprios gatilhos, regras não negociáveis e material de apoio em `references/
 | `typescript-sonarqube`         | Qualquer `.ts`/`.tsx`/`.js`/`.jsx` criado, editado ou refatorado; antes de commit/PR; pedido de revisão "Sonar"/"SonarLint"                                                                                      | Formatação pura de código (Prettier/ESLint) sem relação com regras Sonar                                                              |
 | `vitest-testing`               | Escrever/revisar teste Vitest (`.spec.ts`/`.test.ts`): mocks `vi`, AAA, timers, integração HTTP sem supertest                                                                                                    | Projeto usa Jest ou Sinon como stack principal de mock                                                                                |
 
-**Nota transversal:** quando a tarefa depende de uma lib/framework/versão específica, consulte
-`context7` (ou o MCP do Angular CLI, quando a skill Angular já indicar) antes de codificar —
-`angular-folder-structure`, `angular-patterns`, `angular-http` e `typescript-patterns` já abrem
-seu próprio fluxo recomendado com essa consulta. `typescript-sonarqube` roda a cada alteração de
-`.ts`/`.tsx`/`.js`/`.jsx`, não só na revisão — funciona como o gate final de qualquer um dos
-fluxos abaixo.
-
-**Ordem sugerida por tarefa:**
-
-- **Projeto/feature Angular nova** → `angular-folder-structure` (estrutura), depois
-  `angular-developer` (arquitetura ampla), `angular-patterns`, `typescript-patterns`,
-  `code-standards-en`, `code-smell`.
-- **HTTP/REST em Angular** → `angular-http` (DTOs, mock, specs), depois `typescript-patterns`,
-  `code-standards-en`, `code-smell`.
-- **Componente/UI Angular sem HTTP** → `angular-patterns`, depois `typescript-patterns`,
-  `code-standards-en`, `code-smell`.
-- **TypeScript genérico fora do Angular** → `typescript-patterns`, depois `code-standards-en`,
-  `code-smell`.
-- **Revisão antes de commit ou PR** → `code-standards-en`, `code-smell`, `typescript-patterns`
-  (conforme aplicável) — feche sempre com `typescript-sonarqube`.
-- **Testes** → `vitest-testing` + a skill da camada testada (`angular-patterns` para componente,
-  `angular-http` para serviço HTTP, `typescript-patterns` para domínio puro).
-- **Nova skill de agente** → `skill-best-practices`.
+**Ordem sugerida por tarefa:** projeto/feature Angular → `angular-folder-structure` (estrutura),
+depois `angular-developer`, `angular-patterns`, `typescript-patterns`, `code-standards-en`,
+`code-smell`. HTTP/REST em Angular → `angular-http`, depois `typescript-patterns`,
+`code-standards-en`, `code-smell`. TypeScript fora do Angular → `typescript-patterns`, depois
+`code-standards-en`, `code-smell`. Revisão antes de commit/PR → `code-standards-en`,
+`code-smell`, `typescript-patterns`, feche com `typescript-sonarqube`. Testes →
+`vitest-testing` + skill da camada testada.
 
 # Persistência do Modo Plano
 
