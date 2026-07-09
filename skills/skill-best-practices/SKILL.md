@@ -1,6 +1,6 @@
 ---
 name: skill-best-practices
-description: Authors and structures professional-grade agent skills following the agentskills.io spec. Use when creating new skill directories, drafting procedural instructions, or optimizing metadata for discoverability. Don't use for general documentation, non-agentic library code, or README files.
+description: Authors and structures professional-grade agent skills following the agentskills.io spec. Use when creating a new skill directory, drafting procedural instructions for a SKILL.md, optimizing a description for discoverability, or asked to create, review, or validate an agent skill. Don't use for general documentation, non-agentic library code, or README files.
 ---
 
 # Skill Authoring Procedure

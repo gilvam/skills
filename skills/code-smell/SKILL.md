@@ -1,6 +1,6 @@
 ---
 name: code-smell
-description: Catálogo de code smells em TypeScript com 94 smells organizados por categoria (Bloaters, Couplers, Dispensables, etc.). Use esta skill ao revisar, refatorar ou escrever código TypeScript/JavaScript para identificar problemas de design, sugerir refatorações e justificar mudanças com base em princípios SOLID e Clean Code. Baseado no artigo de Gilvam Mourão.
+description: Catálogo de 94 code smells em TypeScript/JavaScript organizados em 12 categorias (Bloaters, Couplers, Dispensables, Object-Orientation Abusers, Naming & Readability, entre outras), cada um com exemplo de má prática e a refatoração correspondente, baseado no artigo de Gilvam Mourão. Use esta skill ao escrever, revisar ou refatorar código TypeScript/JavaScript — em code review, PRs, auditoria de código legado, ou sempre que um trecho "cheirar mal" (método longo, muitos parâmetros, condicional aninhado, duplicação, acoplamento excessivo) e for preciso nomear o problema e justificar a refatoração via SOLID/Clean Code. Não use para detectar bugs funcionais (use testes e type-checker), medir performance objetivamente (use profiling/benchmarks), nem para aplicar regras de estilo automatizadas (use ESLint/Prettier/Biome).
 allowed-tools: Read, Grep, Glob
 ---
 

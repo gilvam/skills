@@ -1,6 +1,6 @@
 ---
 name: angular-developer
-description: Generates Angular code and provides architectural guidance. Trigger when creating projects, components, or services, or for best practices on reactivity (signals, linkedSignal, resource), forms, dependency injection, routing, SSR, accessibility (ARIA), animations, styling (component styles, Tailwind CSS), testing, or CLI tooling. Do not use for HTTP service module scaffolding (use angular-http), application folder layout (use angular-folder-structure), or component/template/reactivity pattern reviews (use angular-patterns).
+description: Generates Angular code and provides architectural guidance across the framework. Trigger when creating a new Angular project, component, directive, pipe, or service, running ng generate/ng new/ng build, or for best practices on reactivity (signals, linkedSignal, resource, effect), forms (signal/reactive/template-driven), dependency injection, routing and guards, SSR/hydration, accessibility (Angular Aria), animations, styling (component styles, Tailwind CSS), unit or e2e testing, or CLI tooling and migrations. Do not use for HTTP service module scaffolding (use angular-http), application folder layout (use angular-folder-structure), or component/template/reactivity pattern reviews (use angular-patterns).
 license: MIT
 metadata:
   author: Copyright 2026 Google LLC

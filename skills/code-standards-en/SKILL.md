@@ -1,6 +1,6 @@
 ---
 name: code-standards-en
-description: Specifies English identifiers, casing conventions, verb-led functions, parameterized objects over long arg lists, CQS separation, guarded early returns, split boolean-flag behaviors, sizing limits for methods and classes, minimal comments. Do not use when localized naming is required by product policy.
+description: Applies house code standards for naming and structure — English identifiers, camelCase/PascalCase/kebab-case casing, verb-led function names, object parameters over long argument lists, Command Query Separation, guarded early returns instead of nested if/else, split boolean-flag behaviors, method and class size limits, and minimal comments. Use when naming or renaming a function, variable, class, or file; structuring a new function or class; extracting a magic number into a constant; splitting a boolean-flag parameter into separate methods; or reviewing a pull request or diff for these conventions. Do not use when localized (non-English) naming is required by product policy.
 ---
 
 # Code standards (English source)

@@ -1,6 +1,6 @@
 ---
 name: vitest-testing
-description: Guides Vitest-based unit and integration tests with vi mocks, Arrange-Act-Assert, fake timers for Date, HTTP endpoint integration tests without supertest, use-case and domain coverage. Use when writing or reviewing Vitest unit or integration tests, mocking with vi, faking timers for Date, or testing HTTP endpoints. Do not use for Jest-centric projects or Sinon as primary mocking.
+description: Guides Vitest-based unit and integration tests with vi mocks, Arrange-Act-Assert, fake timers for Date, HTTP endpoint integration tests without supertest, use-case and domain coverage. Use when writing or reviewing a Vitest unit or integration test, creating or editing a .spec.ts/.test.ts file, mocking with vi, faking timers for Date, testing an HTTP endpoint, or asked to add test coverage for a use case. Do not use for Jest-centric projects or Sinon as primary mocking.
 ---
 
 # Vitest testing
