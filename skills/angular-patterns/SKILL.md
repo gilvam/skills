@@ -17,11 +17,14 @@ memory alone. See [references/mcp-lookup.md](references/mcp-lookup.md).
 ## Companion skills
 
 This skill **composes with** the base standards — it does not redefine them. When writing Angular code, also
-apply these (each owns its own rules):
+apply these (each owns its own rules). Apply `typescript-patterns` while writing the code; apply
+`code-standards-en`, `code-smell`, and `typescript-sonarqube` **last**, as the closing pass once the
+component/template works:
 
 - **`typescript-patterns`** — base TypeScript standards (classes, interfaces, types, default values).
-- **`code-standards-en`** — identifier naming, casing, function shaping.
-- **`code-smell`** — refactoring catalogue for clean code.
+- **`code-standards-en`** *(last)* — identifier naming, casing, function shaping.
+- **`code-smell`** *(last)* — refactoring catalogue for clean code.
+- **`typescript-sonarqube`** *(last)* — Sonar-style static analysis gate; run after the code is written and again before commit/PR.
 
 (HTTP/DTO modules belong to `angular-http`; folder layout to `angular-folder-structure`.)
 

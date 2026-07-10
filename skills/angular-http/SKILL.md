@@ -18,11 +18,14 @@ legacy `search` flow with the newer `get` flow), **these rules win**.
 ## Companion skills
 
 This skill **composes with** the base standards — it does not redefine them. When generating an HTTP module,
-also apply these (each owns its own rules):
+also apply these (each owns its own rules). Apply `typescript-patterns` while building the module;
+apply `code-standards-en`, `code-smell`, and `typescript-sonarqube` **last**, as the closing pass once the
+module works:
 
 - **`typescript-patterns`** — base TypeScript standards (DTO classes, types, default values).
-- **`code-standards-en`** — identifier naming, casing, function shaping.
-- **`code-smell`** — refactoring catalogue for clean code.
+- **`code-standards-en`** *(last)* — identifier naming, casing, function shaping.
+- **`code-smell`** *(last)* — refactoring catalogue for clean code.
+- **`typescript-sonarqube`** *(last)* — Sonar-style static analysis gate; run after the module is written and again before commit/PR.
 
 (Component/template patterns belong to `angular-patterns`; folder layout to `angular-folder-structure`.)
 

@@ -5,6 +5,10 @@ description: Applies house code standards for naming and structure — English i
 
 # Code standards (English source)
 
+Apply this as a closing pass over already-implemented code — together with `code-smell` and
+`typescript-sonarqube` — after the primary implementation skill (e.g. `angular-patterns`,
+`angular-http`, `typescript-patterns`), not before.
+
 ## Procedures
 
 **When naming, structuring functions, or reviewing pull requests**

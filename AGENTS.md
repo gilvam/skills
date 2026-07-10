@@ -17,13 +17,20 @@ próprios gatilhos, regras não negociáveis e material de apoio em `references/
 | `typescript-sonarqube`         | Qualquer `.ts`/`.tsx`/`.js`/`.jsx` criado, editado ou refatorado; antes de commit/PR; pedido de revisão "Sonar"/"SonarLint"                                                                                      | Formatação pura de código (Prettier/ESLint) sem relação com regras Sonar                                                              |
 | `vitest-testing`               | Escrever/revisar teste Vitest (`.spec.ts`/`.test.ts`): mocks `vi`, AAA, timers, integração HTTP sem supertest                                                                                                    | Projeto usa Jest ou Sinon como stack principal de mock                                                                                |
 
+`code-standards-en`, `code-smell` e `typescript-sonarqube` são sempre as **últimas** skills
+chamadas — em qualquer tarefa que crie, edite ou refatore código, não só em revisão — nessa
+ordem, como fechamento depois da skill de implementação principal.
+
 **Ordem sugerida por tarefa:** projeto/feature Angular → `angular-folder-structure` (estrutura),
-depois `angular-developer`, `angular-patterns`, `typescript-patterns`, `code-standards-en`,
-`code-smell`. HTTP/REST em Angular → `angular-http`, depois `typescript-patterns`,
-`code-standards-en`, `code-smell`. TypeScript fora do Angular → `typescript-patterns`, depois
-`code-standards-en`, `code-smell`. Revisão antes de commit/PR → `code-standards-en`,
-`code-smell`, `typescript-patterns`, feche com `typescript-sonarqube`. Testes →
-`vitest-testing` + skill da camada testada.
+depois `angular-developer`, `angular-patterns`, `typescript-patterns`, feche com
+`code-standards-en`, `code-smell`, `typescript-sonarqube`. HTTP/REST em Angular →
+`angular-http`, depois `typescript-patterns`, feche com `code-standards-en`, `code-smell`,
+`typescript-sonarqube`. TypeScript fora do Angular → `typescript-patterns`, feche com
+`code-standards-en`, `code-smell`, `typescript-sonarqube`. Revisão antes de commit/PR →
+confira `typescript-patterns` (conforme aplicável) e feche com `code-standards-en`,
+`code-smell`, `typescript-sonarqube`. Testes → `vitest-testing` + skill da camada testada,
+feche com `code-standards-en`, `code-smell`, `typescript-sonarqube`. Nova skill de agente →
+`skill-best-practices`.
 
 # Persistência do Modo Plano
 

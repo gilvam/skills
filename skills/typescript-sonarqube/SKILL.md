@@ -16,7 +16,9 @@ coverage tracking.
 
 Run this skill on **every TypeScript/JavaScript change**, not only when "Sonar" is mentioned.
 As soon as `.ts`/`.tsx`/`.js`/`.jsx` files are created, edited, or refactored — and again
-before a commit or PR — do a quick pass before reporting the change as done.
+before a commit or PR — do a quick pass before reporting the change as done. It closes the
+chain **after** `code-standards-en` and `code-smell` — run it last, once naming and design
+smells are already addressed.
 
 ### Choose the scope first
 Before reviewing, decide (or ask the user) which scope applies:

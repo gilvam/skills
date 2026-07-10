@@ -8,6 +8,9 @@ allowed-tools: Read, Grep, Glob
 
 Guia de referência com **94 code smells** identificados em código TypeScript/JavaScript, organizados em 12 categorias, com exemplos de "má prática" e a refatoração correspondente. Adaptado do artigo [_Code Smell_ de Gilvam Mourão](https://medium.com/@gilvam/code-smell-a6b42538f754).
 
+Aplique como parte do fechamento, junto com `code-standards-en` e `typescript-sonarqube` — depois da
+skill de implementação principal (`angular-patterns`, `angular-http`, `typescript-patterns`), não antes.
+
 ## O que é um Code Smell?
 
 Code smell é um sintoma no código-fonte que pode indicar problemas mais profundos. Não é um bug em si, mas sugere que o código tem baixa qualidade ou problemas potenciais de manutenção e evolução. Code smells são pistas de que o design ou a implementação precisa ser revista ou refatorada.
