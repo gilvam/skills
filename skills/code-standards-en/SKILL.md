@@ -1,13 +1,15 @@
 ---
 name: code-standards-en
-description: Applies house code standards for naming and structure — English identifiers, camelCase/PascalCase/kebab-case casing, verb-led function names, object parameters over long argument lists, Command Query Separation, guarded early returns instead of nested if/else, split boolean-flag behaviors, method and class size limits, and minimal comments. Use when naming or renaming a function, variable, class, or file; structuring a new function or class; extracting a magic number into a constant; splitting a boolean-flag parameter into separate methods; or reviewing a pull request or diff for these conventions. Do not use when localized (non-English) naming is required by product policy.
+description: Applies house code standards for naming and structure — English identifiers, camelCase/PascalCase/kebab-case casing, verb-led function names, object parameters over long argument lists, Command Query Separation, guarded early returns instead of nested if/else, split boolean-flag behaviors, method and class size limits, and minimal comments. Trigger as a mandatory closing pass on EVERY task that creates, edits, refactors, writes, or organizes code — in new or existing projects, not only during review — after naming, structuring, or refactoring a function or class, extracting a magic number into a constant, or splitting a boolean-flag parameter, and before reporting the change as done or opening a PR. Run last, after the implementation skill, alongside code-smell and typescript-sonarqube. Do not use when localized (non-English) naming is required by product policy.
 ---
 
 # Code standards (English source)
 
-Apply this as a closing pass over already-implemented code — together with `code-smell` and
-`typescript-sonarqube` — after the primary implementation skill (e.g. `angular-patterns`,
-`angular-http`, `typescript-patterns`), not before.
+Apply this as a **mandatory closing pass on every task that creates, edits, refactors, or writes
+code** — together with `code-smell` and `typescript-sonarqube`, after the primary implementation
+skill (e.g. `angular-patterns`, `angular-http`, `typescript-patterns`) and **before reporting the
+change as done**. This is **not review-only**: run it even when scaffolding a new project or editing
+a single file in an existing one.
 
 ## Procedures
 

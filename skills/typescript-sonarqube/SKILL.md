@@ -1,6 +1,6 @@
 ---
 name: typescript-sonarqube
-description: 'Reviews TypeScript/JavaScript against SonarQube/SonarJS rules and runs SonarQube-style static analysis locally. Use ANY time TypeScript/JavaScript code is written, edited, refactored, or reviewed — after creating or changing `.ts`/`.tsx`/`.js`/`.jsx` files, before committing or opening a PR, or when the user asks for a "SonarQube", "Sonar", "SonarLint" or "SonarJS" review, wants to check code smells/bugs/complexity/security the way SonarQube would, or wants to set up Sonar analysis. Offers two scopes: validate the whole project, or only the new/changed code.'
+description: 'Reviews TypeScript/JavaScript against SonarQube/SonarJS rules and runs SonarQube-style static analysis locally. Trigger as the mandatory final gate on EVERY task that creates, edits, refactors, writes, or organizes `.ts`/`.tsx`/`.js`/`.jsx` code — in new or existing projects — before reporting the change as done or opening a PR, not only when Sonar is mentioned. Also trigger when a "SonarQube", "Sonar", "SonarLint" or "SonarJS" review is requested, to check code smells/bugs/complexity/security the way SonarQube would, or to set up Sonar analysis. Run last in the closing chain, after code-standards-en and code-smell. Offers two scopes: validate the whole project, or only the new/changed code.'
 ---
 
 # SonarQube for TypeScript
@@ -14,7 +14,8 @@ coverage tracking.
 
 ## When to run
 
-Run this skill on **every TypeScript/JavaScript change**, not only when "Sonar" is mentioned.
+Run this skill as the **mandatory final gate on every task that creates, edits, refactors, or
+writes TypeScript/JavaScript** — in a new or existing project, not only when "Sonar" is mentioned.
 As soon as `.ts`/`.tsx`/`.js`/`.jsx` files are created, edited, or refactored — and again
 before a commit or PR — do a quick pass before reporting the change as done. It closes the
 chain **after** `code-standards-en` and `code-smell` — run it last, once naming and design

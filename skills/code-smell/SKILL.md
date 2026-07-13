@@ -1,6 +1,6 @@
 ---
 name: code-smell
-description: Catálogo de 94 code smells em TypeScript/JavaScript organizados em 12 categorias (Bloaters, Couplers, Dispensables, Object-Orientation Abusers, Naming & Readability, entre outras), cada um com exemplo de má prática e a refatoração correspondente, baseado no artigo de Gilvam Mourão. Use esta skill ao escrever, revisar ou refatorar código TypeScript/JavaScript — em code review, PRs, auditoria de código legado, ou sempre que um trecho "cheirar mal" (método longo, muitos parâmetros, condicional aninhado, duplicação, acoplamento excessivo) e for preciso nomear o problema e justificar a refatoração via SOLID/Clean Code. Não use para detectar bugs funcionais (use testes e type-checker), medir performance objetivamente (use profiling/benchmarks), nem para aplicar regras de estilo automatizadas (use ESLint/Prettier/Biome).
+description: Catálogo de 94 code smells em TypeScript/JavaScript organizados em 12 categorias (Bloaters, Couplers, Dispensables, Object-Orientation Abusers, Naming & Readability, entre outras), cada um com exemplo de má prática e a refatoração correspondente, baseado no artigo de Gilvam Mourão. Acione como passada obrigatória de fechamento em TODA tarefa que cria, edita, refatora, escreve ou organiza código TypeScript/JavaScript — em projeto novo ou existente, não só em code review — ao nomear um problema de design (método longo, muitos parâmetros, condicional aninhado, duplicação, acoplamento excessivo) e justificar a refatoração via SOLID/Clean Code, antes de reportar a mudança como concluída ou abrir PR. Rode por último, depois da skill de implementação, junto de code-standards-en e typescript-sonarqube. Não use para detectar bugs funcionais (use testes e type-checker), medir performance objetivamente (use profiling/benchmarks), nem para aplicar regras de estilo automatizadas (use ESLint/Prettier/Biome).
 allowed-tools: Read, Grep, Glob
 ---
 
@@ -8,8 +8,11 @@ allowed-tools: Read, Grep, Glob
 
 Guia de referência com **94 code smells** identificados em código TypeScript/JavaScript, organizados em 12 categorias, com exemplos de "má prática" e a refatoração correspondente. Adaptado do artigo [_Code Smell_ de Gilvam Mourão](https://medium.com/@gilvam/code-smell-a6b42538f754).
 
-Aplique como parte do fechamento, junto com `code-standards-en` e `typescript-sonarqube` — depois da
-skill de implementação principal (`angular-patterns`, `angular-http`, `typescript-patterns`), não antes.
+Aplique como **passada obrigatória de fechamento em toda tarefa que cria, edita, refatora ou escreve
+código** — junto com `code-standards-en` e `typescript-sonarqube`, depois da skill de implementação
+principal (`angular-patterns`, `angular-http`, `typescript-patterns`) e **antes de reportar a mudança
+como concluída**. **Não é só para review**: rode mesmo ao scaffoldar um projeto novo ou editar um
+único arquivo em um projeto existente.
 
 ## O que é um Code Smell?
 
@@ -21,9 +24,9 @@ Code smell é um sintoma no código-fonte que pode indicar problemas mais profun
 
 Use esta skill quando você for:
 
+- **Criar, editar ou refatorar** código e evitar armadilhas conhecidas (boolean trap, magic numbers, long parameter list, etc.).
 - **Revisar código** TypeScript/JavaScript (PRs, code review, auditoria) e precisar identificar problemas de design.
 - **Refatorar** módulos legados e precisar de um vocabulário comum para discutir e priorizar mudanças.
-- **Escrever código novo** e quiser evitar armadilhas conhecidas (boolean trap, magic numbers, long parameter list, etc.).
 - **Justificar uma refatoração** com base em princípios consagrados (SOLID, Clean Code, Refactoring de Fowler).
 - **Ensinar/onboardar** desenvolvedores que estão aprendendo Clean Code e padrões de projeto.
 
